@@ -1,0 +1,24 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt'
+
+def libraries = rootProject.ext.libraries
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 24
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "com.android.support:support-annotations:${libraries.supportVersion}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:${libraries.dbFlowVersion}"
+    compile "com.github.Raizlabs.DBFlow:dbflow:${libraries.dbFlowVersion}"
+
+    testCompile "junit:junit:${libraries.testJunit}"
+
+    apt "com.github.Raizlabs.DBFlow:dbflow-processor:${libraries.dbFlowVersion}"
+}

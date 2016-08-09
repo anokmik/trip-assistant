@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Trip Assistant</string>
+
+    <!-- Titles -->
+    <string name="title_trips_list">Trips</string>
+    <string name="title_login_as_author">Login as Author</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_edit_author">Edit Author</string>
+    <string name="title_author">Author</string>
+
+    <!-- Buttons -->
+    <string name="login">Login</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="sign_out">Sign out</string>
+
+    <!-- Hint -->
+    <string name="hint_first_name">First name</string>
+    <string name="hint_last_name">Last name</string>
+
+    <!-- Error -->
+    <string name="error_first_name_not_valid">Input value length must be higher than five chars</string>
+    <string name="error_last_name_not_valid">Input value length must be higher than five chars</string>
+
+</resources>

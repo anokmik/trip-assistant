@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="presenter"
+            type="com.anokmik.tripassistant.author.profile.ProfilePresenter" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="@{presenter.isEditing}"
+            app:error="@{@string/error_first_name_not_valid}"
+            app:showError="@{!presenter.firstNameValid}">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="@{presenter.isEditing}"
+                android:focusable="@{presenter.isEditing}"
+                android:focusableInTouchMode="@{presenter.isEditing}"
+                android:hint="@string/hint_first_name"
+                android:text="@={presenter.authorFirstName}" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="@{presenter.isEditing}"
+            app:error="@{@string/error_last_name_not_valid}"
+            app:showError="@{!presenter.lastNameValid}">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="@{presenter.isEditing}"
+                android:focusable="@{presenter.isEditing}"
+                android:focusableInTouchMode="@{presenter.isEditing}"
+                android:hint="@string/hint_last_name"
+                android:text="@={presenter.authorLastName}" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> presenter.save()}"
+            android:text="@string/save"
+            android:visibility="@{presenter.isEditing ? View.VISIBLE : View.GONE}" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> presenter.cancel()}"
+            android:text="@string/cancel"
+            android:visibility="@{presenter.isEditing ? View.VISIBLE : View.GONE}" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> presenter.edit()}"
+            android:text="@string/edit"
+            android:visibility="@{presenter.isEditing ? View.GONE : View.VISIBLE}" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> presenter.delete()}"
+            android:text="@string/delete"
+            android:visibility="@{presenter.isEditing ? View.GONE : View.VISIBLE}" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> presenter.signOut()}"
+            android:text="@string/sign_out"
+            android:visibility="@{presenter.isEditing ? View.GONE : View.VISIBLE}" />
+
+    </LinearLayout>
+
+</layout>
