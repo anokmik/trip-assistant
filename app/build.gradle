@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 def libraries = rootProject.ext.libraries
 
@@ -34,6 +35,9 @@ android {
             ]
         }
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
     dataBinding {
         enabled true
     }
@@ -61,6 +65,13 @@ dependencies {
     compile "com.android.support:appcompat-v7:${libraries.supportVersion}"
     compile "com.android.support:recyclerview-v7:${libraries.supportVersion}"
     compile "com.android.support:design:${libraries.supportVersion}"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:${libraries.kotlinVersion}"
 
     testCompile "junit:junit:${libraries.testJunit}"
+
+    kapt "com.android.databinding:compiler:${libraries.dataBindingVersion}"
+}
+
+kapt {
+    generateStubs = true
 }

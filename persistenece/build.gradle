@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'kotlin-android'
 
 def libraries = rootProject.ext.libraries
 
@@ -10,15 +10,24 @@ android {
         minSdkVersion 17
         targetSdkVersion 24
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:support-annotations:${libraries.supportVersion}"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:${libraries.kotlinVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${libraries.dbFlowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow:${libraries.dbFlowVersion}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${libraries.dbFlowVersion}"
 
     testCompile "junit:junit:${libraries.testJunit}"
 
-    apt "com.github.Raizlabs.DBFlow:dbflow-processor:${libraries.dbFlowVersion}"
+    kapt "com.github.Raizlabs.DBFlow:dbflow-processor:${libraries.dbFlowVersion}"
+}
+
+kapt {
+    generateStubs = true
 }
