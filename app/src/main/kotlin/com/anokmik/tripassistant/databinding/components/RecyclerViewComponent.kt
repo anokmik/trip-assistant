@@ -10,11 +10,6 @@ import com.anokmik.tripassistant.databinding.adapter.RowPresenter
 
 class RecyclerViewComponent {
 
-    @BindingAdapter("layoutManager")
-    fun setLayoutManager(view: RecyclerView, layoutManager: RecyclerView.LayoutManager) {
-        view.layoutManager = layoutManager
-    }
-
     @BindingAdapter("items", "rowPresenter")
     fun <T> setContent(view: RecyclerView, items: List<T>, rowPresenter: RowPresenter<T>) {
         view.adapter = BinderRecyclerViewAdapter<T, ViewDataBinding>(LayoutInflater.from(view.context), items, rowPresenter)

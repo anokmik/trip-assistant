@@ -9,7 +9,7 @@
             type="android.support.v7.widget.RecyclerView.LayoutManager" />
 
         <variable
-            name="tripListPresenter"
+            name="tripsListPresenter"
             type="com.anokmik.tripassistant.trip.list.TripsListPresenter" />
 
     </data>
@@ -17,8 +17,8 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:items="@{tripListPresenter.getTrips()}"
+        app:items="@{tripsListPresenter.getTrips()}"
         app:layoutManager="@{layoutManager}"
-        app:rowPresenter="@{tripListPresenter.getRowPresenter()}" />
+        app:rowPresenter="@{tripsListPresenter.getRowPresenter()}" />
 
 </layout>

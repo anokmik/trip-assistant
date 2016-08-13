@@ -44,7 +44,7 @@ class TripsListFragment : BaseFragment<FragmentTripsListBinding>(), TripsListCon
 
     override fun initBinding(binding: FragmentTripsListBinding) {
         binding.layoutManager = LinearLayoutManager(context)
-        binding.tripListPresenter = TripsListPresenter(this)
+        binding.tripsListPresenter = TripsListPresenter(this)
     }
 
     override fun showTrip(trip: Trip?) {
