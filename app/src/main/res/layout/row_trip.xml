@@ -3,9 +3,7 @@
 
     <data>
 
-        <import type="android.view.View" />
-
-        <import type="android.text.TextUtils" />
+        <import type="com.anokmik.tripassistant.util.ViewUtils" />
 
         <import type="com.anokmik.tripassistant.util.DateUtils" />
 
@@ -29,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{trip.description}"
-            android:visibility="@{TextUtils.isEmpty(trip.description) ? View.GONE : View.VISIBLE}" />
+            android:visibility="@{ViewUtils.hideIfEmpty(trip.description)}" />
 
         <TextView
             android:layout_width="match_parent"
