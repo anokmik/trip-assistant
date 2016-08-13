@@ -21,9 +21,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginContract.View {
         binding.presenter = LoginPresenter(this)
     }
 
-    override fun back() {
-        activity.onBackPressed()
-    }
+    override fun back() = activity.onBackPressed()
 
     companion object {
 

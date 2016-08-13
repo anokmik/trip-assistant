@@ -39,8 +39,6 @@ class AuthorActivity : BaseActivity<ActivityAuthorBinding>(), AuthorContract.Vie
         addFragment(ProfileFragment.newInstance(author.id))
     }
 
-    override fun onClick(view: View) {
-        onBackPressed()
-    }
+    override fun onClick(view: View) = onBackPressed()
 
 }

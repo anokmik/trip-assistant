@@ -18,9 +18,7 @@ object DateUtils {
     }
 
     @JvmStatic
-    fun toString(time: Long): String {
-        return DATE_FORMAT.format(Date(time))
-    }
+    fun toString(time: Long) = DATE_FORMAT.format(Date(time))
 
     @JvmStatic
     fun toTime(date: String): Long {

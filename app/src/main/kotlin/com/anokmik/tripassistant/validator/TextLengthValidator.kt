@@ -2,16 +2,10 @@ package com.anokmik.tripassistant.validator
 
 open class TextLengthValidator {
 
-    fun higherThan(text: String?, length: Int): Boolean {
-        return length(text) > length
-    }
+    fun higherThan(text: String?, length: Int) = length(text) > length
 
-    fun lowerThan(text: String, length: Int): Boolean {
-        return length(text) < length
-    }
+    fun lowerThan(text: String, length: Int) = length(text) < length
 
-    private fun length(text: String?): Int {
-        return text?.length ?: 0
-    }
+    private fun length(text: String?) = text?.length ?: 0
 
 }

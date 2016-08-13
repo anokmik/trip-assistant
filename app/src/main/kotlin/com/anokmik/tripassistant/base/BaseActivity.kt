@@ -8,9 +8,13 @@ import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
+import com.anokmik.tripassistant.util.add
+import com.anokmik.tripassistant.util.popBackImmediate
+import com.anokmik.tripassistant.util.replace
 
-abstract class BaseActivity<in T : ViewDataBinding> : AppCompatActivity() {
+abstract class BaseActivity<in T : ViewDataBinding> : AppCompatActivity(), OnInteractionListener {
 
     @IdRes
     protected var containerId: Int = 0
@@ -23,17 +27,23 @@ abstract class BaseActivity<in T : ViewDataBinding> : AppCompatActivity() {
         initBinding(DataBindingUtil.setContentView<T>(this, layoutId))
     }
 
-    protected fun addFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().add(containerId, fragment).commit()
+    override fun onLaunchActivity(cls: Class<out Activity>) = launchActivity(cls)
+
+    override fun onReplace(fragment: Fragment, backStackTag: String?) {
+        replaceFragment(fragment, backStackTag)
     }
 
-    protected fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(containerId, fragment).addToBackStack(null).commit()
+    override fun onImmediatePopBack(flags: Int, backStackTag: String?) {
+        popBackImmediate(flags, backStackTag)
     }
 
-    protected fun launchActivity(cls: Class<out Activity>) {
-        startActivity(Intent(this, cls))
-    }
+    protected fun addFragment(fragment: Fragment) = supportFragmentManager.add(fragment, containerId)
+
+    protected fun replaceFragment(fragment: Fragment, backStackTag: String? = null) = supportFragmentManager.replace(fragment, containerId, backStackTag)
+
+    protected fun popBackImmediate(flags: Int = FragmentManager.POP_BACK_STACK_INCLUSIVE, backStackTag: String? = null) = supportFragmentManager.popBackImmediate(backStackTag, flags)
+
+    protected fun launchActivity(cls: Class<out Activity>) = startActivity(Intent(this, cls))
 
     protected abstract fun initBinding(binding: T)
 

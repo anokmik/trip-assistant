@@ -4,6 +4,13 @@
     tools:context=".trip.TripActivity">
 
     <item
+        android:id="@+id/action_add_trip"
+        android:icon="@drawable/ic_add"
+        android:orderInCategory="100"
+        android:title="@string/title_trip"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_author"
         android:icon="@drawable/ic_author"
         android:orderInCategory="100"

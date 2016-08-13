@@ -9,10 +9,6 @@
             name="navigationClickListener"
             type="android.view.View.OnClickListener" />
 
-        <variable
-            name="menuItemClickListener"
-            type="android.support.v7.widget.Toolbar.OnMenuItemClickListener" />
-
     </data>
 
     <LinearLayout
@@ -29,7 +25,6 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:theme="@style/ToolbarTheme"
-            app:onMenuItemClick="@{menuItemClickListener}"
             app:onNavigationClick="@{navigationClickListener}"
             app:popupTheme="@style/PopupTheme"
             tools:ignore="UnusedAttribute" />

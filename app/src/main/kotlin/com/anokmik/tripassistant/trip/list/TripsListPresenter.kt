@@ -13,8 +13,6 @@ class TripsListPresenter(private val view: TripsListContract.View) : TripsListCo
 
     override val rowPresenter = RowPresenter.Builder<Trip>(view.rowItemLayoutId, view.itemBindingId).setItemClickListener(this).build()
 
-    override fun onItemClick(item: Trip?, position: Int) {
-        view.showTrip(item)
-    }
+    override fun onItemClick(item: Trip?, position: Int) = view.showTrip(item)
 
 }

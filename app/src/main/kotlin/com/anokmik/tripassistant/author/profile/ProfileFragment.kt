@@ -25,9 +25,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), ProfileContract.
         setActionBarTitle(R.string.title_edit_author)
     }
 
-    override fun back() {
-        activity.onBackPressed()
-    }
+    override fun back() = activity.onBackPressed()
 
     companion object {
 

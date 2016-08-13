@@ -6,16 +6,10 @@ import com.anokmik.tripassistant.databinding.components.TextViewComponent
 
 class ComponentProvider : android.databinding.DataBindingComponent {
 
-    override fun getRecyclerViewComponent(): RecyclerViewComponent {
-        return RecyclerViewComponent()
-    }
+    override fun getRecyclerViewComponent() = RecyclerViewComponent()
 
-    override fun getTextInputLayoutComponent(): TextInputLayoutComponent {
-        return TextInputLayoutComponent()
-    }
+    override fun getTextInputLayoutComponent() = TextInputLayoutComponent()
 
-    override fun getTextViewComponent(): TextViewComponent {
-        return TextViewComponent()
-    }
+    override fun getTextViewComponent() = TextViewComponent()
 
 }

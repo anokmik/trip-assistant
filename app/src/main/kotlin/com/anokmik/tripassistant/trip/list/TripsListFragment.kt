@@ -2,11 +2,14 @@ package com.anokmik.tripassistant.trip.list
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.MenuItem
 import com.anokmik.persistence.model.Trip
 import com.anokmik.tripassistant.BR
 import com.anokmik.tripassistant.R
+import com.anokmik.tripassistant.author.AuthorActivity
 import com.anokmik.tripassistant.base.BaseFragment
 import com.anokmik.tripassistant.databinding.FragmentTripsListBinding
+import com.anokmik.tripassistant.trip.details.TripDetailsFragment
 
 class TripsListFragment : BaseFragment<FragmentTripsListBinding>(), TripsListContract.View {
 
@@ -23,20 +26,34 @@ class TripsListFragment : BaseFragment<FragmentTripsListBinding>(), TripsListCon
         setActionBarTitle(R.string.title_trips_list)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_add_trip -> {
+                replaceFragment(TripDetailsFragment.add())
+                return true
+            }
+            R.id.action_author -> {
+                launchActivity(AuthorActivity::class.java)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun getOptionMenuResourceId(): Int = R.menu.menu_trip
+
     override fun initBinding(binding: FragmentTripsListBinding) {
         binding.layoutManager = LinearLayoutManager(context)
         binding.tripListPresenter = TripsListPresenter(this)
     }
 
     override fun showTrip(trip: Trip?) {
-        //TODO: Mikle, implement
+        replaceFragment(TripDetailsFragment.view(trip?.id))
     }
 
     companion object {
 
-        fun newInstance(): TripsListFragment {
-            return TripsListFragment()
-        }
+        fun newInstance() = TripsListFragment()
 
     }
 
