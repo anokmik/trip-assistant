@@ -57,7 +57,7 @@ public final class TripsListFragment extends BaseFragment<FragmentTripsListBindi
     @Override
     protected void initBinding(FragmentTripsListBinding binding) {
         binding.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.setTripListPresenter(new TripsListPresenter(this));
+        binding.setTripsListPresenter(new TripsListPresenter(this));
     }
 
     @Override

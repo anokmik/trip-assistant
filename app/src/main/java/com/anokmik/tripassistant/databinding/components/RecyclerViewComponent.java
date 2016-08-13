@@ -11,11 +11,6 @@ import java.util.List;
 
 public final class RecyclerViewComponent {
 
-    @BindingAdapter("layoutManager")
-    public void setLayoutManager(RecyclerView view, RecyclerView.LayoutManager layoutManager) {
-        view.setLayoutManager(layoutManager);
-    }
-
     @BindingAdapter({"items", "rowPresenter"})
     public void setContent(RecyclerView view, List<?> items, RowPresenter<?> rowPresenter) {
         view.setAdapter(new BinderRecyclerViewAdapter(LayoutInflater.from(view.getContext()), items, rowPresenter));
