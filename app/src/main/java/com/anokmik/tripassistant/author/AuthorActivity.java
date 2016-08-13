@@ -44,8 +44,8 @@ public final class AuthorActivity extends BaseActivity<ActivityAuthorBinding> im
     }
 
     @Override
-    public void showProfile(long authorId) {
-        addFragment(ProfileFragment.newInstance(authorId));
+    public void showProfile(Author author) {
+        addFragment(ProfileFragment.newInstance(author.id));
     }
 
     @Override

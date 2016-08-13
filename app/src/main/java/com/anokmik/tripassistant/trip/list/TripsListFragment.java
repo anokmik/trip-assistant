@@ -72,7 +72,7 @@ public final class TripsListFragment extends BaseFragment<FragmentTripsListBindi
 
     @Override
     public void showTrip(Trip trip) {
-        //TODO: Mikle, implement
+        TripDetailsFragment.view(trip.id);
     }
 
 }

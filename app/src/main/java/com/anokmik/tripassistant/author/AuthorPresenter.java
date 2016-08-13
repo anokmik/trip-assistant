@@ -17,7 +17,7 @@ public final class AuthorPresenter implements AuthorContract.Presenter {
     public void validateAuthor() {
         Author author = authorRepository.getActive();
         if (author != null) {
-            view.showProfile(author.id);
+            view.showProfile(author);
         } else {
             view.showLogin();
         }

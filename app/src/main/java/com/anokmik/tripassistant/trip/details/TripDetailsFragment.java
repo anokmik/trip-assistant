@@ -16,5 +16,4 @@ public final class TripDetailsFragment extends Fragment {
         return new TripDetailsFragment();
     }
 
-
 }
