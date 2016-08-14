@@ -8,7 +8,7 @@
 
         <variable
             name="presenter"
-            type="com.anokmik.tripassistant.author.profile.ProfilePresenter" />
+            type="com.anokmik.tripassistant.user.profile.ProfilePresenter" />
 
     </data>
 
@@ -33,7 +33,7 @@
                 android:focusable="@{presenter.isEditing}"
                 android:focusableInTouchMode="@{presenter.isEditing}"
                 android:hint="@string/hint_first_name"
-                android:text="@={presenter.authorFirstName}" />
+                android:text="@={presenter.userFirstName}" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -51,7 +51,7 @@
                 android:focusable="@{presenter.isEditing}"
                 android:focusableInTouchMode="@{presenter.isEditing}"
                 android:hint="@string/hint_last_name"
-                android:text="@={presenter.authorLastName}" />
+                android:text="@={presenter.userLastName}" />
 
         </android.support.design.widget.TextInputLayout>
 

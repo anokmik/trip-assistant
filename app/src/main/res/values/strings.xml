@@ -3,11 +3,11 @@
 
     <!-- Titles -->
     <string name="title_trips_list">Trips</string>
-    <string name="title_login_as_author">Login as Author</string>
+    <string name="title_user_login">User Login</string>
     <string name="title_profile">Profile</string>
-    <string name="title_edit_author">Edit Author</string>
+    <string name="title_edit_user">Edit User</string>
     <string name="title_trip">Trip</string>
-    <string name="title_author">Author</string>
+    <string name="title_user">User</string>
 
     <!-- Buttons -->
     <string name="login">Login</string>

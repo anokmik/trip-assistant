@@ -11,10 +11,10 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_author"
-        android:icon="@drawable/ic_author"
+        android:id="@+id/action_user"
+        android:icon="@drawable/ic_user"
         android:orderInCategory="100"
-        android:title="@string/title_author"
+        android:title="@string/title_user"
         app:showAsAction="always" />
 
 </menu>

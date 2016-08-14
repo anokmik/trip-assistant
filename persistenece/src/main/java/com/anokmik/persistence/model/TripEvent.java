@@ -21,7 +21,7 @@ public final class TripEvent extends BaseModel {
     public long tripId;
 
     @Column
-    public long authorId;
+    public long userId;
 
     @Column
     public String name;

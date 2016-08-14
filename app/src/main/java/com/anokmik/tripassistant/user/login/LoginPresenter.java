@@ -1,10 +1,10 @@
-package com.anokmik.tripassistant.author.login;
+package com.anokmik.tripassistant.user.login;
 
 import android.databinding.ObservableBoolean;
 
-import com.anokmik.persistence.model.Author;
-import com.anokmik.persistence.repository.AuthorRepository;
-import com.anokmik.tripassistant.validator.AuthorTextLengthValidator;
+import com.anokmik.persistence.model.User;
+import com.anokmik.persistence.repository.UserRepository;
+import com.anokmik.tripassistant.validator.UserTextLengthValidator;
 
 public final class LoginPresenter implements LoginContract.Presenter {
 
@@ -12,8 +12,8 @@ public final class LoginPresenter implements LoginContract.Presenter {
     public final ObservableBoolean lastNameValid;
 
     private final LoginContract.View view;
-    private final AuthorRepository authorRepository;
-    private final AuthorTextLengthValidator validator;
+    private final UserRepository userRepository;
+    private final UserTextLengthValidator validator;
 
     private String firstName;
     private String lastName;
@@ -23,21 +23,21 @@ public final class LoginPresenter implements LoginContract.Presenter {
         this.lastNameValid = new ObservableBoolean(true);
 
         this.view = view;
-        this.authorRepository = new AuthorRepository();
-        this.validator = new AuthorTextLengthValidator(firstNameValid, lastNameValid);
+        this.userRepository = new UserRepository();
+        this.validator = new UserTextLengthValidator(firstNameValid, lastNameValid);
     }
 
     @Override
     public void login() {
         if (validator.validFields(firstName, lastName)) {
-            Author author = authorRepository.get(firstName, lastName);
-            if (author == null) {
-                authorRepository.setAllActive(false);
-                authorRepository.add(firstName, lastName, true);
-            } else if (!author.isActive) {
-                authorRepository.setAllActive(false);
-                author.isActive = true;
-                author.save();
+            User user = userRepository.get(firstName, lastName);
+            if (user == null) {
+                userRepository.setAllActive(false);
+                userRepository.add(firstName, lastName, true);
+            } else if (!user.isActive) {
+                userRepository.setAllActive(false);
+                user.isActive = true;
+                user.save();
             }
             view.back();
         }

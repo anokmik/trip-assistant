@@ -1,4 +1,4 @@
-package com.anokmik.tripassistant.author.profile;
+package com.anokmik.tripassistant.user.profile;
 
 import android.os.Bundle;
 
@@ -8,11 +8,11 @@ import com.anokmik.tripassistant.databinding.FragmentProfileBinding;
 
 public final class ProfileFragment extends BaseFragment<FragmentProfileBinding> implements ProfileContract.View {
 
-    private static final String KEY_AUTHOR_ID = "key_author_id";
+    private static final String KEY_USER_ID = "key_user_id";
 
-    public static ProfileFragment newInstance(long authorId) {
+    public static ProfileFragment newInstance(long userId) {
         Bundle args = new Bundle();
-        args.putLong(KEY_AUTHOR_ID, authorId);
+        args.putLong(KEY_USER_ID, userId);
         ProfileFragment fragment = new ProfileFragment();
         fragment.setArguments(args);
         return fragment;
@@ -30,7 +30,7 @@ public final class ProfileFragment extends BaseFragment<FragmentProfileBinding> 
 
     @Override
     protected void initBinding(FragmentProfileBinding binding) {
-        binding.setPresenter(new ProfilePresenter(this, getAuthorId()));
+        binding.setPresenter(new ProfilePresenter(this, getUserId()));
     }
 
     @Override
@@ -39,8 +39,8 @@ public final class ProfileFragment extends BaseFragment<FragmentProfileBinding> 
     }
 
     @Override
-    public void setEditAuthorTitle() {
-        setActionBarTitle(R.string.title_edit_author);
+    public void setEditUserTitle() {
+        setActionBarTitle(R.string.title_edit_user);
     }
 
     @Override
@@ -48,8 +48,8 @@ public final class ProfileFragment extends BaseFragment<FragmentProfileBinding> 
         getActivity().onBackPressed();
     }
 
-    private long getAuthorId() {
-        return getArguments().getLong(KEY_AUTHOR_ID);
+    private long getUserId() {
+        return getArguments().getLong(KEY_USER_ID);
     }
 
 }

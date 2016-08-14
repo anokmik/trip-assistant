@@ -6,7 +6,7 @@
 
         <variable
             name="presenter"
-            type="com.anokmik.tripassistant.author.login.LoginPresenter" />
+            type="com.anokmik.tripassistant.user.login.LoginPresenter" />
 
     </data>
 

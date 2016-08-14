@@ -22,7 +22,7 @@
         </activity>
 
         <activity
-            android:name=".author.AuthorActivity"
+            android:name=".user.UserActivity"
             android:exported="false"
             android:theme="@style/AppTheme" />
 

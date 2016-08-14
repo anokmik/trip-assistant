@@ -1,4 +1,4 @@
-package com.anokmik.tripassistant.author.profile;
+package com.anokmik.tripassistant.user.profile;
 
 public interface ProfileContract {
 
@@ -6,7 +6,7 @@ public interface ProfileContract {
 
         void setProfileTitle();
 
-        void setEditAuthorTitle();
+        void setEditUserTitle();
 
         void back();
 

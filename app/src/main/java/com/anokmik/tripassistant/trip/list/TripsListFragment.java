@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import com.anokmik.persistence.model.Trip;
 import com.anokmik.tripassistant.BR;
 import com.anokmik.tripassistant.R;
-import com.anokmik.tripassistant.author.AuthorActivity;
+import com.anokmik.tripassistant.user.UserActivity;
 import com.anokmik.tripassistant.base.BaseFragment;
 import com.anokmik.tripassistant.databinding.FragmentTripsListBinding;
 import com.anokmik.tripassistant.trip.details.TripDetailsFragment;
@@ -31,8 +31,8 @@ public final class TripsListFragment extends BaseFragment<FragmentTripsListBindi
             case R.id.action_add_trip:
                 replaceFragment(TripDetailsFragment.add(), null);
                 return true;
-            case R.id.action_author:
-                launchActivity(AuthorActivity.class);
+            case R.id.action_user:
+                launchActivity(UserActivity.class);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

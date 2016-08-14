@@ -1,4 +1,4 @@
-package com.anokmik.tripassistant.author.login;
+package com.anokmik.tripassistant.user.login;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +16,7 @@ public final class LoginFragment extends BaseFragment<FragmentLoginBinding> impl
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setActionBarTitle(R.string.title_login_as_author);
+        setActionBarTitle(R.string.title_user_login);
     }
 
     @Override
