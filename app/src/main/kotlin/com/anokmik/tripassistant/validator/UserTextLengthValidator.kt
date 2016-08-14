@@ -2,7 +2,7 @@ package com.anokmik.tripassistant.validator
 
 import android.databinding.ObservableBoolean
 
-class AuthorTextLengthValidator(private val firstNameValid: ObservableBoolean, private val lastNameValid: ObservableBoolean) : TextLengthValidator() {
+class UserTextLengthValidator(private val firstNameValid: ObservableBoolean, private val lastNameValid: ObservableBoolean) : TextLengthValidator() {
 
     private val minTextLength = 5
 

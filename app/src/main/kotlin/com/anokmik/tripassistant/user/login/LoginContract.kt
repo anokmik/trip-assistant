@@ -1,4 +1,4 @@
-package com.anokmik.tripassistant.author.login
+package com.anokmik.tripassistant.user.login
 
 interface LoginContract {
 

@@ -1,4 +1,4 @@
-package com.anokmik.tripassistant.author.profile
+package com.anokmik.tripassistant.user.profile
 
 import android.os.Bundle
 import com.anokmik.tripassistant.R
@@ -11,29 +11,29 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), ProfileContract.
 
     override val layoutId = R.layout.fragment_profile
 
-    private val authorId by lazy { arguments.getLong(KEY_AUTHOR_ID) }
+    private val userId by lazy { arguments.getLong(KEY_USER_ID) }
 
     override fun initBinding(binding: FragmentProfileBinding) {
-        binding.presenter = ProfilePresenter(this, authorId)
+        binding.presenter = ProfilePresenter(this, userId)
     }
 
     override fun setProfileTitle() {
         setActionBarTitle(R.string.title_profile)
     }
 
-    override fun setEditAuthorTitle() {
-        setActionBarTitle(R.string.title_edit_author)
+    override fun setEditUserTitle() {
+        setActionBarTitle(R.string.title_edit_user)
     }
 
     override fun back() = activity.onBackPressed()
 
     companion object {
 
-        private val KEY_AUTHOR_ID = "key_author_id"
+        private val KEY_USER_ID = "key_user_id"
 
-        fun newInstance(authorId: Long): ProfileFragment {
+        fun newInstance(userId: Long): ProfileFragment {
             val args = Bundle()
-            args.putLong(KEY_AUTHOR_ID, authorId)
+            args.putLong(KEY_USER_ID, userId)
             val fragment = ProfileFragment()
             fragment.arguments = args
             return fragment

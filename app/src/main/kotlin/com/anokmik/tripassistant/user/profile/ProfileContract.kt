@@ -1,4 +1,4 @@
-package com.anokmik.tripassistant.author.profile
+package com.anokmik.tripassistant.user.profile
 
 interface ProfileContract {
 
@@ -6,7 +6,7 @@ interface ProfileContract {
 
         fun setProfileTitle()
 
-        fun setEditAuthorTitle()
+        fun setEditUserTitle()
 
         fun back()
 

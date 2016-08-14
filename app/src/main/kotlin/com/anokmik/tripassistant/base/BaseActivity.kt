@@ -10,9 +10,9 @@ import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
-import com.anokmik.tripassistant.util.add
-import com.anokmik.tripassistant.util.popBackImmediate
-import com.anokmik.tripassistant.util.replace
+import com.anokmik.tripassistant.extensions.add
+import com.anokmik.tripassistant.extensions.popBackImmediate
+import com.anokmik.tripassistant.extensions.replace
 
 abstract class BaseActivity<in T : ViewDataBinding> : AppCompatActivity(), OnInteractionListener {
 

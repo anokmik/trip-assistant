@@ -17,7 +17,7 @@ class TripEvent : BaseModel() {
     var tripId: Long = 0
 
     @Column
-    var authorId: Long = 0
+    var userId: Long = 0
 
     @Column
     var name: String? = null

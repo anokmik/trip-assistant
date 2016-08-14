@@ -7,7 +7,7 @@ import com.raizlabs.android.dbflow.annotation.Table
 import com.raizlabs.android.dbflow.structure.BaseModel
 
 @Table(database = TripAssistantDatabase::class)
-class Author : BaseModel() {
+class User : BaseModel() {
 
     @PrimaryKey(autoincrement = true)
     var id: Long = 0

@@ -1,4 +1,4 @@
-package com.anokmik.tripassistant.author.login
+package com.anokmik.tripassistant.user.login
 
 import android.os.Bundle
 
@@ -14,7 +14,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginContract.View {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setActionBarTitle(R.string.title_login_as_author)
+        setActionBarTitle(R.string.title_user_login)
     }
 
     public override fun initBinding(binding: FragmentLoginBinding) {
