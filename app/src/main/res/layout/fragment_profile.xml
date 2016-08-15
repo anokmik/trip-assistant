@@ -4,7 +4,7 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="com.anokmik.tripassistant.util.ViewUtils" />
 
         <variable
             name="presenter"
@@ -60,35 +60,35 @@
             android:layout_height="wrap_content"
             android:onClick="@{() -> presenter.save()}"
             android:text="@string/save"
-            android:visibility="@{presenter.isEditing ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{ViewUtils.show(presenter.isEditing)}" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{() -> presenter.cancel()}"
             android:text="@string/cancel"
-            android:visibility="@{presenter.isEditing ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{ViewUtils.show(presenter.isEditing)}" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{() -> presenter.edit()}"
             android:text="@string/edit"
-            android:visibility="@{presenter.isEditing ? View.GONE : View.VISIBLE}" />
+            android:visibility="@{ViewUtils.show(!presenter.isEditing)}" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{() -> presenter.delete()}"
             android:text="@string/delete"
-            android:visibility="@{presenter.isEditing ? View.GONE : View.VISIBLE}" />
+            android:visibility="@{ViewUtils.show(!presenter.isEditing)}" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{() -> presenter.signOut()}"
             android:text="@string/sign_out"
-            android:visibility="@{presenter.isEditing ? View.GONE : View.VISIBLE}" />
+            android:visibility="@{ViewUtils.show(!presenter.isEditing)}" />
 
     </LinearLayout>
 

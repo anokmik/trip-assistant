@@ -17,7 +17,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(), LoginContract.View {
         setActionBarTitle(R.string.title_user_login)
     }
 
-    public override fun initBinding(binding: FragmentLoginBinding) {
+    override fun initBinding(binding: FragmentLoginBinding) {
         binding.presenter = LoginPresenter(this)
     }
 

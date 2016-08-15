@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -16,8 +15,7 @@
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
         android:fitsSystemWindows="true"
-        android:orientation="vertical"
-        tools:context=".MainActivity">
+        android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -26,8 +24,7 @@
             android:background="?attr/colorPrimary"
             android:theme="@style/ToolbarTheme"
             app:onNavigationClick="@{navigationClickListener}"
-            app:popupTheme="@style/PopupTheme"
-            tools:ignore="UnusedAttribute" />
+            app:popupTheme="@style/PopupTheme" />
 
         <FrameLayout
             android:id="@+id/container"

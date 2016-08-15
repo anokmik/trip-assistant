@@ -6,6 +6,9 @@ import android.view.View
 object ViewUtils {
 
     @JvmStatic
-    fun hideIfEmpty(value: String?): Int = if (TextUtils.isEmpty(value)) View.GONE else View.VISIBLE
+    fun show(value: Boolean) = if (value) View.VISIBLE else View.GONE
+
+    @JvmStatic
+    fun hideIfEmpty(value: String?) = if (TextUtils.isEmpty(value)) View.GONE else View.VISIBLE
 
 }
