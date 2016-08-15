@@ -9,6 +9,10 @@ public final class ViewUtils {
 
     }
 
+    public static int show(boolean value) {
+        return value ? View.VISIBLE : View.GONE;
+    }
+
     public static int hideIfEmpty(String value) {
         return TextUtils.isEmpty(value) ? View.GONE : View.VISIBLE;
     }
