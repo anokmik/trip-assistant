@@ -7,6 +7,7 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
@@ -33,6 +34,11 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     }
 
     @Override
+    public void onShowDialog(DialogFragment dialogFragment) {
+        showDialog(dialogFragment);
+    }
+
+    @Override
     public void onImmediatePopBack(int flags, String backStackTag) {
         popBackImmediate(flags, backStackTag);
     }
@@ -43,6 +49,10 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
 
     protected void replaceFragment(Fragment fragment, String backStackTag) {
         getSupportFragmentManager().beginTransaction().replace(containerId, fragment).addToBackStack(backStackTag).commit();
+    }
+
+    protected void showDialog(DialogFragment dialogFragment) {
+        dialogFragment.show(getSupportFragmentManager(), null);
     }
 
     protected void popBackImmediate(int flags, String backStackTag) {

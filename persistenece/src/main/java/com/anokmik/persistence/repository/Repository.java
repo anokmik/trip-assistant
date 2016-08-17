@@ -11,9 +11,16 @@ abstract class Repository<T extends BaseModel> {
 
     private final Class<T> cls = getType();
 
-    public List<T> getList() {
+    public List<T> getAll() {
         return new FlowQueryList.Builder<>(cls)
                 .modelQueriable(SQLite.select().from(cls))
+                .cacheModels(true)
+                .build();
+    }
+
+    public List<T> getList(Condition... conditions) {
+        return new FlowQueryList.Builder<>(cls)
+                .modelQueriable(SQLite.select().from(cls).where(conditions))
                 .cacheModels(true)
                 .build();
     }
@@ -24,6 +31,10 @@ abstract class Repository<T extends BaseModel> {
 
     public void setAll(Condition... conditions) {
         SQLite.update(getType()).set(conditions).execute();
+    }
+
+    public void delete(Condition... conditions) {
+        SQLite.delete().from(cls).where(conditions);
     }
 
     abstract protected Class<T> getType();

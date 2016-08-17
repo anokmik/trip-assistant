@@ -3,13 +3,18 @@
 
     <!-- Titles -->
     <string name="title_trips_list">Trips</string>
+    <string name="title_trip_details">Trip Details</string>
     <string name="title_user_login">User Login</string>
     <string name="title_profile">Profile</string>
     <string name="title_edit_user">Edit User</string>
     <string name="title_trip">Trip</string>
     <string name="title_user">User</string>
+    <string name="title_delete">Delete</string>
 
     <!-- Buttons -->
+    <string name="add_event">Add Event</string>
+    <string name="start_date">Start Date: %s</string>
+    <string name="finish_date">Finish Date: %s</string>
     <string name="login">Login</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
@@ -17,12 +22,25 @@
     <string name="delete">Delete</string>
     <string name="sign_out">Sign out</string>
 
+    <!-- Event Type -->
+    <string name="event_type_default">Default</string>
+    <string name="event_type_ticket">Ticket</string>
+    <string name="event_type_hotel">Hotel</string>
+    <string name="event_type_meeting">Meeting</string>
+    <string name="event_type_place_of_interest">Place of Interest</string>
+
     <!-- Hint -->
     <string name="hint_first_name">First name</string>
     <string name="hint_last_name">Last name</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_comment">Comment</string>
 
     <!-- Error -->
     <string name="error_first_name_not_valid">Input value length must be higher than five chars</string>
     <string name="error_last_name_not_valid">Input value length must be higher than five chars</string>
+    <string name="error_input_not_empty">Input value must be not empty</string>
+    <string name="error_start_date_not_valid">Dates should be equal or represent period</string>
 
 </resources>

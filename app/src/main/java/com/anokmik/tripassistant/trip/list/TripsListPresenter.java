@@ -21,7 +21,7 @@ public final class TripsListPresenter implements TripsListContract.Presenter, On
 
     @Override
     public List<Trip> getTrips() {
-        return tripRepository.getList();
+        return tripRepository.getAll();
     }
 
     @Override

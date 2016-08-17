@@ -8,6 +8,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.MenuRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,8 @@ import android.view.ViewGroup;
 public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
 
     private ActionBar supportActionBar;
+
+    private T binding;
 
     private OnInteractionListener onInteractionListener;
 
@@ -48,7 +51,7 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        T binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+        binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
         initBinding(binding);
         return binding.getRoot();
     }
@@ -59,6 +62,10 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
         if (getOptionMenuResourceId() > 0) {
             inflater.inflate(getOptionMenuResourceId(), menu);
         }
+    }
+
+    public T getBinding() {
+        return binding;
     }
 
     @MenuRes
@@ -75,6 +82,12 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
     protected void replaceFragment(Fragment fragment, String backStackTag) {
         if (onInteractionListener != null) {
             onInteractionListener.onReplace(fragment, backStackTag);
+        }
+    }
+
+    protected void showDialog(DialogFragment dialogFragment) {
+        if (onInteractionListener != null) {
+            onInteractionListener.onShowDialog(dialogFragment);
         }
     }
 

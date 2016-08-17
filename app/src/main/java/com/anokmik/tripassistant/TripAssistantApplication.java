@@ -4,7 +4,9 @@ import android.app.Application;
 import android.databinding.DataBindingUtil;
 
 import com.anokmik.persistence.model.Trip;
-import com.anokmik.persistence.repository.mock.MockTripRepository;
+import com.anokmik.persistence.model.TripEvent;
+import com.anokmik.persistence.model.User;
+import com.anokmik.persistence.repository.mock.MockRepository;
 import com.anokmik.tripassistant.databinding.ComponentProvider;
 import com.anokmik.tripassistant.util.DateUtils;
 import com.raizlabs.android.dbflow.config.FlowConfig;
@@ -27,16 +29,18 @@ public final class TripAssistantApplication extends Application {
 
     private static class InitMockData extends Thread {
 
-        private final MockTripRepository mockTripRepository;
+        private final MockRepository<Trip> tripsMockRepository;
+        private final MockRepository<TripEvent> tripEventsMockRepository;
 
         private InitMockData() {
-            this.mockTripRepository = new MockTripRepository();
+            this.tripsMockRepository = new MockRepository<>();
+            this.tripEventsMockRepository = new MockRepository<>();
         }
 
         @Override
         public void run() {
             super.run();
-            if (mockTripRepository.count() == 0) {
+            if (tripsMockRepository.count(Trip.class) == 0) {
                 String descriptionParis = "Paris is the home of the most visited art museum in the world, the Louvre, as well as the Musée d'Orsay, noted for its collection of French Impressionist art, and the Musée National d'Art Moderne, a museum of modern and contemporary art.";
                 String descriptionDublin = "Founded as a Viking settlement, the Kingdom of Dublin became Ireland's principal city following the Norman invasion.";
                 String descriptionReykjavik = "Reykjavík is believed to be the location of the first permanent settlement in Iceland, which, according to Ingólfur Arnarson, was established in AD 874. Until the 19th century, there was no urban development in the city location.";
@@ -45,7 +49,7 @@ public final class TripAssistantApplication extends Application {
                 String descriptionBerlin = "Modern Berlin is home to world renowned universities, orchestras, museums, entertainment venues and is host to many sporting events. Its urban setting has made it a sought-after location for international film productions.";
 
                 List<Trip> trips = new ArrayList<>();
-                trips.add(newTrip("Paris", descriptionParis, DateUtils.toTime("12/01/2014"), DateUtils.toTime("23/01/2014")));
+                trips.add(newTrip("Paris", descriptionParis, DateUtils.toTime("11/01/2014"), DateUtils.toTime("23/01/2014")));
                 trips.add(newTrip("Prague", null, DateUtils.toTime("30/04/2014"), DateUtils.toTime("09/05/2014")));
                 trips.add(newTrip("Dublin", descriptionDublin, DateUtils.toTime("22/08/2014"), DateUtils.toTime("24/08/2014")));
                 trips.add(newTrip("Oslo", null, DateUtils.toTime("02/12/2014"), DateUtils.toTime("12/12/2014")));
@@ -56,7 +60,25 @@ public final class TripAssistantApplication extends Application {
                 trips.add(newTrip("London", descriptionLondon, DateUtils.toTime("02/09/2016"), DateUtils.toTime("02/09/2016")));
                 trips.add(newTrip("Berlin", descriptionBerlin, DateUtils.toTime("14/12/2016"), DateUtils.toTime("16/12/2016")));
 
-                mockTripRepository.storeModelsFast(trips);
+                tripsMockRepository.storeModelsFast(trips, Trip.class);
+
+                if (tripEventsMockRepository.count(TripEvent.class) == 0) {
+                    Trip firstTrip = trips.get(0);
+                    if (firstTrip != null) {
+                        String commentHotel = "Grand palatial hotel in the heart of Paris, in the 1st arrondissement. The hotel is ranked highly among the most prestigious and luxurious hotels in the world and is a member of The Leading Hotels of the World. The Ritz reopened on 6 June 2016 after a major four-year, multimillion-dollar renovation.";
+                        String commentEiffelTower = "Wrought iron lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower.";
+                        String commentLouvre = "The world's largest museum and a historic monument in Paris, France. A central landmark of the city, it is located on the Right Bank of the Seine in the 1st arrondissement (ward). Nearly 35,000 objects from prehistory to the 21st century are exhibited over an area of 60,600 square metres.";
+
+                        List<TripEvent> tripEvents = new ArrayList<>();
+                        tripEvents.add(newTripEvent(firstTrip, null, "Ticket", null, TripEvent.Type.TICKET, DateUtils.toTime("12/12/2013"), DateUtils.toTime("12/12/2013")));
+                        tripEvents.add(newTripEvent(firstTrip, null, "Return Ticket", null, TripEvent.Type.TICKET, DateUtils.toTime("21/12/2013"), DateUtils.toTime("21/12/2013")));
+                        tripEvents.add(newTripEvent(firstTrip, null, "Hotel Ritz Paris", commentHotel, TripEvent.Type.HOTEL, DateUtils.toTime("12/01/2014"), DateUtils.toTime("22/01/2014")));
+                        tripEvents.add(newTripEvent(firstTrip, null, "Eiffel Tower", commentEiffelTower, TripEvent.Type.PLACE_OF_INTEREST, DateUtils.toTime("16/01/2014"), DateUtils.toTime("16/01/2014")));
+                        tripEvents.add(newTripEvent(firstTrip, null, "Louvre", commentLouvre, TripEvent.Type.PLACE_OF_INTEREST, DateUtils.toTime("19/01/2014"), DateUtils.toTime("19/01/2014")));
+
+                        tripEventsMockRepository.storeModelsFast(tripEvents, TripEvent.class);
+                    }
+                }
             }
         }
 
@@ -67,6 +89,18 @@ public final class TripAssistantApplication extends Application {
             trip.startDate = startDate;
             trip.finishDate = finishDate;
             return trip;
+        }
+
+        private TripEvent newTripEvent(Trip trip, User user, String name, String comment, @TripEvent.Type int type, long startDate, long finishDate) {
+            TripEvent tripEvent = new TripEvent();
+            tripEvent.trip = trip;
+            tripEvent.user = user;
+            tripEvent.name = name;
+            tripEvent.comment = comment;
+            tripEvent.type = type;
+            tripEvent.startDate = startDate;
+            tripEvent.finishDate = finishDate;
+            return tripEvent;
         }
 
     }

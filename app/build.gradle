@@ -62,5 +62,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${libraries.supportVersion}"
     compile "com.android.support:design:${libraries.supportVersion}"
 
+    debugCompile "im.dino:dbinspector:${libraries.dbInspector}"
+
     testCompile "junit:junit:${libraries.testJunit}"
 }

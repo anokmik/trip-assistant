@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.anokmik.tripassistant.util.ViewUtils" />
+
+        <import type="com.anokmik.tripassistant.util.DateUtils" />
+
+        <variable
+            name="tripEvent"
+            type="com.anokmik.persistence.model.TripEvent" />
+
+        <variable
+            name="tripEventListener"
+            type="com.anokmik.tripassistant.trip.details.TripDetailsContract.TripEventListener" />
+
+        <variable
+            name="isEditing"
+            type="android.databinding.ObservableBoolean" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{tripEvent.name}" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{tripEvent.comment}"
+            android:visibility="@{ViewUtils.hideIfEmpty(tripEvent.comment)}" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{DateUtils.format(tripEvent.startDate, tripEvent.finishDate)}" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> tripEventListener.deleteEvent(tripEvent.id)}"
+            android:src="@drawable/ic_delete"
+            android:visibility="@{ViewUtils.show(isEditing)}" />
+
+    </LinearLayout>
+
+</layout>

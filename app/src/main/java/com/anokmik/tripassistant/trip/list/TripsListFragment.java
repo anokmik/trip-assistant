@@ -41,7 +41,7 @@ public final class TripsListFragment extends BaseFragment<FragmentTripsListBindi
 
     @Override
     protected int getOptionMenuResourceId() {
-        return R.menu.menu_trip;
+        return R.menu.menu_trips_list;
     }
 
     @Override
@@ -57,7 +57,7 @@ public final class TripsListFragment extends BaseFragment<FragmentTripsListBindi
     @Override
     protected void initBinding(FragmentTripsListBinding binding) {
         binding.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.setTripsListPresenter(new TripsListPresenter(this));
+        binding.setPresenter(new TripsListPresenter(this));
     }
 
     @Override
@@ -72,7 +72,7 @@ public final class TripsListFragment extends BaseFragment<FragmentTripsListBindi
 
     @Override
     public void showTrip(Trip trip) {
-        TripDetailsFragment.view(trip.id);
+        replaceFragment(TripDetailsFragment.view(trip.id), null);
     }
 
 }
