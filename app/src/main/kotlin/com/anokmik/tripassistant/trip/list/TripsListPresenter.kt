@@ -9,7 +9,7 @@ class TripsListPresenter(private val view: TripsListContract.View) : TripsListCo
 
     private val tripRepository = TripRepository()
 
-    override val trips = tripRepository.getList()
+    override val trips = tripRepository.getAll()
 
     override val rowPresenter = RowPresenter.Builder<Trip>(view.rowItemLayoutId, view.itemBindingId).setItemClickListener(this).build()
 

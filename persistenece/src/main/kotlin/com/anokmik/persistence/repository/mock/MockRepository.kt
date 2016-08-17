@@ -5,17 +5,18 @@ import com.anokmik.persistence.model.Trip
 import com.anokmik.persistence.repository.TripRepository
 import com.raizlabs.android.dbflow.config.FlowManager
 import com.raizlabs.android.dbflow.sql.language.SQLite
+import com.raizlabs.android.dbflow.structure.Model
 import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction
 
-class MockTripRepository : TripRepository() {
+class MockRepository<T : Model> {
 
-    fun storeModelsFast(trips: List<Trip>) {
+    fun storeModelsFast(items: List<T>, type: Class<T>) {
         FlowManager.getDatabase(TripAssistantDatabase::class.java).executeTransaction(
-                FastStoreModelTransaction.insertBuilder(FlowManager.getModelAdapter(cls)).addAll(trips).build())
+                FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(type)).addAll(items).build())
     }
 
-    fun count(): Long {
-        return SQLite.select().from(cls).count()
+    fun count(type: Class<T>): Long {
+        return SQLite.select().from(type).count()
     }
 
 }

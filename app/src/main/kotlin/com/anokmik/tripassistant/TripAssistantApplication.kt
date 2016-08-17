@@ -3,7 +3,9 @@ package com.anokmik.tripassistant
 import android.app.Application
 import android.databinding.DataBindingUtil
 import com.anokmik.persistence.model.Trip
-import com.anokmik.persistence.repository.mock.MockTripRepository
+import com.anokmik.persistence.model.TripEvent
+import com.anokmik.persistence.model.User
+import com.anokmik.persistence.repository.mock.MockRepository
 import com.anokmik.tripassistant.databinding.ComponentProvider
 import com.anokmik.tripassistant.util.DateUtils
 import com.raizlabs.android.dbflow.config.FlowConfig
@@ -23,11 +25,12 @@ class TripAssistantApplication : Application() {
 
     private class InitMockData() : Thread() {
 
-        val mockTripRepository = MockTripRepository()
+        val mockTripRepository = MockRepository<Trip>()
+        val mockTripEventRepository = MockRepository<TripEvent>()
 
         override fun run() {
             super.run()
-            if (mockTripRepository.count() == 0L) {
+            if (mockTripRepository.count(Trip::class.java) == 0L) {
                 val descriptionParis = "Paris is the home of the most visited art museum in the world, the Louvre, as well as the Musée d'Orsay, noted for its collection of French Impressionist art, and the Musée National d'Art Moderne, a museum of modern and contemporary art."
                 val descriptionDublin = "Founded as a Viking settlement, the Kingdom of Dublin became Ireland's principal city following the Norman invasion."
                 val descriptionReykjavik = "Reykjavík is believed to be the location of the first permanent settlement in Iceland, which, according to Ingólfur Arnarson, was established in AD 874. Until the 19th century, there was no urban development in the city location."
@@ -47,19 +50,42 @@ class TripAssistantApplication : Application() {
                 trips.add(newTrip("London", descriptionLondon, DateUtils.toTime("02/09/2016"), DateUtils.toTime("02/09/2016")))
                 trips.add(newTrip("Berlin", descriptionBerlin, DateUtils.toTime("14/12/2016"), DateUtils.toTime("16/12/2016")))
 
-                mockTripRepository.storeModelsFast(trips)
+                mockTripRepository.storeModelsFast(trips, Trip::class.java)
+
+                if (mockTripEventRepository.count(TripEvent::class.java) == 0L) {
+                    val firstTrip = trips.get(0);
+                    val commentHotel = "Grand palatial hotel in the heart of Paris, in the 1st arrondissement. The hotel is ranked highly among the most prestigious and luxurious hotels in the world and is a member of The Leading Hotels of the World. The Ritz reopened on 6 June 2016 after a major four-year, multimillion-dollar renovation.";
+                    val commentEiffelTower = "Wrought iron lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower.";
+                    val commentLouvre = "The world's largest museum and a historic monument in Paris, France. A central landmark of the city, it is located on the Right Bank of the Seine in the 1st arrondissement (ward). Nearly 35,000 objects from prehistory to the 21st century are exhibited over an area of 60,600 square metres.";
+
+                    val tripEvents = ArrayList<TripEvent>();
+                    tripEvents.add(newTripEvent(firstTrip, null, "Ticket", null, TripEvent.TICKET, DateUtils.toTime("12/12/2013"), DateUtils.toTime("12/12/2013")));
+                    tripEvents.add(newTripEvent(firstTrip, null, "Return Ticket", null, TripEvent.TICKET, DateUtils.toTime("21/12/2013"), DateUtils.toTime("21/12/2013")));
+                    tripEvents.add(newTripEvent(firstTrip, null, "Hotel Ritz Paris", commentHotel, TripEvent.HOTEL, DateUtils.toTime("12/01/2014"), DateUtils.toTime("22/01/2014")));
+                    tripEvents.add(newTripEvent(firstTrip, null, "Eiffel Tower", commentEiffelTower, TripEvent.PLACE_OF_INTEREST, DateUtils.toTime("16/01/2014"), DateUtils.toTime("16/01/2014")));
+                    tripEvents.add(newTripEvent(firstTrip, null, "Louvre", commentLouvre, TripEvent.PLACE_OF_INTEREST, DateUtils.toTime("19/01/2014"), DateUtils.toTime("19/01/2014")));
+
+                    mockTripEventRepository.storeModelsFast(tripEvents, TripEvent::class.java);
+                }
             }
         }
 
-        private fun newTrip(titleValue: String?, descriptionValue: String?, startDateValue: Long, finishDateValue: Long): Trip {
-            return Trip().apply {
-                title = titleValue
-                description = descriptionValue
-                startDate = startDateValue
-                finishDate = finishDateValue
-            }
+        private fun newTrip(titleValue: String?, descriptionValue: String?, startDateValue: Long, finishDateValue: Long) = Trip().apply {
+            title = titleValue
+            description = descriptionValue
+            startDate = startDateValue
+            finishDate = finishDateValue
         }
 
+        private fun newTripEvent(tripValue: Trip?, userValue: User?, nameValue: String?, commentValue: String?, @TripEvent.Type typeValue: Long, startDateValue: Long, finishDateValue: Long) = TripEvent().apply {
+            trip = tripValue;
+            user = userValue;
+            name = nameValue;
+            comment = commentValue;
+            type = typeValue;
+            startDate = startDateValue;
+            finishDate = finishDateValue;
+        }
     }
 
 }

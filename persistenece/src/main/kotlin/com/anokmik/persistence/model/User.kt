@@ -9,15 +9,19 @@ import com.raizlabs.android.dbflow.structure.BaseModel
 @Table(database = TripAssistantDatabase::class)
 class User : BaseModel() {
 
+    @JvmField
     @PrimaryKey(autoincrement = true)
     var id: Long = 0
 
+    @JvmField
     @Column
     var firstName: String? = null
 
+    @JvmField
     @Column
     var lastName: String? = null
 
+    @JvmField
     @Column
     var isActive: Boolean = false
 

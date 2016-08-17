@@ -2,6 +2,7 @@ package com.anokmik.tripassistant.databinding.components
 
 import android.databinding.BindingAdapter
 import android.text.Spanned
+import android.widget.EditText
 import android.widget.TextView
 
 class TextViewComponent {
@@ -17,7 +18,8 @@ class TextViewComponent {
             } else if (!haveContentsChanged(text, oldText)) {
                 return
             }
-            view.append(text)
+
+            if (view is EditText) view.append(text) else view.setText(text)
         }
     }
 

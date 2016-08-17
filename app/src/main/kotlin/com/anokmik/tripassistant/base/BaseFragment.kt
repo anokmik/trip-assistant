@@ -6,16 +6,19 @@ import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.annotation.MenuRes
 import android.support.annotation.StringRes
+import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 
-abstract class BaseFragment<in T : ViewDataBinding> : Fragment() {
+abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     private var supportActionBar: ActionBar? = null
 
     private var onInteractionListener: OnInteractionListener? = null
+
+    protected lateinit var binding: T
 
     protected abstract val displayHomeAsUp: Boolean
 
@@ -42,7 +45,7 @@ abstract class BaseFragment<in T : ViewDataBinding> : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = DataBindingUtil.inflate<T>(inflater, layoutId, container, false)
+        binding = DataBindingUtil.inflate<T>(inflater, layoutId, container, false)
         initBinding(binding)
         return binding.root
     }
@@ -60,6 +63,8 @@ abstract class BaseFragment<in T : ViewDataBinding> : Fragment() {
     protected fun launchActivity(cls: Class<out Activity>) = onInteractionListener?.onLaunchActivity(cls)
 
     protected fun replaceFragment(fragment: Fragment, backStackTag: String? = null) = onInteractionListener?.onReplace(fragment, backStackTag)
+
+    protected fun showDialog(dialogFragment: DialogFragment) = onInteractionListener?.onShowDialog(dialogFragment)
 
     protected fun immediatePopBack(flags: Int, backStackTag: String? = null) = onInteractionListener?.onImmediatePopBack(flags, backStackTag)
 

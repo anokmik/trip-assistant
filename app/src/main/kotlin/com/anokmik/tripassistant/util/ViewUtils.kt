@@ -1,9 +1,13 @@
 package com.anokmik.tripassistant.util
 
+import android.databinding.ObservableBoolean
 import android.text.TextUtils
 import android.view.View
 
 object ViewUtils {
+
+    @JvmStatic
+    fun show(value: ObservableBoolean) = show(value.get())
 
     @JvmStatic
     fun show(value: Boolean) = if (value) View.VISIBLE else View.GONE

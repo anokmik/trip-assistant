@@ -7,6 +7,7 @@ import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
+import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
@@ -33,6 +34,10 @@ abstract class BaseActivity<in T : ViewDataBinding> : AppCompatActivity(), OnInt
         replaceFragment(fragment, backStackTag)
     }
 
+    override fun onShowDialog(dialogFragment: DialogFragment) {
+        showDialog(dialogFragment)
+    }
+
     override fun onImmediatePopBack(flags: Int, backStackTag: String?) {
         popBackImmediate(flags, backStackTag)
     }
@@ -40,6 +45,10 @@ abstract class BaseActivity<in T : ViewDataBinding> : AppCompatActivity(), OnInt
     protected fun addFragment(fragment: Fragment) = supportFragmentManager.add(fragment, containerId)
 
     protected fun replaceFragment(fragment: Fragment, backStackTag: String? = null) = supportFragmentManager.replace(fragment, containerId, backStackTag)
+
+    protected fun showDialog(dialogFragment: DialogFragment) {
+        dialogFragment.show(supportFragmentManager, null);
+    }
 
     protected fun popBackImmediate(flags: Int = FragmentManager.POP_BACK_STACK_INCLUSIVE, backStackTag: String? = null) = supportFragmentManager.popBackImmediate(backStackTag, flags)
 

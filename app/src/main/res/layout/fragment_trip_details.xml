@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.anokmik.tripassistant.util.ViewUtils" />
+
+        <import type="com.anokmik.tripassistant.util.DateUtils" />
+
+        <variable
+            name="layoutManager"
+            type="android.support.v7.widget.RecyclerView.LayoutManager" />
+
+        <variable
+            name="presenter"
+            type="com.anokmik.tripassistant.trip.details.TripDetailsPresenter" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="@{presenter.isEditing}"
+            app:error="@{@string/error_input_not_empty}"
+            app:showError="@{!presenter.titleValid}">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="@{presenter.isEditing}"
+                android:focusable="@{presenter.isEditing}"
+                android:focusableInTouchMode="@{presenter.isEditing}"
+                android:hint="@string/hint_title"
+                android:text="@={presenter.tripTitle}" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="@{presenter.isEditing}">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="@{presenter.isEditing}"
+                android:focusable="@{presenter.isEditing}"
+                android:focusableInTouchMode="@{presenter.isEditing}"
+                android:hint="@string/hint_description"
+                android:text="@={presenter.tripDescription}" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="@{presenter.isEditing}"
+                android:onClick="@{() -> presenter.showStartDatePicker()}"
+                android:text="@{@string/start_date(DateUtils.toString(presenter.tripStartDate))}" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="@{presenter.isEditing}"
+                android:onClick="@{() -> presenter.showFinishDatePicker()}"
+                android:text="@{@string/finish_date(DateUtils.toString(presenter.tripFinishDate))}" />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="@{() -> presenter.addEvent()}"
+            android:text="@string/add_event"
+            android:visibility="@{ViewUtils.show(presenter.isEditing)}" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:items="@{presenter.tripEvents}"
+            app:layoutManager="@{layoutManager}"
+            app:rowPresenter="@{presenter.rowPresenter}" />
+
+    </LinearLayout>
+
+</layout>

@@ -40,15 +40,17 @@ class TripsListFragment : BaseFragment<FragmentTripsListBinding>(), TripsListCon
         }
     }
 
-    override fun getOptionMenuResourceId(): Int = R.menu.menu_trip
+    override fun getOptionMenuResourceId(): Int = R.menu.menu_trips_list
 
     override fun initBinding(binding: FragmentTripsListBinding) {
         binding.layoutManager = LinearLayoutManager(context)
-        binding.tripsListPresenter = TripsListPresenter(this)
+        binding.presenter = TripsListPresenter(this)
     }
 
     override fun showTrip(trip: Trip?) {
-        replaceFragment(TripDetailsFragment.view(trip?.id))
+        trip?.let {
+            replaceFragment(TripDetailsFragment.view(trip.id))
+        }
     }
 
     companion object {
