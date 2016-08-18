@@ -19,6 +19,6 @@
         android:layout_height="match_parent"
         app:items="@{presenter.trips}"
         app:layoutManager="@{layoutManager}"
-        app:rowPresenter="@{presenter.rowPresenter}" />
+        app:viewHolderPresenter="@{presenter.viewHolderPresenter}" />
 
 </layout>

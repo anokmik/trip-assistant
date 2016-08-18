@@ -5,15 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
 import com.anokmik.tripassistant.databinding.adapter.BinderRecyclerViewAdapter;
-import com.anokmik.tripassistant.databinding.adapter.RowPresenter;
+import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter;
 
 import java.util.List;
 
 public final class RecyclerViewComponent {
 
-    @BindingAdapter({"items", "rowPresenter"})
-    public void setContent(RecyclerView view, List<?> items, RowPresenter<?> rowPresenter) {
-        view.setAdapter(new BinderRecyclerViewAdapter(LayoutInflater.from(view.getContext()), items, rowPresenter));
+    @BindingAdapter({"items", "viewHolderPresenter"})
+    public void setContent(RecyclerView view, List<?> items, ViewHolderPresenter<?> viewHolderPresenter) {
+        view.setAdapter(new BinderRecyclerViewAdapter(LayoutInflater.from(view.getContext()), items, viewHolderPresenter));
     }
 
 }

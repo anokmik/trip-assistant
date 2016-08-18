@@ -1,12 +1,12 @@
 package com.anokmik.tripassistant.base;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 public interface OnInteractionListener {
 
-    void onLaunchActivity(Class<? extends Activity> cls);
+    void onLaunchActivity(Intent intent);
 
     void onReplace(Fragment fragment, String backStackTag);
 

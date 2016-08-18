@@ -3,10 +3,12 @@ package com.anokmik.tripassistant;
 import android.app.Application;
 import android.databinding.DataBindingUtil;
 
+import com.anokmik.persistence.model.PhotoAttachment;
 import com.anokmik.persistence.model.Trip;
 import com.anokmik.persistence.model.TripEvent;
 import com.anokmik.persistence.model.User;
 import com.anokmik.persistence.repository.mock.MockRepository;
+import com.anokmik.persistence.util.TypeEventUtils;
 import com.anokmik.tripassistant.databinding.ComponentProvider;
 import com.anokmik.tripassistant.util.DateUtils;
 import com.raizlabs.android.dbflow.config.FlowConfig;
@@ -31,16 +33,18 @@ public final class TripAssistantApplication extends Application {
 
         private final MockRepository<Trip> tripsMockRepository;
         private final MockRepository<TripEvent> tripEventsMockRepository;
+        private final MockRepository<PhotoAttachment> photoAttachmentMockRepository;
 
         private InitMockData() {
-            this.tripsMockRepository = new MockRepository<>();
-            this.tripEventsMockRepository = new MockRepository<>();
+            this.tripsMockRepository = new MockRepository<>(Trip.class);
+            this.tripEventsMockRepository = new MockRepository<>(TripEvent.class);
+            this.photoAttachmentMockRepository = new MockRepository<>(PhotoAttachment.class);
         }
 
         @Override
         public void run() {
             super.run();
-            if (tripsMockRepository.count(Trip.class) == 0) {
+            if (tripsMockRepository.count() == 0) {
                 String descriptionParis = "Paris is the home of the most visited art museum in the world, the Louvre, as well as the Musée d'Orsay, noted for its collection of French Impressionist art, and the Musée National d'Art Moderne, a museum of modern and contemporary art.";
                 String descriptionDublin = "Founded as a Viking settlement, the Kingdom of Dublin became Ireland's principal city following the Norman invasion.";
                 String descriptionReykjavik = "Reykjavík is believed to be the location of the first permanent settlement in Iceland, which, according to Ingólfur Arnarson, was established in AD 874. Until the 19th century, there was no urban development in the city location.";
@@ -60,9 +64,9 @@ public final class TripAssistantApplication extends Application {
                 trips.add(newTrip("London", descriptionLondon, DateUtils.toTime("02/09/2016"), DateUtils.toTime("02/09/2016")));
                 trips.add(newTrip("Berlin", descriptionBerlin, DateUtils.toTime("14/12/2016"), DateUtils.toTime("16/12/2016")));
 
-                tripsMockRepository.storeModelsFast(trips, Trip.class);
+                tripsMockRepository.storeModelsFast(trips);
 
-                if (tripEventsMockRepository.count(TripEvent.class) == 0) {
+                if (tripEventsMockRepository.count() == 0) {
                     Trip firstTrip = trips.get(0);
                     if (firstTrip != null) {
                         String commentHotel = "Grand palatial hotel in the heart of Paris, in the 1st arrondissement. The hotel is ranked highly among the most prestigious and luxurious hotels in the world and is a member of The Leading Hotels of the World. The Ritz reopened on 6 June 2016 after a major four-year, multimillion-dollar renovation.";
@@ -70,13 +74,29 @@ public final class TripAssistantApplication extends Application {
                         String commentLouvre = "The world's largest museum and a historic monument in Paris, France. A central landmark of the city, it is located on the Right Bank of the Seine in the 1st arrondissement (ward). Nearly 35,000 objects from prehistory to the 21st century are exhibited over an area of 60,600 square metres.";
 
                         List<TripEvent> tripEvents = new ArrayList<>();
-                        tripEvents.add(newTripEvent(firstTrip, null, "Ticket", null, TripEvent.Type.TICKET, DateUtils.toTime("12/12/2013"), DateUtils.toTime("12/12/2013")));
-                        tripEvents.add(newTripEvent(firstTrip, null, "Return Ticket", null, TripEvent.Type.TICKET, DateUtils.toTime("21/12/2013"), DateUtils.toTime("21/12/2013")));
-                        tripEvents.add(newTripEvent(firstTrip, null, "Hotel Ritz Paris", commentHotel, TripEvent.Type.HOTEL, DateUtils.toTime("12/01/2014"), DateUtils.toTime("22/01/2014")));
-                        tripEvents.add(newTripEvent(firstTrip, null, "Eiffel Tower", commentEiffelTower, TripEvent.Type.PLACE_OF_INTEREST, DateUtils.toTime("16/01/2014"), DateUtils.toTime("16/01/2014")));
-                        tripEvents.add(newTripEvent(firstTrip, null, "Louvre", commentLouvre, TripEvent.Type.PLACE_OF_INTEREST, DateUtils.toTime("19/01/2014"), DateUtils.toTime("19/01/2014")));
+                        tripEvents.add(newTripEvent(firstTrip, null, "Ticket", null, TypeEventUtils.Type.TICKET, DateUtils.toTime("12/12/2013"), DateUtils.toTime("12/12/2013")));
+                        tripEvents.add(newTripEvent(firstTrip, null, "Return Ticket", null, TypeEventUtils.Type.TICKET, DateUtils.toTime("21/12/2013"), DateUtils.toTime("21/12/2013")));
+                        tripEvents.add(newTripEvent(firstTrip, null, "Hotel Ritz Paris", commentHotel, TypeEventUtils.Type.HOTEL, DateUtils.toTime("12/01/2014"), DateUtils.toTime("22/01/2014")));
+                        tripEvents.add(newTripEvent(firstTrip, null, "Eiffel Tower", commentEiffelTower, TypeEventUtils.Type.PLACE_OF_INTEREST, DateUtils.toTime("16/01/2014"), DateUtils.toTime("16/01/2014")));
+                        tripEvents.add(newTripEvent(firstTrip, null, "Louvre", commentLouvre, TypeEventUtils.Type.PLACE_OF_INTEREST, DateUtils.toTime("19/01/2014"), DateUtils.toTime("19/01/2014")));
 
-                        tripEventsMockRepository.storeModelsFast(tripEvents, TripEvent.class);
+                        tripEventsMockRepository.storeModelsFast(tripEvents);
+
+                        if (photoAttachmentMockRepository.count() == 0) {
+                            TripEvent tripEvent = tripEvents.get(4);
+                            if (tripEvent != null) {
+                                String photoBelowGround = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Donjon_chateau_louvre.JPG/640px-Donjon_chateau_louvre.JPG";
+                                String photoPsycheRevived = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Amor-Psyche-Canova-JBU02.JPG/480px-Amor-Psyche-Canova-JBU02.JPG";
+                                String photoPyramid = "https://upload.wikimedia.org/wikipedia/en/thumb/4/42/Louvre_Pyramid.jpg/640px-Louvre_Pyramid.jpg";
+
+                                List<PhotoAttachment> photoAttachments = new ArrayList<>();
+                                photoAttachments.add(newPhotoAttachment(tripEvent, photoBelowGround));
+                                photoAttachments.add(newPhotoAttachment(tripEvent, photoPsycheRevived));
+                                photoAttachments.add(newPhotoAttachment(tripEvent, photoPyramid));
+
+                                photoAttachmentMockRepository.storeModelsFast(photoAttachments);
+                            }
+                        }
                     }
                 }
             }
@@ -91,7 +111,7 @@ public final class TripAssistantApplication extends Application {
             return trip;
         }
 
-        private TripEvent newTripEvent(Trip trip, User user, String name, String comment, @TripEvent.Type int type, long startDate, long finishDate) {
+        private TripEvent newTripEvent(Trip trip, User user, String name, String comment, @TypeEventUtils.Type int type, long startDate, long finishDate) {
             TripEvent tripEvent = new TripEvent();
             tripEvent.trip = trip;
             tripEvent.user = user;
@@ -101,6 +121,13 @@ public final class TripAssistantApplication extends Application {
             tripEvent.startDate = startDate;
             tripEvent.finishDate = finishDate;
             return tripEvent;
+        }
+
+        private PhotoAttachment newPhotoAttachment(TripEvent tripEvent, String path) {
+            PhotoAttachment photoAttachment = new PhotoAttachment();
+            photoAttachment.tripEvent = tripEvent;
+            photoAttachment.path = path;
+            return photoAttachment;
         }
 
     }

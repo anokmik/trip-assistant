@@ -61,6 +61,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:${libraries.supportVersion}"
     compile "com.android.support:recyclerview-v7:${libraries.supportVersion}"
     compile "com.android.support:design:${libraries.supportVersion}"
+    compile "com.squareup.picasso:picasso:${libraries.picassoVersion}"
 
     debugCompile "im.dino:dbinspector:${libraries.dbInspector}"
 

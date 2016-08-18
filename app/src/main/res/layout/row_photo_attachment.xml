@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.anokmik.tripassistant.util.ViewUtils" />
+
+        <variable
+            name="photoAttachment"
+            type="com.anokmik.persistence.model.PhotoAttachment" />
+
+        <variable
+            name="listener"
+            type="com.anokmik.tripassistant.trip.event.TripEventContract.PhotoAttachmentListener" />
+
+        <variable
+            name="isEditing"
+            type="android.databinding.ObservableBoolean" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@{photoAttachment.path}" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> listener.deletePhoto(photoAttachment)}"
+            android:src="@drawable/ic_delete"
+            android:visibility="@{ViewUtils.show(isEditing)}" />
+
+    </FrameLayout>
+
+</layout>

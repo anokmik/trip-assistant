@@ -1,22 +1,22 @@
-package com.anokmik.tripassistant.trip.details;
+package com.anokmik.tripassistant.trip.event;
 
 import android.support.annotation.LayoutRes;
 
-import com.anokmik.persistence.model.Trip;
+import com.anokmik.persistence.model.PhotoAttachment;
 import com.anokmik.persistence.model.TripEvent;
 import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter;
 
 import java.util.List;
 
-public interface TripDetailsContract {
+public interface TripEventContract {
 
     interface Presenter {
 
-        Trip getTrip();
+        TripEvent getTripEvent();
 
-        List<TripEvent> getTripEvents();
+        List<PhotoAttachment> getPhotoAttachments();
 
-        ViewHolderPresenter<TripEvent> getViewHolderPresenter();
+        ViewHolderPresenter<PhotoAttachment> getViewHolderPresenter();
 
         void showStartDatePicker();
 
@@ -32,13 +32,17 @@ public interface TripDetailsContract {
 
         void delete();
 
+        void addPhotoAttachment(String path);
+
     }
 
-    interface TripEventListener {
+    interface PhotoAttachmentListener {
 
-        void addEvent();
+        void takePhoto();
 
-        void deleteEvent(TripEvent tripEvent);
+        void pickPhoto();
+
+        void deletePhoto(PhotoAttachment photoAttachment);
 
     }
 
@@ -57,9 +61,9 @@ public interface TripDetailsContract {
 
         void showFinishDatePickerDialog(long finishDate);
 
-        void addTripEvent();
+        void takePhotoAttachment();
 
-        void viewTripEvent(long tripEventId);
+        void pickPhotoAttachment();
 
         void enableSaveMode();
 

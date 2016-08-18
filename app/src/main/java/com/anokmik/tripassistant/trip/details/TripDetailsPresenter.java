@@ -9,7 +9,7 @@ import com.anokmik.persistence.model.Trip_Table;
 import com.anokmik.persistence.repository.TripEventRepository;
 import com.anokmik.persistence.repository.TripRepository;
 import com.anokmik.tripassistant.databinding.adapter.OnItemClickListener;
-import com.anokmik.tripassistant.databinding.adapter.RowPresenter;
+import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter;
 
 import java.util.List;
 
@@ -19,17 +19,15 @@ public final class TripDetailsPresenter implements TripDetailsContract.Presenter
     public final ObservableBoolean titleValid;
 
     private final TripDetailsContract.View view;
-    private final TripRepository tripRepository;
-    private final TripEventRepository tripEventRepository;
     private final Trip trip;
+    private final List<TripEvent> tripEvents;
 
     public TripDetailsPresenter(TripDetailsContract.View view, long tripId) {
         this.isEditing = new ObservableBoolean(tripId == 0);
-        this.titleValid = new ObservableBoolean(true);
+        this.titleValid = new ObservableBoolean(tripId != 0);
         this.view = view;
-        this.tripRepository = new TripRepository();
-        this.tripEventRepository = new TripEventRepository();
-        this.trip = tripRepository.get(Trip_Table.id.is(tripId));
+        this.trip = new TripRepository().get(Trip_Table.id.is(tripId));
+        this.tripEvents = new TripEventRepository().getList(TripEvent_Table.trip.is(tripId));
     }
 
     @Override
@@ -39,12 +37,12 @@ public final class TripDetailsPresenter implements TripDetailsContract.Presenter
 
     @Override
     public List<TripEvent> getTripEvents() {
-        return tripEventRepository.getList(TripEvent_Table.trip.is(trip.id));
+        return tripEvents;
     }
 
     @Override
-    public RowPresenter<TripEvent> getRowPresenter() {
-        return new RowPresenter.Builder<TripEvent>(view.getRowItemLayoutId(), view.getItemBindingId())
+    public ViewHolderPresenter<TripEvent> getViewHolderPresenter() {
+        return new ViewHolderPresenter.Builder<TripEvent>(view.getRowItemLayoutId(), view.getItemBindingId())
                 .setItemClickListener(this)
                 .mapVariable(view.getItemListenerBindingId(), this)
                 .mapVariable(view.getItemIsEditingBindingId(), isEditing)
@@ -75,16 +73,22 @@ public final class TripDetailsPresenter implements TripDetailsContract.Presenter
     public void save() {
         isEditing.set(false);
         trip.save();
+        view.enableEditMode();
     }
 
     @Override
     public void edit() {
         isEditing.set(true);
+        view.enableSaveMode();
     }
 
     @Override
     public void delete() {
-        tripRepository.delete(Trip_Table.id.is(trip.id));
+        for (TripEvent tripEvent : getTripEvents()) {
+            tripEvent.delete();
+        }
+        trip.delete();
+        view.back();
     }
 
     @Override
@@ -93,8 +97,8 @@ public final class TripDetailsPresenter implements TripDetailsContract.Presenter
     }
 
     @Override
-    public void deleteEvent(long tripEventId) {
-        tripEventRepository.delete(TripEvent_Table.id.is(tripEventId));
+    public void deleteEvent(TripEvent tripEvent) {
+        tripEvent.delete();
     }
 
     @Override

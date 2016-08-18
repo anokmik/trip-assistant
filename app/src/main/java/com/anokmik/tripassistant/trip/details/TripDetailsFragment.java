@@ -2,7 +2,6 @@ package com.anokmik.tripassistant.trip.details;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,17 +53,13 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit_trip:
-                showSaveMenuItem();
                 getBinding().getPresenter().edit();
                 return true;
             case R.id.action_save_trip:
-                showEditMenuItem();
                 getBinding().getPresenter().save();
-                immediatePopBack(FragmentManager.POP_BACK_STACK_INCLUSIVE, null);
                 return true;
             case R.id.action_delete_trip:
                 getBinding().getPresenter().delete();
-                immediatePopBack(FragmentManager.POP_BACK_STACK_INCLUSIVE, null);
                 return true;
             case R.id.action_user:
                 launchActivity(UserActivity.class);
@@ -107,7 +102,7 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
 
     @Override
     public int getItemListenerBindingId() {
-        return BR.tripEventListener;
+        return BR.listener;
     }
 
     @Override
@@ -133,6 +128,21 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
     @Override
     public void viewTripEvent(long tripEventId) {
         replaceFragment(TripEventFragment.view(tripEventId), null);
+    }
+
+    @Override
+    public void enableSaveMode() {
+        showSaveMenuItem();
+    }
+
+    @Override
+    public void enableEditMode() {
+        showEditMenuItem();
+    }
+
+    @Override
+    public void back() {
+        getActivity().onBackPressed();
     }
 
     @Override

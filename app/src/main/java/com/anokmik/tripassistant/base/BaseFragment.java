@@ -1,6 +1,7 @@
 package com.anokmik.tripassistant.base;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -74,8 +75,12 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
     }
 
     protected void launchActivity(Class<? extends Activity> cls) {
+        launchActivity(new Intent(getContext(), cls));
+    }
+
+    protected void launchActivity(Intent intent) {
         if (onInteractionListener != null) {
-            onInteractionListener.onLaunchActivity(cls);
+            onInteractionListener.onLaunchActivity(intent);
         }
     }
 

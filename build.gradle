@@ -3,6 +3,7 @@
 ext {
     libraries = [
             supportVersion: "24.2.0",
+            picassoVersion: "2.5.2",
             dbFlowVersion : "3.1.1",
             dbInspector   : "3.3.0@aar",
             testJunit     : "4.12"

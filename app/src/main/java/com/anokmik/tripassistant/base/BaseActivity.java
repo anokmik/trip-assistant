@@ -1,6 +1,5 @@
 package com.anokmik.tripassistant.base;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -24,8 +23,17 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     }
 
     @Override
-    public void onLaunchActivity(Class<? extends Activity> cls) {
-        launchActivity(cls);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(containerId);
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onLaunchActivity(Intent intent) {
+        launchActivity(intent);
     }
 
     @Override
@@ -59,8 +67,8 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         getSupportFragmentManager().popBackStackImmediate(backStackTag, flags);
     }
 
-    protected void launchActivity(Class<? extends Activity> cls) {
-        startActivity(new Intent(this, cls));
+    protected void launchActivity(Intent intent) {
+        startActivity(intent);
     }
 
     @LayoutRes

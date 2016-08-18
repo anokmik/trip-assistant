@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public final class RowPresenter<T> {
+public final class ViewHolderPresenter<T> {
 
     @LayoutRes
     private final int layoutId;
@@ -21,8 +21,8 @@ public final class RowPresenter<T> {
 
     private final HashMap<Integer, Object> variablesMap;
 
-    private RowPresenter(@LayoutRes int layoutId, @IdRes int itemBindingId, OnItemClickListener<T> onItemClickListener,
-                           OnItemLongClickListener<T> onItemLongClickListener, HashMap<Integer, Object> variablesMap) {
+    private ViewHolderPresenter(@LayoutRes int layoutId, @IdRes int itemBindingId, OnItemClickListener<T> onItemClickListener,
+                                OnItemLongClickListener<T> onItemLongClickListener, HashMap<Integer, Object> variablesMap) {
         this.layoutId = layoutId;
         this.itemBindingId = itemBindingId;
         this.onItemClickListener = onItemClickListener;
@@ -89,8 +89,8 @@ public final class RowPresenter<T> {
             return this;
         }
 
-        public RowPresenter<T> build() {
-            return new RowPresenter<>(layoutId, itemBindingId, onItemClickListener, onItemLongClickListener, variablesMap);
+        public ViewHolderPresenter<T> build() {
+            return new ViewHolderPresenter<>(layoutId, itemBindingId, onItemClickListener, onItemLongClickListener, variablesMap);
         }
 
         private void initVariablesMap() {

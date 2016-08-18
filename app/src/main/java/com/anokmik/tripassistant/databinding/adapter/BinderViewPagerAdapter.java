@@ -2,7 +2,7 @@ package com.anokmik.tripassistant.databinding.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,48 +10,60 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Map;
 
-public final class BinderRecyclerViewAdapter<T, B extends ViewDataBinding> extends RecyclerView.Adapter<BinderRecyclerViewAdapter.BinderViewHolder<T, B>> {
+public final class BinderViewPagerAdapter<T> extends PagerAdapter {
 
     private final LayoutInflater inflater;
     private final List<T> items;
     private final ViewHolderPresenter<T> presenter;
 
-    public BinderRecyclerViewAdapter(LayoutInflater inflater, List<T> items, ViewHolderPresenter<T> presenter) {
+    public BinderViewPagerAdapter(LayoutInflater inflater, List<T> items, ViewHolderPresenter<T> presenter) {
         this.inflater = inflater;
         this.items = items;
         this.presenter = presenter;
     }
 
     @Override
-    public BinderViewHolder<T, B> onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new BinderViewHolder(DataBindingUtil.inflate(inflater, presenter.getLayoutId(), parent, false), presenter);
+    public Object instantiateItem(ViewGroup container, int position) {
+        ViewDataBinding binding = DataBindingUtil.inflate(inflater, presenter.getLayoutId(), container, false);
+        BinderViewHolder binderViewHolder = new BinderViewHolder(binding, presenter, position);
+        binderViewHolder.bindItem(items.get(position));
+        container.addView(binding.getRoot());
+        return binding.getRoot();
     }
 
     @Override
-    public void onBindViewHolder(BinderViewHolder holder, int position) {
-        holder.bindItem(items.get(position));
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        container.removeView((View) object);
     }
 
     @Override
-    public int getItemCount() {
+    public boolean isViewFromObject(View view, Object object) {
+        return view == object;
+    }
+
+    @Override
+    public int getCount() {
+
         return (items != null) ? items.size() : 0;
     }
 
-    protected static class BinderViewHolder<T, B extends ViewDataBinding> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    protected static class BinderViewHolder<T, B extends ViewDataBinding> implements View.OnClickListener, View.OnLongClickListener {
 
         private final B binding;
 
         private final ViewHolderPresenter<T> presenter;
 
+        private final int adapterPosition;
+
         private T item;
 
-        public BinderViewHolder(B binding, ViewHolderPresenter<T> presenter) {
-            super(binding.getRoot());
+        public BinderViewHolder(B binding, ViewHolderPresenter<T> presenter, int adapterPosition) {
             this.binding = binding;
             this.presenter = presenter;
-            setItemClickListener(itemView, presenter.getItemClickListener());
-            setItemLongClickListener(itemView, presenter.getItemLongClickListener());
+            setItemClickListener(binding.getRoot(), presenter.getItemClickListener());
+            setItemLongClickListener(binding.getRoot(), presenter.getItemLongClickListener());
             setMappedVariables();
+            this.adapterPosition = adapterPosition;
         }
 
         private void bindItem(T item) {
@@ -62,12 +74,12 @@ public final class BinderRecyclerViewAdapter<T, B extends ViewDataBinding> exten
 
         @Override
         public void onClick(View view) {
-            presenter.getItemClickListener().onItemClick(item, getAdapterPosition());
+            presenter.getItemClickListener().onItemClick(item, adapterPosition);
         }
 
         @Override
         public boolean onLongClick(View view) {
-            presenter.getItemLongClickListener().onItemLongClick(item, getAdapterPosition());
+            presenter.getItemLongClickListener().onItemLongClick(item, adapterPosition);
             return true;
         }
 

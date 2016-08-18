@@ -3,7 +3,7 @@ package com.anokmik.tripassistant.trip.list;
 import com.anokmik.persistence.model.Trip;
 import com.anokmik.persistence.repository.TripRepository;
 import com.anokmik.tripassistant.databinding.adapter.OnItemClickListener;
-import com.anokmik.tripassistant.databinding.adapter.RowPresenter;
+import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter;
 
 import java.util.List;
 
@@ -11,12 +11,12 @@ public final class TripsListPresenter implements TripsListContract.Presenter, On
 
     private final TripsListContract.View view;
     private final TripRepository tripRepository;
-    private final RowPresenter<Trip> tripRowPresenter;
+    private final ViewHolderPresenter<Trip> tripViewHolderPresenter;
 
     public TripsListPresenter(TripsListContract.View view) {
         this.view = view;
         this.tripRepository = new TripRepository();
-        this.tripRowPresenter = buildRowPresenter(view);
+        this.tripViewHolderPresenter = buildRowPresenter(view);
     }
 
     @Override
@@ -25,8 +25,8 @@ public final class TripsListPresenter implements TripsListContract.Presenter, On
     }
 
     @Override
-    public RowPresenter<Trip> getRowPresenter() {
-        return tripRowPresenter;
+    public ViewHolderPresenter<Trip> getViewHolderPresenter() {
+        return tripViewHolderPresenter;
     }
 
     @Override
@@ -34,8 +34,8 @@ public final class TripsListPresenter implements TripsListContract.Presenter, On
         view.showTrip(item);
     }
 
-    private RowPresenter<Trip> buildRowPresenter(TripsListContract.View view) {
-        return new RowPresenter.Builder<Trip>(view.getRowItemLayoutId(), view.getItemBindingId()).setItemClickListener(this).build();
+    private ViewHolderPresenter<Trip> buildRowPresenter(TripsListContract.View view) {
+        return new ViewHolderPresenter.Builder<Trip>(view.getRowItemLayoutId(), view.getItemBindingId()).setItemClickListener(this).build();
     }
 
 }

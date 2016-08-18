@@ -3,7 +3,7 @@ package com.anokmik.tripassistant.trip.list;
 import android.support.annotation.LayoutRes;
 
 import com.anokmik.persistence.model.Trip;
-import com.anokmik.tripassistant.databinding.adapter.RowPresenter;
+import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public interface TripsListContract {
 
         List<Trip> getTrips();
 
-        RowPresenter<Trip> getRowPresenter();
+        ViewHolderPresenter<Trip> getViewHolderPresenter();
 
     }
 
