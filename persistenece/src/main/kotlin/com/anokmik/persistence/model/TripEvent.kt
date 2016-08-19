@@ -2,6 +2,7 @@ package com.anokmik.persistence.model
 
 import android.support.annotation.IntDef
 import com.anokmik.persistence.TripAssistantDatabase
+import com.anokmik.persistence.util.TypeEventUtils
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.structure.BaseModel
 
@@ -42,7 +43,7 @@ class TripEvent : BaseModel() {
     var comment: String? = null
 
     @JvmField
-    @Type
+    @TypeEventUtils.Type
     @Column
     var type: Long = 0
 
@@ -54,18 +55,5 @@ class TripEvent : BaseModel() {
     @Column
     var finishDate: Long = 0
 
-    @IntDef(DEFAULT, TICKET, HOTEL, MEETING, PLACE_OF_INTEREST)
-    @Retention(AnnotationRetention.SOURCE)
-    annotation class Type
-
-    companion object {
-
-        const val DEFAULT = 0L
-        const val TICKET = 1L
-        const val HOTEL = 2L
-        const val MEETING = 3L
-        const val PLACE_OF_INTEREST = 4L
-
-    }
 
 }

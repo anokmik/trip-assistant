@@ -1,15 +1,17 @@
 package com.anokmik.tripassistant.databinding
 
-import com.anokmik.tripassistant.databinding.components.RecyclerViewComponent
-import com.anokmik.tripassistant.databinding.components.TextInputLayoutComponent
-import com.anokmik.tripassistant.databinding.components.TextViewComponent
+import com.anokmik.tripassistant.databinding.components.*
 
 class ComponentProvider : android.databinding.DataBindingComponent {
+
+    override fun getImageViewComponent() = ImageViewComponent()
 
     override fun getRecyclerViewComponent() = RecyclerViewComponent()
 
     override fun getTextInputLayoutComponent() = TextInputLayoutComponent()
 
     override fun getTextViewComponent() = TextViewComponent()
+
+    override fun getViewPagerComponent() = ViewPagerComponent()
 
 }

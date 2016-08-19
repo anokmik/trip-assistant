@@ -12,7 +12,7 @@
             type="com.anokmik.persistence.model.TripEvent" />
 
         <variable
-            name="tripEventListener"
+            name="listener"
             type="com.anokmik.tripassistant.trip.details.TripDetailsContract.TripEventListener" />
 
         <variable
@@ -45,7 +45,7 @@
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> tripEventListener.deleteEvent(tripEvent.id)}"
+            android:onClick="@{() -> listener.deleteEvent(tripEvent)}"
             android:src="@drawable/ic_delete"
             android:visibility="@{ViewUtils.show(isEditing)}" />
 

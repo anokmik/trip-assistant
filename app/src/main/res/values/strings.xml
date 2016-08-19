@@ -4,6 +4,7 @@
     <!-- Titles -->
     <string name="title_trips_list">Trips</string>
     <string name="title_trip_details">Trip Details</string>
+    <string name="title_trip_event">Trip Event</string>
     <string name="title_user_login">User Login</string>
     <string name="title_profile">Profile</string>
     <string name="title_edit_user">Edit User</string>
@@ -13,6 +14,8 @@
 
     <!-- Buttons -->
     <string name="add_event">Add Event</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="pick_photo">Pick Photo</string>
     <string name="start_date">Start Date: %s</string>
     <string name="finish_date">Finish Date: %s</string>
     <string name="login">Login</string>
@@ -21,13 +24,6 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="sign_out">Sign out</string>
-
-    <!-- Event Type -->
-    <string name="event_type_default">Default</string>
-    <string name="event_type_ticket">Ticket</string>
-    <string name="event_type_hotel">Hotel</string>
-    <string name="event_type_meeting">Meeting</string>
-    <string name="event_type_place_of_interest">Place of Interest</string>
 
     <!-- Hint -->
     <string name="hint_first_name">First name</string>

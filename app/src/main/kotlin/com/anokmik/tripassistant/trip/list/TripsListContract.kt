@@ -1,7 +1,7 @@
 package com.anokmik.tripassistant.trip.list
 
 import com.anokmik.persistence.model.Trip
-import com.anokmik.tripassistant.databinding.adapter.RowPresenter
+import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter
 
 interface TripsListContract {
 
@@ -19,7 +19,7 @@ interface TripsListContract {
 
         val trips: List<Trip?>
 
-        val rowPresenter: RowPresenter<Trip>
+        val viewHolderPresenter: ViewHolderPresenter<Trip>
 
     }
 

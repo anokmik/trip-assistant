@@ -1,17 +1,13 @@
 package com.anokmik.tripassistant.trip.details
 
-import com.anokmik.persistence.model.Trip_Table
-
 import android.databinding.ObservableBoolean
-
-import com.anokmik.persistence.model.Trip
 import com.anokmik.persistence.model.TripEvent
 import com.anokmik.persistence.model.TripEvent_Table
+import com.anokmik.persistence.model.Trip_Table
 import com.anokmik.persistence.repository.TripEventRepository
 import com.anokmik.persistence.repository.TripRepository
 import com.anokmik.tripassistant.databinding.adapter.OnItemClickListener
-import com.anokmik.tripassistant.databinding.adapter.RowPresenter
-import com.anokmik.tripassistant.trip.details.TripDetailsContract
+import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter
 
 class TripDetailsPresenter(private val view: TripDetailsContract.View, private val tripId: Long) :
         TripDetailsContract.Presenter, TripDetailsContract.TripEventListener, OnItemClickListener<TripEvent> {
@@ -22,13 +18,13 @@ class TripDetailsPresenter(private val view: TripDetailsContract.View, private v
 
     val isEditing = ObservableBoolean(tripId == 0L)
 
-    val titleValid = ObservableBoolean(true)
+    val titleValid = ObservableBoolean(tripId != 0L)
 
     override val trip = tripRepository.get(Trip_Table.id.`is`(tripId))
 
-    override val tripEvents by lazy { tripEventRepository.getList(TripEvent_Table.trip.`is`(tripId)) }
+    override val tripEvents = tripEventRepository.getList(TripEvent_Table.trip.`is`(tripId))
 
-    override val rowPresenter = RowPresenter.Builder<TripEvent>(view.rowItemLayoutId, view.itemBindingId)
+    override val viewHolderPresenter = ViewHolderPresenter.Builder<TripEvent>(view.rowItemLayoutId, view.itemBindingId)
             .setItemClickListener(this)
             .mapVariable(view.itemListenerBindingId, this)
             .mapVariable(view.itemIsEditingBindingId, isEditing)
@@ -57,22 +53,28 @@ class TripDetailsPresenter(private val view: TripDetailsContract.View, private v
     override fun save() {
         isEditing.set(false)
         trip?.save()
+        view.enableEditMode()
     }
 
     override fun edit() {
         isEditing.set(true)
+        view.enableSaveMode()
     }
 
     override fun delete() {
-        tripRepository.delete(Trip_Table.id.`is`(tripId))
+        for (tripEvent in tripEvents) {
+            tripEvent.delete()
+        }
+        trip?.delete();
+        view.back();
     }
 
     override fun addEvent() {
         view.addTripEvent()
     }
 
-    override fun deleteEvent(tripEventId: Long) {
-        tripEventRepository.delete(TripEvent_Table.id.`is`(tripEventId))
+    override fun deleteEvent(tripEvent: TripEvent) {
+        tripEvent.delete()
     }
 
     override fun onItemClick(item: TripEvent?, position: Int) {

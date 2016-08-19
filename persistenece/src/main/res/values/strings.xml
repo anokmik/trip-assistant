@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Event Type -->
+    <string name="event_type_default">Default</string>
+    <string name="event_type_ticket">Ticket</string>
+    <string name="event_type_hotel">Hotel</string>
+    <string name="event_type_meeting">Meeting</string>
+    <string name="event_type_place_of_interest">Place of Interest</string>
+
+</resources>

@@ -4,7 +4,7 @@ import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
 import java.util.*
 
-class RowPresenter<in T> private constructor(
+class ViewHolderPresenter<in T> private constructor(
         @LayoutRes val layoutId: Int,
         @IdRes val itemBindingId: Int,
         val itemClickListener: OnItemClickListener<T>?,
@@ -35,8 +35,8 @@ class RowPresenter<in T> private constructor(
             return this
         }
 
-        fun build(): RowPresenter<T> {
-            return RowPresenter(layoutId, itemBindingId, onItemClickListener, onItemLongClickListener, variablesMap)
+        fun build(): ViewHolderPresenter<T> {
+            return ViewHolderPresenter(layoutId, itemBindingId, onItemClickListener, onItemLongClickListener, variablesMap)
         }
 
     }

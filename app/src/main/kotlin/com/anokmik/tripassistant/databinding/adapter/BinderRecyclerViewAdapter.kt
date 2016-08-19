@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class BinderRecyclerViewAdapter<T, B : ViewDataBinding>(private val inflater: LayoutInflater, private val items: List<T>, private val presenter: RowPresenter<T>) : RecyclerView.Adapter<BinderRecyclerViewAdapter.BinderViewHolder<T, B>>() {
+class BinderRecyclerViewAdapter<T, B : ViewDataBinding>(private val inflater: LayoutInflater, private val items: List<T>, private val presenter: ViewHolderPresenter<T>) : RecyclerView.Adapter<BinderRecyclerViewAdapter.BinderViewHolder<T, B>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BinderViewHolder<T, B> = BinderViewHolder(DataBindingUtil.inflate<ViewDataBinding>(inflater, presenter.layoutId, parent, false), presenter)
 
@@ -15,7 +15,7 @@ class BinderRecyclerViewAdapter<T, B : ViewDataBinding>(private val inflater: La
 
     override fun getItemCount() = items.size
 
-    class BinderViewHolder<in T, in B : ViewDataBinding>(private val binding: B, private val presenter: RowPresenter<T>) : RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener {
+    class BinderViewHolder<in T, in B : ViewDataBinding>(private val binding: B, private val presenter: ViewHolderPresenter<T>) : RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener {
 
         private var item: T? = null
 

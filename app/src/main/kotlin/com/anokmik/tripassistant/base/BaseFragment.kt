@@ -1,6 +1,7 @@
 package com.anokmik.tripassistant.base
 
 import android.app.Activity
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
@@ -60,7 +61,9 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     @MenuRes
     protected open fun getOptionMenuResourceId(): Int = 0
 
-    protected fun launchActivity(cls: Class<out Activity>) = onInteractionListener?.onLaunchActivity(cls)
+    protected fun launchActivity(cls: Class<out Activity>) = launchActivity(Intent(context, cls))
+
+    protected fun launchActivity(intent: Intent?) = onInteractionListener?.onLaunchActivity(intent)
 
     protected fun replaceFragment(fragment: Fragment, backStackTag: String? = null) = onInteractionListener?.onReplace(fragment, backStackTag)
 

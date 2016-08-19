@@ -6,13 +6,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 
 import com.anokmik.tripassistant.databinding.adapter.BinderRecyclerViewAdapter
-import com.anokmik.tripassistant.databinding.adapter.RowPresenter
+import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter
 
 class RecyclerViewComponent {
 
-    @BindingAdapter("items", "rowPresenter")
-    fun <T> setContent(view: RecyclerView, items: List<T>, rowPresenter: RowPresenter<T>) {
-        view.adapter = BinderRecyclerViewAdapter<T, ViewDataBinding>(LayoutInflater.from(view.context), items, rowPresenter)
+    @BindingAdapter("items", "viewHolderPresenter")
+    fun <T> setContent(view: RecyclerView, items: List<T>, viewHolderPresenter: ViewHolderPresenter<T>) {
+        view.adapter = BinderRecyclerViewAdapter<T, ViewDataBinding>(LayoutInflater.from(view.context), items, viewHolderPresenter)
     }
 
 }

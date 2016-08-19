@@ -1,18 +1,20 @@
-package com.anokmik.tripassistant.trip.details
+package com.anokmik.tripassistant.trip.event
 
-import com.anokmik.persistence.model.Trip
+import android.support.annotation.LayoutRes
+
+import com.anokmik.persistence.model.PhotoAttachment
 import com.anokmik.persistence.model.TripEvent
 import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter
 
-interface TripDetailsContract {
+interface TripEventContract {
 
     interface Presenter {
 
-        val trip: Trip?
+        val tripEvent: TripEvent?
 
-        val tripEvents: List<TripEvent>
+        val photoAttachments: List<PhotoAttachment>
 
-        val viewHolderPresenter: ViewHolderPresenter<TripEvent>
+        val viewHolderPresenter: ViewHolderPresenter<PhotoAttachment>
 
         fun showStartDatePicker()
 
@@ -28,13 +30,17 @@ interface TripDetailsContract {
 
         fun delete()
 
+        fun addPhotoAttachment(path: String?)
+
     }
 
-    interface TripEventListener {
+    interface PhotoAttachmentListener {
 
-        fun addEvent()
+        fun takePhoto()
 
-        fun deleteEvent(tripEvent: TripEvent)
+        fun pickPhoto()
+
+        fun deletePhoto(photoAttachment: PhotoAttachment)
 
     }
 
@@ -52,9 +58,9 @@ interface TripDetailsContract {
 
         fun showFinishDatePickerDialog(finishDate: Long)
 
-        fun addTripEvent()
+        fun takePhotoAttachment()
 
-        fun viewTripEvent(tripEventId: Long)
+        fun pickPhotoAttachment()
 
         fun enableSaveMode()
 
@@ -63,6 +69,5 @@ interface TripDetailsContract {
         fun back()
 
     }
-
 
 }
