@@ -99,6 +99,7 @@ public final class TripDetailsPresenter implements TripDetailsContract.Presenter
     @Override
     public void deleteEvent(TripEvent tripEvent) {
         tripEvent.delete();
+        tripEvents.remove(tripEvent);
     }
 
     @Override

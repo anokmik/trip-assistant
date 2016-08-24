@@ -27,16 +27,13 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="@{presenter.isEditing}"
+            app:editable="@{presenter.isEditing}"
             app:error="@{@string/error_input_not_empty}"
             app:showError="@{!presenter.titleValid}">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="@{presenter.isEditing}"
-                android:focusable="@{presenter.isEditing}"
-                android:focusableInTouchMode="@{presenter.isEditing}"
                 android:hint="@string/hint_title"
                 android:text="@={presenter.tripTitle}" />
 
@@ -45,14 +42,12 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="@{presenter.isEditing}">
+            android:visibility="@{ViewUtils.show(presenter.isEditing, presenter.tripDescription)}"
+            app:editable="@{presenter.isEditing}">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="@{presenter.isEditing}"
-                android:focusable="@{presenter.isEditing}"
-                android:focusableInTouchMode="@{presenter.isEditing}"
                 android:hint="@string/hint_description"
                 android:text="@={presenter.tripDescription}" />
 

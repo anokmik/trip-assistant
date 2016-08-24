@@ -10,18 +10,18 @@ import java.util.List;
 public final class TripsListPresenter implements TripsListContract.Presenter, OnItemClickListener<Trip> {
 
     private final TripsListContract.View view;
-    private final TripRepository tripRepository;
+    private final List<Trip> trips;
     private final ViewHolderPresenter<Trip> tripViewHolderPresenter;
 
     public TripsListPresenter(TripsListContract.View view) {
         this.view = view;
-        this.tripRepository = new TripRepository();
+        this.trips = new TripRepository().getAll();
         this.tripViewHolderPresenter = buildRowPresenter(view);
     }
 
     @Override
     public List<Trip> getTrips() {
-        return tripRepository.getAll();
+        return trips;
     }
 
     @Override

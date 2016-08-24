@@ -6,25 +6,25 @@
     <item
         android:id="@+id/action_edit_trip"
         android:icon="@drawable/ic_edit"
-        android:title="@string/title_trip"
+        android:title="@string/menu_edit_trip"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_save_trip"
         android:icon="@drawable/ic_save"
-        android:title="@string/title_trip"
+        android:title="@string/menu_save_trip"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_delete_trip"
         android:icon="@drawable/ic_delete"
-        android:title="@string/title_delete"
+        android:title="@string/menu_delete_trip"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_user"
+        android:id="@+id/action_show_user"
         android:icon="@drawable/ic_user"
-        android:title="@string/title_user"
+        android:title="@string/menu_show_user"
         app:showAsAction="always" />
 
 </menu>

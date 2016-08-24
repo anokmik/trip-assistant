@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{tripEvent.comment}"
-            android:visibility="@{ViewUtils.hideIfEmpty(tripEvent.comment)}" />
+            android:visibility="@{ViewUtils.show(tripEvent.comment)}" />
 
         <TextView
             android:layout_width="match_parent"

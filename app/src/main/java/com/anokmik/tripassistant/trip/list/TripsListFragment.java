@@ -1,17 +1,15 @@
 package com.anokmik.tripassistant.trip.list;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
 
 import com.anokmik.persistence.model.Trip;
 import com.anokmik.tripassistant.BR;
 import com.anokmik.tripassistant.R;
-import com.anokmik.tripassistant.user.UserActivity;
 import com.anokmik.tripassistant.base.BaseFragment;
 import com.anokmik.tripassistant.databinding.FragmentTripsListBinding;
 import com.anokmik.tripassistant.trip.details.TripDetailsFragment;
+import com.anokmik.tripassistant.user.UserActivity;
 
 public final class TripsListFragment extends BaseFragment<FragmentTripsListBinding> implements TripsListContract.View {
 
@@ -20,18 +18,12 @@ public final class TripsListFragment extends BaseFragment<FragmentTripsListBindi
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setActionBarTitle(R.string.title_trips_list);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_trip:
                 replaceFragment(TripDetailsFragment.add(), null);
                 return true;
-            case R.id.action_user:
+            case R.id.action_show_user:
                 launchActivity(UserActivity.class);
                 return true;
             default:
@@ -47,6 +39,11 @@ public final class TripsListFragment extends BaseFragment<FragmentTripsListBindi
     @Override
     protected boolean displayHomeAsUp() {
         return false;
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.title_trips_list;
     }
 
     @Override

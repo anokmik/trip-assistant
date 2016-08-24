@@ -1,18 +1,28 @@
 <resources>
     <string name="app_name">Trip Assistant</string>
 
-    <!-- Titles -->
+    <!-- Title -->
     <string name="title_trips_list">Trips</string>
     <string name="title_trip_details">Trip Details</string>
     <string name="title_trip_event">Trip Event</string>
-    <string name="title_user_login">User Login</string>
+    <string name="title_login">Login</string>
     <string name="title_profile">Profile</string>
-    <string name="title_edit_user">Edit User</string>
     <string name="title_trip">Trip</string>
     <string name="title_user">User</string>
     <string name="title_delete">Delete</string>
 
-    <!-- Buttons -->
+    <!-- Menu -->
+    <string name="menu_add_trip">Add Trip</string>
+    <string name="menu_edit_trip">Edit Trip</string>
+    <string name="menu_delete_trip">Delete Trip</string>
+    <string name="menu_save_trip">Save Trip</string>
+    <string name="menu_add_trip_event">Add Trip Event</string>
+    <string name="menu_edit_trip_event">Edit Trip Event</string>
+    <string name="menu_delete_trip_event">Delete Trip Event</string>
+    <string name="menu_save_trip_event">Save Trip Event</string>
+    <string name="menu_show_user">Show User</string>
+
+    <!-- Button -->
     <string name="add_event">Add Event</string>
     <string name="take_photo">Take Photo</string>
     <string name="pick_photo">Pick Photo</string>

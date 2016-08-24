@@ -1,8 +1,5 @@
 package com.anokmik.tripassistant.user.login;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-
 import com.anokmik.tripassistant.R;
 import com.anokmik.tripassistant.base.BaseFragment;
 import com.anokmik.tripassistant.databinding.FragmentLoginBinding;
@@ -14,14 +11,13 @@ public final class LoginFragment extends BaseFragment<FragmentLoginBinding> impl
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setActionBarTitle(R.string.title_user_login);
+    protected boolean displayHomeAsUp() {
+        return true;
     }
 
     @Override
-    protected boolean displayHomeAsUp() {
-        return true;
+    protected int getTitleResourceId() {
+        return R.string.title_login;
     }
 
     @Override

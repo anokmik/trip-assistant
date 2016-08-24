@@ -1,7 +1,6 @@
 package com.anokmik.tripassistant.trip.details;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,12 +35,6 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setActionBarTitle(R.string.title_trip_details);
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         saveMenuItem = menu.findItem(R.id.action_save_trip);
@@ -61,7 +54,7 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
             case R.id.action_delete_trip:
                 getBinding().getPresenter().delete();
                 return true;
-            case R.id.action_user:
+            case R.id.action_show_user:
                 launchActivity(UserActivity.class);
                 return true;
             default:
@@ -72,6 +65,11 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
     @Override
     protected boolean displayHomeAsUp() {
         return true;
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.title_trip_details;
     }
 
     @Override

@@ -24,6 +24,11 @@ public final class ProfileFragment extends BaseFragment<FragmentProfileBinding> 
     }
 
     @Override
+    protected int getTitleResourceId() {
+        return R.string.title_profile;
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.fragment_profile;
     }
@@ -31,16 +36,6 @@ public final class ProfileFragment extends BaseFragment<FragmentProfileBinding> 
     @Override
     protected void initBinding(FragmentProfileBinding binding) {
         binding.setPresenter(new ProfilePresenter(this, getUserId()));
-    }
-
-    @Override
-    public void setProfileTitle() {
-        setActionBarTitle(R.string.title_profile);
-    }
-
-    @Override
-    public void setEditUserTitle() {
-        setActionBarTitle(R.string.title_edit_user);
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.anokmik.tripassistant.trip.event;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,8 +16,7 @@ import com.anokmik.tripassistant.dialog.DatePickerDialogFragment;
 import com.anokmik.tripassistant.trip.details.TripDetailsFragment;
 import com.anokmik.tripassistant.user.UserActivity;
 
-public final class TripEventFragment extends BaseFragment<FragmentTripEventBinding>
-        implements TripEventContract.View, DateHandler {
+public final class TripEventFragment extends BaseFragment<FragmentTripEventBinding> implements TripEventContract.View, DateHandler {
 
     public static final String KEY_TRIP_EVENT_ID = "key_trip_event_id";
 
@@ -45,32 +43,26 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setActionBarTitle(R.string.title_trip_event);
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        saveMenuItem = menu.findItem(R.id.action_save_trip);
-        editMenuItem = menu.findItem(R.id.action_edit_trip);
+        saveMenuItem = menu.findItem(R.id.action_save_trip_event);
+        editMenuItem = menu.findItem(R.id.action_edit_trip_event);
         showEditMenuItem();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_edit_trip:
+            case R.id.action_edit_trip_event:
                 getBinding().getPresenter().edit();
                 return true;
-            case R.id.action_save_trip:
+            case R.id.action_save_trip_event:
                 getBinding().getPresenter().save();
                 return true;
-            case R.id.action_delete_trip:
+            case R.id.action_delete_trip_event:
                 getBinding().getPresenter().delete();
                 return true;
-            case R.id.action_user:
+            case R.id.action_show_user:
                 launchActivity(UserActivity.class);
                 return true;
             default:
@@ -100,6 +92,11 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
     @Override
     protected boolean displayHomeAsUp() {
         return true;
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.title_trip_event;
     }
 
     @Override

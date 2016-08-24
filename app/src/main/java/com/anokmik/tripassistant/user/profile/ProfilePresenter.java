@@ -11,7 +11,6 @@ public final class ProfilePresenter implements ProfileContract.Presenter {
     public final ObservableBoolean firstNameValid;
     public final ObservableBoolean lastNameValid;
     public final ObservableBoolean isEditing;
-    private final UserRepository userRepository;
     private final User user;
     private final ProfileContract.View view;
     private final UserTextLengthValidator validator;
@@ -20,12 +19,9 @@ public final class ProfilePresenter implements ProfileContract.Presenter {
         this.lastNameValid = new ObservableBoolean(true);
         this.firstNameValid = new ObservableBoolean(true);
         this.isEditing = new ObservableBoolean(false);
-        this.userRepository = new UserRepository();
-        this.user = userRepository.get(userId);
+        this.user = new UserRepository().get(userId);
         this.view = view;
         this.validator = new UserTextLengthValidator(firstNameValid, lastNameValid);
-
-        init();
     }
 
     @Override
@@ -38,13 +34,11 @@ public final class ProfilePresenter implements ProfileContract.Presenter {
 
     @Override
     public void cancel() {
-        view.setProfileTitle();
         isEditing.set(false);
     }
 
     @Override
     public void edit() {
-        view.setEditUserTitle();
         isEditing.set(true);
     }
 
@@ -75,10 +69,6 @@ public final class ProfilePresenter implements ProfileContract.Presenter {
 
     public void setUserLastName(String lastName) {
         user.lastName = lastName;
-    }
-
-    private void init() {
-        view.setProfileTitle();
     }
 
 }

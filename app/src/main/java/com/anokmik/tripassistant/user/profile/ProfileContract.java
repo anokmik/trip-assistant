@@ -4,10 +4,6 @@ public interface ProfileContract {
 
     interface View {
 
-        void setProfileTitle();
-
-        void setEditUserTitle();
-
         void back();
 
     }

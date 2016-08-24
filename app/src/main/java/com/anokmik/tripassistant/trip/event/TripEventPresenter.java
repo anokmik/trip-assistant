@@ -12,8 +12,7 @@ import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter;
 
 import java.util.List;
 
-public final class TripEventPresenter implements TripEventContract.Presenter,
-        TripEventContract.PhotoAttachmentListener {
+public final class TripEventPresenter implements TripEventContract.Presenter, TripEventContract.PhotoAttachmentListener {
 
     public final ObservableBoolean isEditing;
     public final ObservableBoolean nameValid;
@@ -25,6 +24,7 @@ public final class TripEventPresenter implements TripEventContract.Presenter,
     public TripEventPresenter(TripEventContract.View view, long tripEventId) {
         this.isEditing = new ObservableBoolean(tripEventId == 0);
         this.nameValid = new ObservableBoolean(tripEventId != 0);
+
         this.view = view;
         this.tripEvent = new TripEventRepository().get(TripEvent_Table.id.is(tripEventId));
         this.photoAttachments = new PhotoAttachmentRepository().getList(PhotoAttachment_Table.tripEvent.is(tripEventId));
@@ -88,6 +88,7 @@ public final class TripEventPresenter implements TripEventContract.Presenter,
             photoAttachment.delete();
         }
         tripEvent.delete();
+        view.back();
     }
 
     @Override
@@ -111,6 +112,7 @@ public final class TripEventPresenter implements TripEventContract.Presenter,
     @Override
     public void deletePhoto(PhotoAttachment photoAttachment) {
         photoAttachment.delete();
+        photoAttachments.remove(photoAttachment);
     }
 
     public String getTripEventName() {

@@ -33,10 +33,6 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
         super.onAttach(activity);
         if (activity instanceof AppCompatActivity) {
             supportActionBar = ((AppCompatActivity) activity).getSupportActionBar();
-            if (supportActionBar != null) {
-                supportActionBar.setDisplayHomeAsUpEnabled(displayHomeAsUp());
-                supportActionBar.show();
-            }
         }
         if (activity instanceof OnInteractionListener) {
             onInteractionListener = (OnInteractionListener) activity;
@@ -62,6 +58,15 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         if (getOptionMenuResourceId() > 0) {
             inflater.inflate(getOptionMenuResourceId(), menu);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(displayHomeAsUp());
+            supportActionBar.setTitle(getTitleResourceId());
         }
     }
 
@@ -102,13 +107,10 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
         }
     }
 
-    protected void setActionBarTitle(@StringRes int resourceId) {
-        if (supportActionBar != null) {
-            supportActionBar.setTitle(resourceId);
-        }
-    }
-
     protected abstract boolean displayHomeAsUp();
+
+    @StringRes
+    protected abstract int getTitleResourceId();
 
     @LayoutRes
     protected abstract int getLayoutId();

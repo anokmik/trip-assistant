@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{trip.description}"
-            android:visibility="@{ViewUtils.hideIfEmpty(trip.description)}" />
+            android:visibility="@{ViewUtils.show(trip.description)}" />
 
         <TextView
             android:layout_width="match_parent"

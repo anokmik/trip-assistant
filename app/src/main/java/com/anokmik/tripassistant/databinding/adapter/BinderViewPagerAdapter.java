@@ -43,11 +43,15 @@ public final class BinderViewPagerAdapter<T> extends PagerAdapter {
 
     @Override
     public int getCount() {
-
         return (items != null) ? items.size() : 0;
     }
 
-    protected static class BinderViewHolder<T, B extends ViewDataBinding> implements View.OnClickListener, View.OnLongClickListener {
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
+    private static class BinderViewHolder<T, B extends ViewDataBinding> implements View.OnClickListener, View.OnLongClickListener {
 
         private final B binding;
 
