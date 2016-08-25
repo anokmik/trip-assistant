@@ -8,6 +8,7 @@ import com.anokmik.persistence.model.TripEvent_Table;
 import com.anokmik.persistence.model.Trip_Table;
 import com.anokmik.persistence.repository.TripEventRepository;
 import com.anokmik.persistence.repository.TripRepository;
+import com.anokmik.tripassistant.databinding.ObservableCompositeList;
 import com.anokmik.tripassistant.databinding.adapter.OnItemClickListener;
 import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter;
 
@@ -20,14 +21,14 @@ public final class TripDetailsPresenter implements TripDetailsContract.Presenter
 
     private final TripDetailsContract.View view;
     private final Trip trip;
-    private final List<TripEvent> tripEvents;
+    private final ObservableCompositeList<TripEvent> tripEvents;
 
     public TripDetailsPresenter(TripDetailsContract.View view, long tripId) {
         this.isEditing = new ObservableBoolean(tripId == 0);
         this.titleValid = new ObservableBoolean(tripId != 0);
         this.view = view;
         this.trip = new TripRepository().get(Trip_Table.id.is(tripId));
-        this.tripEvents = new TripEventRepository().getList(TripEvent_Table.trip.is(tripId));
+        this.tripEvents = new ObservableCompositeList<>(new TripEventRepository().getAsyncList(TripEvent_Table.trip.is(tripId)));
     }
 
     @Override
@@ -43,6 +44,7 @@ public final class TripDetailsPresenter implements TripDetailsContract.Presenter
     @Override
     public ViewHolderPresenter<TripEvent> getViewHolderPresenter() {
         return new ViewHolderPresenter.Builder<TripEvent>(view.getRowItemLayoutId(), view.getItemBindingId())
+                .setAdapterPositionProviderBindingId(view.getAdapterPositionProviderBindingId())
                 .setItemClickListener(this)
                 .mapVariable(view.getItemListenerBindingId(), this)
                 .mapVariable(view.getItemIsEditingBindingId(), isEditing)
@@ -97,9 +99,8 @@ public final class TripDetailsPresenter implements TripDetailsContract.Presenter
     }
 
     @Override
-    public void deleteEvent(TripEvent tripEvent) {
-        tripEvent.delete();
-        tripEvents.remove(tripEvent);
+    public void deleteEvent(int position) {
+        tripEvents.remove(position);
     }
 
     @Override

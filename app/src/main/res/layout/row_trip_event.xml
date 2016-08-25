@@ -16,6 +16,10 @@
             type="com.anokmik.tripassistant.trip.details.TripDetailsContract.TripEventListener" />
 
         <variable
+            name="positionProvider"
+            type="com.anokmik.tripassistant.databinding.adapter.AdapterPositionProvider" />
+
+        <variable
             name="isEditing"
             type="android.databinding.ObservableBoolean" />
 
@@ -45,7 +49,7 @@
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> listener.deleteEvent(tripEvent)}"
+            android:onClick="@{() -> listener.deleteEvent(positionProvider.getItemPosition())}"
             android:src="@drawable/ic_delete"
             android:visibility="@{ViewUtils.show(isEditing)}" />
 

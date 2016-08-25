@@ -42,7 +42,7 @@ public interface TripEventContract {
 
         void pickPhoto();
 
-        void deletePhoto(PhotoAttachment photoAttachment);
+        void deletePhoto(int position);
 
     }
 
@@ -52,6 +52,8 @@ public interface TripEventContract {
         int getRowItemLayoutId();
 
         int getItemBindingId();
+
+        int getAdapterPositionProviderBindingId();
 
         int getItemListenerBindingId();
 

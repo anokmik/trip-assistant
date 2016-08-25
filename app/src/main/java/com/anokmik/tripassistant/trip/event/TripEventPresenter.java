@@ -8,6 +8,7 @@ import com.anokmik.persistence.model.TripEvent;
 import com.anokmik.persistence.model.TripEvent_Table;
 import com.anokmik.persistence.repository.PhotoAttachmentRepository;
 import com.anokmik.persistence.repository.TripEventRepository;
+import com.anokmik.tripassistant.databinding.ObservableCompositeList;
 import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public final class TripEventPresenter implements TripEventContract.Presenter, Tr
 
     private final TripEventContract.View view;
     private final TripEvent tripEvent;
-    private final List<PhotoAttachment> photoAttachments;
+    private final ObservableCompositeList<PhotoAttachment> photoAttachments;
 
     public TripEventPresenter(TripEventContract.View view, long tripEventId) {
         this.isEditing = new ObservableBoolean(tripEventId == 0);
@@ -27,7 +28,7 @@ public final class TripEventPresenter implements TripEventContract.Presenter, Tr
 
         this.view = view;
         this.tripEvent = new TripEventRepository().get(TripEvent_Table.id.is(tripEventId));
-        this.photoAttachments = new PhotoAttachmentRepository().getList(PhotoAttachment_Table.tripEvent.is(tripEventId));
+        this.photoAttachments = new ObservableCompositeList<>(new PhotoAttachmentRepository().getAsyncList(PhotoAttachment_Table.tripEvent.is(tripEventId)));
     }
 
     @Override
@@ -42,8 +43,8 @@ public final class TripEventPresenter implements TripEventContract.Presenter, Tr
 
     @Override
     public ViewHolderPresenter<PhotoAttachment> getViewHolderPresenter() {
-        return new ViewHolderPresenter.Builder<PhotoAttachment>
-                (view.getRowItemLayoutId(), view.getItemBindingId())
+        return new ViewHolderPresenter.Builder<PhotoAttachment>(view.getRowItemLayoutId(), view.getItemBindingId())
+                .setAdapterPositionProviderBindingId(view.getAdapterPositionProviderBindingId())
                 .mapVariable(view.getItemListenerBindingId(), this)
                 .mapVariable(view.getItemIsEditingBindingId(), isEditing)
                 .build();
@@ -110,9 +111,8 @@ public final class TripEventPresenter implements TripEventContract.Presenter, Tr
     }
 
     @Override
-    public void deletePhoto(PhotoAttachment photoAttachment) {
-        photoAttachment.delete();
-        photoAttachments.remove(photoAttachment);
+    public void deletePhoto(int position) {
+        photoAttachments.remove(position);
     }
 
     public String getTripEventName() {

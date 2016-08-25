@@ -125,6 +125,11 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
     }
 
     @Override
+    public int getAdapterPositionProviderBindingId() {
+        return BR.positionProvider;
+    }
+
+    @Override
     public int getItemListenerBindingId() {
         return BR.listener;
     }

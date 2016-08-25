@@ -99,6 +99,11 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
     }
 
     @Override
+    public int getAdapterPositionProviderBindingId() {
+        return BR.positionProvider;
+    }
+
+    @Override
     public int getItemListenerBindingId() {
         return BR.listener;
     }

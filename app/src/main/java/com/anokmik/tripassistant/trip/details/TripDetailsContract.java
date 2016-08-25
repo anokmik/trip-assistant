@@ -38,7 +38,7 @@ public interface TripDetailsContract {
 
         void addEvent();
 
-        void deleteEvent(TripEvent tripEvent);
+        void deleteEvent(int position);
 
     }
 
@@ -48,6 +48,8 @@ public interface TripDetailsContract {
         int getRowItemLayoutId();
 
         int getItemBindingId();
+
+        int getAdapterPositionProviderBindingId();
 
         int getItemListenerBindingId();
 

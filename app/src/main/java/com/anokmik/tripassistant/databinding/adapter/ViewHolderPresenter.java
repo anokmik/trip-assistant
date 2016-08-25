@@ -12,8 +12,9 @@ public final class ViewHolderPresenter<T> {
     @LayoutRes
     private final int layoutId;
 
-    @IdRes
     private final int itemBindingId;
+
+    private final int adapterPositionProviderBindingId;
 
     private final OnItemClickListener<T> onItemClickListener;
 
@@ -21,10 +22,12 @@ public final class ViewHolderPresenter<T> {
 
     private final HashMap<Integer, Object> variablesMap;
 
-    private ViewHolderPresenter(@LayoutRes int layoutId, @IdRes int itemBindingId, OnItemClickListener<T> onItemClickListener,
-                                OnItemLongClickListener<T> onItemLongClickListener, HashMap<Integer, Object> variablesMap) {
+    private ViewHolderPresenter(@LayoutRes int layoutId, int itemBindingId, int adapterPositionProviderBindingId,
+                                OnItemClickListener<T> onItemClickListener, OnItemLongClickListener<T> onItemLongClickListener,
+                                HashMap<Integer, Object> variablesMap) {
         this.layoutId = layoutId;
         this.itemBindingId = itemBindingId;
+        this.adapterPositionProviderBindingId = adapterPositionProviderBindingId;
         this.onItemClickListener = onItemClickListener;
         this.onItemLongClickListener = onItemLongClickListener;
         this.variablesMap = variablesMap;
@@ -36,6 +39,10 @@ public final class ViewHolderPresenter<T> {
 
     public int getItemBindingId() {
         return itemBindingId;
+    }
+
+    public int getAdapterPositionProviderBindingId() {
+        return adapterPositionProviderBindingId;
     }
 
     public OnItemClickListener<T> getItemClickListener() {
@@ -59,8 +66,9 @@ public final class ViewHolderPresenter<T> {
         @LayoutRes
         private final int layoutId;
 
-        @IdRes
         private final int itemBindingId;
+
+        private int adapterPositionProviderBindingId;
 
         private OnItemClickListener<T> onItemClickListener;
 
@@ -71,6 +79,11 @@ public final class ViewHolderPresenter<T> {
         public Builder(@LayoutRes int layoutId, @IdRes int itemBindingId) {
             this.layoutId = layoutId;
             this.itemBindingId = itemBindingId;
+        }
+
+        public Builder<T> setAdapterPositionProviderBindingId(int adapterPositionProviderBindingId) {
+            this.adapterPositionProviderBindingId = adapterPositionProviderBindingId;
+            return this;
         }
 
         public Builder<T> setItemClickListener(OnItemClickListener<T> onItemClickListener) {
@@ -90,7 +103,7 @@ public final class ViewHolderPresenter<T> {
         }
 
         public ViewHolderPresenter<T> build() {
-            return new ViewHolderPresenter<>(layoutId, itemBindingId, onItemClickListener, onItemLongClickListener, variablesMap);
+            return new ViewHolderPresenter<>(layoutId, itemBindingId, adapterPositionProviderBindingId, onItemClickListener, onItemLongClickListener, variablesMap);
         }
 
         private void initVariablesMap() {

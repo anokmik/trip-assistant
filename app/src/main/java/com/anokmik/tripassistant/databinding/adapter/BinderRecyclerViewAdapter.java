@@ -37,7 +37,7 @@ public final class BinderRecyclerViewAdapter<T, B extends ViewDataBinding> exten
         return (items != null) ? items.size() : 0;
     }
 
-    protected static class BinderViewHolder<T, B extends ViewDataBinding> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    protected static class BinderViewHolder<T, B extends ViewDataBinding> extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, AdapterPositionProvider {
 
         private final B binding;
 
@@ -49,8 +49,9 @@ public final class BinderRecyclerViewAdapter<T, B extends ViewDataBinding> exten
             super(binding.getRoot());
             this.binding = binding;
             this.presenter = presenter;
-            setItemClickListener(itemView, presenter.getItemClickListener());
-            setItemLongClickListener(itemView, presenter.getItemLongClickListener());
+            setAdapterPositionProvider(presenter.getAdapterPositionProviderBindingId());
+            setItemClickListener(binding.getRoot(), presenter.getItemClickListener());
+            setItemLongClickListener(binding.getRoot(), presenter.getItemLongClickListener());
             setMappedVariables();
         }
 
@@ -61,14 +62,25 @@ public final class BinderRecyclerViewAdapter<T, B extends ViewDataBinding> exten
         }
 
         @Override
+        public int getItemPosition() {
+            return getAdapterPosition();
+        }
+
+        @Override
         public void onClick(View view) {
-            presenter.getItemClickListener().onItemClick(item, getAdapterPosition());
+            presenter.getItemClickListener().onItemClick(item, getItemPosition());
         }
 
         @Override
         public boolean onLongClick(View view) {
-            presenter.getItemLongClickListener().onItemLongClick(item, getAdapterPosition());
+            presenter.getItemLongClickListener().onItemLongClick(item, getItemPosition());
             return true;
+        }
+
+        private void setAdapterPositionProvider(int adapterPositionProviderBindingId) {
+            if (adapterPositionProviderBindingId > 0) {
+                binding.setVariable(adapterPositionProviderBindingId, this);
+            }
         }
 
         private void setItemClickListener(View view, OnItemClickListener<T> onItemClickListener) {
