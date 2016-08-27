@@ -19,7 +19,7 @@ import com.anokmik.tripassistant.validator.TextLengthValidator;
 
 import java.util.List;
 
-public final class TripEventPresenter implements TripEventContract.Presenter, TripEventContract.PhotoAttachmentListener {
+public final class TripEventPresenter implements TripEventContract.Presenter {
 
     public final ObservableTripEvent observableTripEvent;
     public final ObservableBoolean isEditing;

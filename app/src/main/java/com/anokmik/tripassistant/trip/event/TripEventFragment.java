@@ -14,13 +14,12 @@ import com.anokmik.tripassistant.R;
 import com.anokmik.tripassistant.BR;
 import com.anokmik.tripassistant.base.BaseFragment;
 import com.anokmik.tripassistant.databinding.FragmentTripEventBinding;
-import com.anokmik.tripassistant.dialog.DateHandler;
 import com.anokmik.tripassistant.dialog.DatePickerDialogFragment;
 import com.anokmik.tripassistant.trip.Key;
 import com.anokmik.tripassistant.trip.Mode;
 import com.anokmik.tripassistant.user.UserActivity;
 
-public final class TripEventFragment extends BaseFragment<FragmentTripEventBinding> implements TripEventContract.View, DateHandler {
+public final class TripEventFragment extends BaseFragment<FragmentTripEventBinding> implements TripEventContract.View {
 
     private static final int TAKE_PHOTO_REQUEST = 1212;
     private static final int PICK_PHOTO_REQUEST = 2222;

@@ -3,7 +3,6 @@ package com.anokmik.tripassistant.trip.details;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,15 +13,13 @@ import com.anokmik.tripassistant.R;
 import com.anokmik.tripassistant.BR;
 import com.anokmik.tripassistant.base.BaseFragment;
 import com.anokmik.tripassistant.databinding.FragmentTripDetailsBinding;
-import com.anokmik.tripassistant.dialog.DateHandler;
 import com.anokmik.tripassistant.dialog.DatePickerDialogFragment;
 import com.anokmik.tripassistant.trip.Key;
 import com.anokmik.tripassistant.trip.Mode;
 import com.anokmik.tripassistant.trip.event.TripEventFragment;
 import com.anokmik.tripassistant.user.UserActivity;
-import com.anokmik.tripassistant.util.ViewUtils;
 
-public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsBinding> implements TripDetailsContract.View, DateHandler {
+public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsBinding> implements TripDetailsContract.View {
 
     private MenuItem saveMenuItem;
     private MenuItem cancelMenuItem;

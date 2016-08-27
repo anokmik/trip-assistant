@@ -13,7 +13,7 @@
 
         <variable
             name="listener"
-            type="com.anokmik.tripassistant.trip.details.TripDetailsContract.TripEventListener" />
+            type="com.anokmik.tripassistant.trip.details.TripEventListener" />
 
         <variable
             name="positionProvider"

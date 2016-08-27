@@ -1,81 +1,35 @@
 package com.anokmik.tripassistant.trip.event;
 
-import android.support.annotation.LayoutRes;
-
 import com.anokmik.persistence.model.PhotoAttachment;
-import com.anokmik.persistence.model.TripEvent;
 import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter;
+import com.anokmik.tripassistant.dialog.DateHandler;
+import com.anokmik.tripassistant.util.contract.presenter.PresenterEditable;
+import com.anokmik.tripassistant.util.contract.presenter.PresenterStartFinishDates;
+import com.anokmik.tripassistant.util.contract.presenter.PresenterValidator;
+import com.anokmik.tripassistant.util.contract.view.ViewBack;
+import com.anokmik.tripassistant.util.contract.view.ViewControls;
+import com.anokmik.tripassistant.util.contract.view.ViewListItem;
+import com.anokmik.tripassistant.util.contract.view.ViewStartFinishDates;
 
 import java.util.List;
 
 public interface TripEventContract {
 
-    interface Presenter {
+    interface Presenter extends PresenterStartFinishDates, PresenterValidator, PresenterEditable, PhotoAttachmentListener {
 
         List<PhotoAttachment> getPhotoAttachments();
 
         ViewHolderPresenter<PhotoAttachment> getViewHolderPresenter();
 
-        void showStartDatePicker();
-
-        void showFinishDatePicker();
-
-        void setStartDate(long startDate);
-
-        void setFinishDate(long finishDate);
-
-        boolean validFields();
-
-        void save();
-
-        void cancel();
-
-        void edit();
-
-        void delete();
-
         void addPhotoAttachment(String path);
 
     }
 
-    interface PhotoAttachmentListener {
-
-        void takePhoto();
-
-        void pickPhoto();
-
-        void deletePhoto(int position);
-
-    }
-
-    interface View {
-
-        @LayoutRes
-        int getRowItemLayoutId();
-
-        int getItemBindingId();
-
-        int getAdapterPositionProviderBindingId();
-
-        int getItemListenerBindingId();
-
-        int getItemIsEditingBindingId();
-
-        void showStartDatePickerDialog(long startDate);
-
-        void showFinishDatePickerDialog(long finishDate);
-
-        void showDatesInvalidError();
+    interface View extends ViewListItem, ViewStartFinishDates, ViewControls, ViewBack, DateHandler {
 
         void takePhotoAttachment();
 
         void pickPhotoAttachment();
-
-        void enableSaveControls();
-
-        void enableEditControls();
-
-        void back();
 
     }
 

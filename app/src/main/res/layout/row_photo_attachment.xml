@@ -11,7 +11,7 @@
 
         <variable
             name="listener"
-            type="com.anokmik.tripassistant.trip.event.TripEventContract.PhotoAttachmentListener" />
+            type="com.anokmik.tripassistant.trip.event.PhotoAttachmentListener" />
 
         <variable
             name="positionProvider"

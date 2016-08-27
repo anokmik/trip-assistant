@@ -9,7 +9,6 @@ import com.anokmik.persistence.model.Trip_Table;
 import com.anokmik.persistence.repository.TripEventRepository;
 import com.anokmik.persistence.repository.TripRepository;
 import com.anokmik.tripassistant.databinding.ObservableCompositeList;
-import com.anokmik.tripassistant.databinding.adapter.OnItemClickListener;
 import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter;
 import com.anokmik.tripassistant.model.ObservableTrip;
 import com.anokmik.tripassistant.trip.Mode;
@@ -18,7 +17,7 @@ import com.anokmik.tripassistant.validator.TextLengthValidator;
 
 import java.util.List;
 
-public final class TripDetailsPresenter implements TripDetailsContract.Presenter, TripDetailsContract.TripEventListener, OnItemClickListener<TripEvent> {
+public final class TripDetailsPresenter implements TripDetailsContract.Presenter {
 
     public final ObservableTrip observableTrip;
     public final ObservableBoolean isEditing;
