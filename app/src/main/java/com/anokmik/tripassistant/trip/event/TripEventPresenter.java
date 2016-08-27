@@ -7,9 +7,11 @@ import com.anokmik.persistence.model.PhotoAttachment_Table;
 import com.anokmik.persistence.model.TripEvent;
 import com.anokmik.persistence.model.TripEvent_Table;
 import com.anokmik.persistence.model.Trip_Table;
+import com.anokmik.persistence.model.User;
 import com.anokmik.persistence.repository.PhotoAttachmentRepository;
 import com.anokmik.persistence.repository.TripEventRepository;
 import com.anokmik.persistence.repository.TripRepository;
+import com.anokmik.persistence.repository.UserRepository;
 import com.anokmik.tripassistant.databinding.ObservableCompositeList;
 import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter;
 import com.anokmik.tripassistant.model.ObservableTripEvent;
@@ -24,12 +26,12 @@ public final class TripEventPresenter implements TripEventContract.Presenter {
     public final ObservableTripEvent observableTripEvent;
     public final ObservableBoolean isEditing;
     public final ObservableBoolean nameValid;
+    public final int mode;
 
     private final TripRepository tripRepository;
     private final TripEventRepository tripEventRepository;
     private final TextLengthValidator validator;
     private final TripEventContract.View view;
-    private final int mode;
     private final long tripId;
     private final long tripEventId;
     private final ObservableCompositeList<PhotoAttachment> photoAttachments;
@@ -170,6 +172,10 @@ public final class TripEventPresenter implements TripEventContract.Presenter {
         switch (mode) {
             case Mode.ADD:
                 TripEvent tripEvent = new TripEvent();
+                User activeUser = new UserRepository().getActive();
+                if (activeUser != null) {
+                    tripEvent.user = activeUser;
+                }
                 tripEvent.startDate = System.currentTimeMillis();
                 tripEvent.finishDate = System.currentTimeMillis();
                 tripEvent.trip = tripRepository.get(Trip_Table.id.is(tripId));

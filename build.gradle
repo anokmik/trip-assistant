@@ -2,11 +2,12 @@
 
 ext {
     libraries = [
-            supportVersion: "24.1.1",
-            picassoVersion: "2.5.2",
-            dbFlowVersion : "3.1.1",
-            dbInspector   : "3.3.0@aar",
-            testJunit     : "4.12"
+            supportVersion      : "24.1.1",
+            picassoVersion      : "2.5.2",
+            simpleItemDecoration: "1.0.0",
+            dbFlowVersion       : "3.1.1",
+            dbInspector         : "3.3.0@aar",
+            testJunit           : "4.12"
     ]
 }
 

@@ -22,11 +22,11 @@ public final class TripDetailsPresenter implements TripDetailsContract.Presenter
     public final ObservableTrip observableTrip;
     public final ObservableBoolean isEditing;
     public final ObservableBoolean titleValid;
+    public final int mode;
 
     private final TripRepository tripRepository;
     private final TextLengthValidator validator;
     private final TripDetailsContract.View view;
-    private final int mode;
     private final long tripId;
     private final ObservableCompositeList<TripEvent> tripEvents;
 

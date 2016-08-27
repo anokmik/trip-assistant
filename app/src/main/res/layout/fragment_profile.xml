@@ -16,13 +16,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/fragment_padding">
 
         <android.support.design.widget.TextInputLayout
+            style="@style/TextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:editable="@{presenter.isEditing}"
-            app:error="@{@string/error_first_name_not_valid}"
+            app:error="@{@string/error_name_not_valid}"
             app:showError="@{!presenter.firstNameValid}">
 
             <android.support.design.widget.TextInputEditText
@@ -33,11 +36,14 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <include layout="@layout/space_small" />
+
         <android.support.design.widget.TextInputLayout
+            style="@style/TextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:editable="@{presenter.isEditing}"
-            app:error="@{@string/error_last_name_not_valid}"
+            app:error="@{@string/error_name_not_valid}"
             app:showError="@{!presenter.lastNameValid}">
 
             <android.support.design.widget.TextInputEditText
@@ -48,33 +54,57 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> presenter.save()}"
-            android:text="@string/save"
-            android:visibility="@{ViewUtils.show(presenter.isEditing)}" />
+        <include layout="@layout/space_large" />
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> presenter.cancel()}"
-            android:text="@string/cancel"
-            android:visibility="@{ViewUtils.show(presenter.isEditing)}" />
+            android:orientation="horizontal"
+            android:visibility="@{ViewUtils.show(presenter.isEditing)}">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> presenter.edit()}"
-            android:text="@string/edit"
-            android:visibility="@{ViewUtils.show(!presenter.isEditing)}" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{() -> presenter.cancel()}"
+                android:text="@string/cancel" />
 
-        <Button
+            <include layout="@layout/space_small" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{() -> presenter.save()}"
+                android:text="@string/save" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> presenter.delete()}"
-            android:text="@string/delete"
-            android:visibility="@{ViewUtils.show(!presenter.isEditing)}" />
+            android:orientation="horizontal"
+            android:visibility="@{ViewUtils.show(!presenter.isEditing)}">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{() -> presenter.edit()}"
+                android:text="@string/edit" />
+
+            <include layout="@layout/space_small" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{() -> presenter.delete()}"
+                android:text="@string/delete" />
+
+        </LinearLayout>
+
+        <include layout="@layout/space_small" />
 
         <Button
             android:layout_width="match_parent"

@@ -30,11 +30,15 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
             android:src="@{photoAttachment.path}" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/image_btn_size"
+            android:layout_height="@dimen/image_btn_size"
+            android:layout_gravity="end"
+            android:layout_margin="@dimen/image_btn_margin"
             android:onClick="@{() -> listener.deletePhoto(positionProvider.getItemPosition())}"
             android:src="@drawable/ic_delete"
             android:visibility="@{ViewUtils.show(isEditing)}" />

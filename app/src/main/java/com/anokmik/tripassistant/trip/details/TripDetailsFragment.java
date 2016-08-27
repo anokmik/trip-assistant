@@ -18,6 +18,7 @@ import com.anokmik.tripassistant.trip.Key;
 import com.anokmik.tripassistant.trip.Mode;
 import com.anokmik.tripassistant.trip.event.TripEventFragment;
 import com.anokmik.tripassistant.user.UserActivity;
+import com.dgreenhalgh.android.simpleitemdecoration.linear.DividerItemDecoration;
 
 public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsBinding> implements TripDetailsContract.View {
 
@@ -93,6 +94,7 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
 
     @Override
     protected void initBinding(FragmentTripDetailsBinding binding) {
+        binding.setDecoration(new DividerItemDecoration(ContextCompat.getDrawable(getContext(), R.drawable.small_divider)));
         binding.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.setPresenter(new TripDetailsPresenter(this, getMode(), getTripId()));
     }

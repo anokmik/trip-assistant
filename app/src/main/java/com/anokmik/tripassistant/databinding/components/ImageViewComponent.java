@@ -9,7 +9,7 @@ public final class ImageViewComponent {
 
     @BindingAdapter("android:src")
     public void loadImage(ImageView view, String imageUrl) {
-        Picasso.with(view.getContext()).load(imageUrl).fit().into(view);
+        Picasso.with(view.getContext()).load(imageUrl).into(view);
     }
 
 }

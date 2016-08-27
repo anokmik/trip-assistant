@@ -9,7 +9,7 @@ def versionFix = 0
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.2"
     defaultConfig {
         applicationId "com.anokmik.tripassistant"
         minSdkVersion 17
@@ -62,6 +62,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${libraries.supportVersion}"
     compile "com.android.support:design:${libraries.supportVersion}"
     compile "com.squareup.picasso:picasso:${libraries.picassoVersion}"
+    compile "com.bignerdranch.android:simple-item-decoration:${libraries.simpleItemDecoration}"
 
     debugCompile "im.dino:dbinspector:${libraries.dbInspector}"
 

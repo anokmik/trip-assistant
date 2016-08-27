@@ -28,27 +28,63 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{tripEvent.name}" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{tripEvent.comment}"
-            android:visibility="@{ViewUtils.show(tripEvent.comment)}" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{DateUtils.format(tripEvent.startDate, tripEvent.finishDate)}" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{tripEvent.name}"
+                    android:textColor="@color/material_dark_secondary_text_color"
+                    android:textSize="@dimen/body_text_size"
+                    android:textStyle="bold" />
+
+                <include layout="@layout/space_very_small" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{DateUtils.format(tripEvent.startDate, tripEvent.finishDate)}"
+                    android:textColor="@color/material_dark_secondary_text_color"
+                    android:textSize="@dimen/caption_text_size"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <include
+                layout="@layout/space_very_small"
+                android:visibility="@{ViewUtils.show(tripEvent.comment)}" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{tripEvent.comment}"
+                android:textColor="@color/material_dark_secondary_text_color"
+                android:textSize="@dimen/caption_text_size"
+                android:visibility="@{ViewUtils.show(tripEvent.comment)}" />
+
+        </LinearLayout>
+
+        <include
+            layout="@layout/space_very_small"
+            android:visibility="@{ViewUtils.show(isEditing)}" />
 
         <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/image_btn_size"
+            android:layout_height="@dimen/image_btn_size"
             android:onClick="@{() -> listener.deleteEvent(positionProvider.getItemPosition())}"
             android:src="@drawable/ic_delete"
             android:visibility="@{ViewUtils.show(isEditing)}" />

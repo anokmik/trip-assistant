@@ -23,4 +23,16 @@ public final class RecyclerViewComponent {
         }
     }
 
+    @BindingAdapter("decoration")
+    public void setDecoration(RecyclerView view, RecyclerView.ItemDecoration decoration) {
+        view.addItemDecoration(decoration);
+    }
+
+    @BindingAdapter("decoration")
+    public void setDecoration(RecyclerView view, RecyclerView.ItemDecoration[] decorations) {
+        for (RecyclerView.ItemDecoration decoration : decorations) {
+            view.addItemDecoration(decoration);
+        }
+    }
+
 }

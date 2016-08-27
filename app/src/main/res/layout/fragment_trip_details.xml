@@ -9,6 +9,10 @@
         <import type="com.anokmik.tripassistant.util.DateUtils" />
 
         <variable
+            name="decoration"
+            type="android.support.v7.widget.RecyclerView.ItemDecoration" />
+
+        <variable
             name="layoutManager"
             type="android.support.v7.widget.RecyclerView.LayoutManager" />
 
@@ -21,9 +25,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/fragment_padding">
 
         <android.support.design.widget.TextInputLayout
+            style="@style/TextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:editable="@{presenter.isEditing}"
@@ -34,11 +40,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_title"
+                android:singleLine="true"
                 android:text="@={presenter.observableTrip.title}" />
 
         </android.support.design.widget.TextInputLayout>
 
+        <include layout="@layout/space_small" />
+
         <android.support.design.widget.TextInputLayout
+            style="@style/TextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="@{ViewUtils.show(presenter.isEditing, presenter.observableTrip.description)}"
@@ -48,9 +58,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_description"
+                android:maxLines="3"
                 android:text="@={presenter.observableTrip.description}" />
 
         </android.support.design.widget.TextInputLayout>
+
+        <include layout="@layout/space_small" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,6 +78,8 @@
                 android:onClick="@{() -> presenter.showStartDatePicker()}"
                 android:text="@{@string/start_date(DateUtils.toString(presenter.observableTrip.startDate))}" />
 
+            <include layout="@layout/space_small" />
+
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -75,20 +90,28 @@
 
         </LinearLayout>
 
+        <include layout="@layout/space_medium" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:decoration="@{decoration}"
+            app:items="@{presenter.tripEvents}"
+            app:layoutManager="@{layoutManager}"
+            app:viewHolderPresenter="@{presenter.viewHolderPresenter}" />
+
+        <include
+            layout="@layout/space_small"
+            android:visibility="@{ViewUtils.showForViewMode(presenter.isEditing, presenter.mode)}" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:onClick="@{() -> presenter.addEvent()}"
             android:text="@string/add_event"
-            android:visibility="@{ViewUtils.show(presenter.isEditing)}" />
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:items="@{presenter.tripEvents}"
-            app:layoutManager="@{layoutManager}"
-            app:viewHolderPresenter="@{presenter.viewHolderPresenter}" />
+            android:visibility="@{ViewUtils.showForViewMode(presenter.isEditing, presenter.mode)}" />
 
     </LinearLayout>
 

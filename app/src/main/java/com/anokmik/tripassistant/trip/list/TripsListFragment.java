@@ -1,5 +1,6 @@
 package com.anokmik.tripassistant.trip.list;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
 
@@ -10,6 +11,7 @@ import com.anokmik.tripassistant.base.BaseFragment;
 import com.anokmik.tripassistant.databinding.FragmentTripsListBinding;
 import com.anokmik.tripassistant.trip.details.TripDetailsFragment;
 import com.anokmik.tripassistant.user.UserActivity;
+import com.dgreenhalgh.android.simpleitemdecoration.linear.DividerItemDecoration;
 
 public final class TripsListFragment extends BaseFragment<FragmentTripsListBinding> implements TripsListContract.View {
 
@@ -53,6 +55,7 @@ public final class TripsListFragment extends BaseFragment<FragmentTripsListBindi
 
     @Override
     protected void initBinding(FragmentTripsListBinding binding) {
+        binding.setDecoration(new DividerItemDecoration(ContextCompat.getDrawable(getContext(), R.drawable.large_divider)));
         binding.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.setPresenter(new TripsListPresenter(this));
     }

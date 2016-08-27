@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetBottom="@dimen/divider_large_inset"
+    android:insetLeft="@dimen/divider_small_inset"
+    android:insetRight="@dimen/divider_small_inset"
+    android:insetTop="@dimen/divider_large_inset">
+    <shape android:shape="rectangle">
+        <size android:height="@dimen/divider_size" />
+        <solid android:color="@color/material_dark_divider" />
+    </shape>
+</inset>

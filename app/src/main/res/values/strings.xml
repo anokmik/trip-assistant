@@ -45,9 +45,8 @@
     <string name="hint_comment">Comment</string>
 
     <!-- Error -->
-    <string name="error_first_name_not_valid">Input value length must be higher than five chars</string>
-    <string name="error_last_name_not_valid">Input value length must be higher than five chars</string>
-    <string name="error_input_not_empty">Input value must be not empty</string>
+    <string name="error_name_not_valid">Field should have at least five chars</string>
+    <string name="error_input_not_empty">Field must be not empty</string>
     <string name="error_dates_invalid">Dates should be equal or represent period of time</string>
 
 </resources>
