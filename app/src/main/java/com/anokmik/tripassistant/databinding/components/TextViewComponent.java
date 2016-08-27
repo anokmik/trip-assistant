@@ -19,10 +19,9 @@ public final class TextViewComponent {
                 return;
             }
 
-            if (view instanceof EditText) {
-                view.append(text);
-            } else {
-                view.setText(text);
+            view.setText(text);
+            if (text != null && view instanceof EditText) {
+                ((EditText) view).setSelection(text.length());
             }
         }
     }

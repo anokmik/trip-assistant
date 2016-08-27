@@ -10,14 +10,13 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.widget.DatePicker;
 
+import com.anokmik.tripassistant.trip.Key;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Calendar;
 
 public class DatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-
-    private static final String KEY_DATE = "key_date";
-    private static final String KEY_TYPE = "key_type";
 
     private final Calendar calendar = Calendar.getInstance();
 
@@ -31,8 +30,8 @@ public class DatePickerDialogFragment extends DialogFragment implements DatePick
 
     private static DatePickerDialogFragment newInstance(@Type int type, long date, Fragment target) {
         Bundle args = new Bundle();
-        args.putLong(KEY_DATE, date);
-        args.putLong(KEY_TYPE, type);
+        args.putInt(Key.TYPE, type);
+        args.putLong(Key.DATE, date);
         DatePickerDialogFragment fragment = new DatePickerDialogFragment();
         fragment.setArguments(args);
         fragment.setTargetFragment(target, 0);
@@ -72,20 +71,20 @@ public class DatePickerDialogFragment extends DialogFragment implements DatePick
     }
 
     private long getDate() {
-        return getArguments().getLong(KEY_DATE);
+        return getArguments().getLong(Key.DATE);
     }
 
     @SuppressWarnings("WrongConstant")
     @Type
     private int getType() {
-        return getArguments().getInt(KEY_TYPE);
+        return getArguments().getInt(Key.TYPE);
     }
 
     @IntDef({Type.START, Type.FINISH})
     @Retention(RetentionPolicy.SOURCE)
     private @interface Type {
-        int START = 0;
-        int FINISH = 1;
+        int START = 1;
+        int FINISH = 2;
     }
 
 }

@@ -3,32 +3,37 @@ package com.anokmik.tripassistant.trip.event;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
-import com.anokmik.tripassistant.BR;
 import com.anokmik.tripassistant.R;
+import com.anokmik.tripassistant.BR;
 import com.anokmik.tripassistant.base.BaseFragment;
 import com.anokmik.tripassistant.databinding.FragmentTripEventBinding;
 import com.anokmik.tripassistant.dialog.DateHandler;
 import com.anokmik.tripassistant.dialog.DatePickerDialogFragment;
-import com.anokmik.tripassistant.trip.details.TripDetailsFragment;
+import com.anokmik.tripassistant.trip.Key;
+import com.anokmik.tripassistant.trip.Mode;
 import com.anokmik.tripassistant.user.UserActivity;
 
 public final class TripEventFragment extends BaseFragment<FragmentTripEventBinding> implements TripEventContract.View, DateHandler {
-
-    public static final String KEY_TRIP_EVENT_ID = "key_trip_event_id";
 
     private static final int TAKE_PHOTO_REQUEST = 1212;
     private static final int PICK_PHOTO_REQUEST = 2222;
 
     private MenuItem saveMenuItem;
+    private MenuItem cancelMenuItem;
     private MenuItem editMenuItem;
+    private MenuItem deleteMenuItem;
 
     public static TripEventFragment add(long tripId) {
         Bundle arguments = new Bundle();
-        arguments.putLong(TripDetailsFragment.KEY_TRIP_ID, tripId);
+        arguments.putInt(Key.MODE, Mode.ADD);
+        arguments.putLong(Key.TRIP_ID, tripId);
         TripEventFragment tripEventFragment = new TripEventFragment();
         tripEventFragment.setArguments(arguments);
         return tripEventFragment;
@@ -36,7 +41,8 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
 
     public static TripEventFragment view(long tripEventId) {
         Bundle arguments = new Bundle();
-        arguments.putLong(KEY_TRIP_EVENT_ID, tripEventId);
+        arguments.putInt(Key.MODE, Mode.VIEW);
+        arguments.putLong(Key.TRIP_EVENT_ID, tripEventId);
         TripEventFragment tripDetailsFragment = new TripEventFragment();
         tripDetailsFragment.setArguments(arguments);
         return tripDetailsFragment;
@@ -46,8 +52,10 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         saveMenuItem = menu.findItem(R.id.action_save_trip_event);
+        cancelMenuItem = menu.findItem(R.id.action_cancel);
         editMenuItem = menu.findItem(R.id.action_edit_trip_event);
-        showEditMenuItem();
+        deleteMenuItem = menu.findItem(R.id.action_delete_trip_event);
+        initControls();
     }
 
     @Override
@@ -55,6 +63,9 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
         switch (item.getItemId()) {
             case R.id.action_edit_trip_event:
                 getBinding().getPresenter().edit();
+                return true;
+            case R.id.action_cancel:
+                getBinding().getPresenter().cancel();
                 return true;
             case R.id.action_save_trip_event:
                 getBinding().getPresenter().save();
@@ -106,7 +117,7 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
 
     @Override
     protected void initBinding(FragmentTripEventBinding binding) {
-        binding.setPresenter(new TripEventPresenter(this, getTripEventId()));
+        binding.setPresenter(new TripEventPresenter(this, getMode(), getTripId(), getTripEventId()));
     }
 
     @Override
@@ -150,6 +161,16 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
     }
 
     @Override
+    public void showDatesInvalidError() {
+        View view = getView();
+        if (view != null) {
+            Snackbar snackbar = Snackbar.make(view, R.string.error_dates_invalid, Snackbar.LENGTH_LONG);
+            snackbar.getView().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+            snackbar.show();
+        }
+    }
+
+    @Override
     public void takePhotoAttachment() {
         launchActivity(getTakePhotoIntent());
     }
@@ -160,13 +181,13 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
     }
 
     @Override
-    public void enableSaveMode() {
-        showSaveMenuItem();
+    public void enableSaveControls() {
+        showSaveControls();
     }
 
     @Override
-    public void enableEditMode() {
-        showEditMenuItem();
+    public void enableEditControls() {
+        showEditControls();
     }
 
     @Override
@@ -184,17 +205,34 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
         getBinding().getPresenter().setFinishDate(finishDate);
     }
 
-    private void showSaveMenuItem() {
-        updateModeMenuItems(true, false);
+    private void initControls() {
+        switch (getMode()) {
+            case Mode.ADD:
+                showAddControls();
+                break;
+            case Mode.VIEW:
+                showEditControls();
+                break;
+        }
     }
 
-    private void showEditMenuItem() {
-        updateModeMenuItems(false, true);
+    private void showAddControls() {
+        updateMenuItems(true, false, false);
     }
 
-    private void updateModeMenuItems(boolean showSave, boolean showEdit) {
+    private void showEditControls() {
+        updateMenuItems(false, true, true);
+    }
+
+    private void showSaveControls() {
+        updateMenuItems(true, false, true);
+    }
+
+    private void updateMenuItems(boolean showSave, boolean showEdit, boolean showDelete) {
         saveMenuItem.setVisible(showSave);
+        cancelMenuItem.setVisible(showSave);
         editMenuItem.setVisible(showEdit);
+        deleteMenuItem.setVisible(showDelete);
     }
 
     private Intent getTakePhotoIntent() {
@@ -207,12 +245,18 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
         return null;
     }
 
+    @SuppressWarnings("WrongConstant")
+    @Mode
+    private int getMode() {
+        return getArguments().getInt(Key.MODE);
+    }
+
     private long getTripId() {
-        return getArguments().getLong(TripDetailsFragment.KEY_TRIP_ID);
+        return getArguments().getLong(Key.TRIP_ID);
     }
 
     private long getTripEventId() {
-        return getArguments().getLong(KEY_TRIP_EVENT_ID);
+        return getArguments().getLong(Key.TRIP_EVENT_ID);
     }
 
 }

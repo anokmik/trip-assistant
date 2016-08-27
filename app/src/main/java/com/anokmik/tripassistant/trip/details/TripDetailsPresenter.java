@@ -11,29 +11,37 @@ import com.anokmik.persistence.repository.TripRepository;
 import com.anokmik.tripassistant.databinding.ObservableCompositeList;
 import com.anokmik.tripassistant.databinding.adapter.OnItemClickListener;
 import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter;
+import com.anokmik.tripassistant.model.ObservableTrip;
+import com.anokmik.tripassistant.trip.Mode;
+import com.anokmik.tripassistant.util.DateUtils;
+import com.anokmik.tripassistant.validator.TextLengthValidator;
 
 import java.util.List;
 
 public final class TripDetailsPresenter implements TripDetailsContract.Presenter, TripDetailsContract.TripEventListener, OnItemClickListener<TripEvent> {
 
+    public final ObservableTrip observableTrip;
     public final ObservableBoolean isEditing;
     public final ObservableBoolean titleValid;
 
+    private final TripRepository tripRepository;
+    private final TextLengthValidator validator;
     private final TripDetailsContract.View view;
-    private final Trip trip;
+    private final int mode;
+    private final long tripId;
     private final ObservableCompositeList<TripEvent> tripEvents;
 
-    public TripDetailsPresenter(TripDetailsContract.View view, long tripId) {
-        this.isEditing = new ObservableBoolean(tripId == 0);
-        this.titleValid = new ObservableBoolean(tripId != 0);
+    public TripDetailsPresenter(TripDetailsContract.View view, @Mode int mode, long tripId) {
+        this.tripRepository = new TripRepository();
+        this.validator = new TextLengthValidator();
         this.view = view;
-        this.trip = new TripRepository().get(Trip_Table.id.is(tripId));
+        this.mode = mode;
+        this.tripId = tripId;
+        this.observableTrip = new ObservableTrip(getTrip());
         this.tripEvents = new ObservableCompositeList<>(new TripEventRepository().getAsyncList(TripEvent_Table.trip.is(tripId)));
-    }
 
-    @Override
-    public Trip getTrip() {
-        return trip;
+        this.isEditing = new ObservableBoolean(isEditingInitialValue());
+        this.titleValid = new ObservableBoolean(titleValidInitialValue());
     }
 
     @Override
@@ -53,35 +61,52 @@ public final class TripDetailsPresenter implements TripDetailsContract.Presenter
 
     @Override
     public void showStartDatePicker() {
-        view.showStartDatePickerDialog(trip.startDate);
+        view.showStartDatePickerDialog(observableTrip.getStartDate());
     }
 
     @Override
     public void showFinishDatePicker() {
-        view.showFinishDatePickerDialog(trip.finishDate);
+        view.showFinishDatePickerDialog(observableTrip.getFinishDate());
     }
 
     @Override
     public void setStartDate(long startDate) {
-        trip.startDate = startDate;
+        observableTrip.setStartDate(startDate);
     }
 
     @Override
     public void setFinishDate(long finishDate) {
-        trip.finishDate = finishDate;
+        observableTrip.setFinishDate(finishDate);
+    }
+
+    @Override
+    public boolean validFields() {
+        titleValid.set(validator.notEmpty(observableTrip.getTitle()));
+        boolean validDates = DateUtils.validDates(observableTrip.getStartDate(), observableTrip.getFinishDate());
+        if (!validDates) {
+            view.showDatesInvalidError();
+        }
+        return titleValid.get() && validDates;
     }
 
     @Override
     public void save() {
-        isEditing.set(false);
-        trip.save();
-        view.enableEditMode();
+        if (validFields()) {
+            isEditing.set(false);
+            observableTrip.save();
+            handleSave();
+        }
+    }
+
+    @Override
+    public void cancel() {
+        handleCancel();
     }
 
     @Override
     public void edit() {
         isEditing.set(true);
-        view.enableSaveMode();
+        view.enableSaveControls();
     }
 
     @Override
@@ -89,7 +114,7 @@ public final class TripDetailsPresenter implements TripDetailsContract.Presenter
         for (TripEvent tripEvent : getTripEvents()) {
             tripEvent.delete();
         }
-        trip.delete();
+        observableTrip.delete();
         view.back();
     }
 
@@ -108,28 +133,67 @@ public final class TripDetailsPresenter implements TripDetailsContract.Presenter
         view.viewTripEvent(item.id);
     }
 
-    public String getTripTitle() {
-        return trip.title;
+    private boolean isEditingInitialValue() {
+        switch (mode) {
+            case Mode.ADD:
+                return true;
+            case Mode.VIEW:
+                return false;
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
-    public void setTripTitle(String title) {
-        trip.title = title;
+    private boolean titleValidInitialValue() {
+        switch (mode) {
+            case Mode.ADD:
+            case Mode.VIEW:
+                return true;
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
-    public String getTripDescription() {
-        return trip.description;
+    private Trip getTrip() {
+        switch (mode) {
+            case Mode.ADD:
+                Trip trip = new Trip();
+                trip.startDate = System.currentTimeMillis();
+                trip.finishDate = System.currentTimeMillis();
+                return trip;
+            case Mode.VIEW:
+                return tripRepository.get(Trip_Table.id.is(tripId));
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
-    public void setTripDescription(String description) {
-        trip.description = description;
+    private void handleSave() {
+        switch (mode) {
+            case Mode.ADD:
+                view.back();
+                break;
+            case Mode.VIEW:
+                view.enableEditControls();
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
-    public long getTripStartDate() {
-        return trip.startDate;
-    }
-
-    public long getTripFinishDate() {
-        return trip.finishDate;
+    private void handleCancel() {
+        switch (mode) {
+            case Mode.ADD:
+                view.back();
+                break;
+            case Mode.VIEW:
+                isEditing.set(false);
+                view.enableEditControls();
+                observableTrip.set(getTrip());
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
 }

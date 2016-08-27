@@ -10,6 +10,8 @@ public interface LoginContract {
 
     interface Presenter {
 
+        boolean validFields();
+
         void login();
 
     }

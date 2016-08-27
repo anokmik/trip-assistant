@@ -1,34 +1,46 @@
 package com.anokmik.tripassistant.trip.details;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
-import com.anokmik.tripassistant.BR;
 import com.anokmik.tripassistant.R;
+import com.anokmik.tripassistant.BR;
 import com.anokmik.tripassistant.base.BaseFragment;
 import com.anokmik.tripassistant.databinding.FragmentTripDetailsBinding;
 import com.anokmik.tripassistant.dialog.DateHandler;
 import com.anokmik.tripassistant.dialog.DatePickerDialogFragment;
+import com.anokmik.tripassistant.trip.Key;
+import com.anokmik.tripassistant.trip.Mode;
 import com.anokmik.tripassistant.trip.event.TripEventFragment;
 import com.anokmik.tripassistant.user.UserActivity;
+import com.anokmik.tripassistant.util.ViewUtils;
 
 public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsBinding> implements TripDetailsContract.View, DateHandler {
 
-    public static final String KEY_TRIP_ID = "key_trip_id";
-
     private MenuItem saveMenuItem;
+    private MenuItem cancelMenuItem;
     private MenuItem editMenuItem;
+    private MenuItem deleteMenuItem;
 
     public static TripDetailsFragment add() {
-        return new TripDetailsFragment();
+        Bundle arguments = new Bundle();
+        arguments.putInt(Key.MODE, Mode.ADD);
+        TripDetailsFragment tripDetailsFragment = new TripDetailsFragment();
+        tripDetailsFragment.setArguments(arguments);
+        return tripDetailsFragment;
     }
 
     public static TripDetailsFragment view(long tripId) {
         Bundle arguments = new Bundle();
-        arguments.putLong(KEY_TRIP_ID, tripId);
+        arguments.putInt(Key.MODE, Mode.VIEW);
+        arguments.putLong(Key.TRIP_ID, tripId);
         TripDetailsFragment tripDetailsFragment = new TripDetailsFragment();
         tripDetailsFragment.setArguments(arguments);
         return tripDetailsFragment;
@@ -38,8 +50,10 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         saveMenuItem = menu.findItem(R.id.action_save_trip);
+        cancelMenuItem = menu.findItem(R.id.action_cancel);
         editMenuItem = menu.findItem(R.id.action_edit_trip);
-        showEditMenuItem();
+        deleteMenuItem = menu.findItem(R.id.action_delete_trip);
+        initControls();
     }
 
     @Override
@@ -47,6 +61,9 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
         switch (item.getItemId()) {
             case R.id.action_edit_trip:
                 getBinding().getPresenter().edit();
+                return true;
+            case R.id.action_cancel:
+                getBinding().getPresenter().cancel();
                 return true;
             case R.id.action_save_trip:
                 getBinding().getPresenter().save();
@@ -80,7 +97,7 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
     @Override
     protected void initBinding(FragmentTripDetailsBinding binding) {
         binding.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.setPresenter(new TripDetailsPresenter(this, getTripId()));
+        binding.setPresenter(new TripDetailsPresenter(this, getMode(), getTripId()));
     }
 
     @Override
@@ -124,6 +141,16 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
     }
 
     @Override
+    public void showDatesInvalidError() {
+        View view = getView();
+        if (view != null) {
+            Snackbar snackbar = Snackbar.make(view, R.string.error_dates_invalid, Snackbar.LENGTH_LONG);
+            snackbar.getView().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+            snackbar.show();
+        }
+    }
+
+    @Override
     public void addTripEvent() {
         replaceFragment(TripEventFragment.add(getTripId()), null);
     }
@@ -134,13 +161,13 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
     }
 
     @Override
-    public void enableSaveMode() {
-        showSaveMenuItem();
+    public void enableSaveControls() {
+        showSaveControls();
     }
 
     @Override
-    public void enableEditMode() {
-        showEditMenuItem();
+    public void enableEditControls() {
+        showEditControls();
     }
 
     @Override
@@ -158,21 +185,44 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
         getBinding().getPresenter().setFinishDate(finishDate);
     }
 
-    private void showSaveMenuItem() {
-        updateModeMenuItems(true, false);
+    private void initControls() {
+        switch (getMode()) {
+            case Mode.ADD:
+                showAddControls();
+                break;
+            case Mode.VIEW:
+                showEditControls();
+                break;
+        }
     }
 
-    private void showEditMenuItem() {
-        updateModeMenuItems(false, true);
+    private void showAddControls() {
+        updateMenuItems(true, false, false);
     }
 
-    private void updateModeMenuItems(boolean showSave, boolean showEdit) {
+    private void showEditControls() {
+        updateMenuItems(false, true, true);
+    }
+
+    private void showSaveControls() {
+        updateMenuItems(true, false, true);
+    }
+
+    private void updateMenuItems(boolean showSave, boolean showEdit, boolean showDelete) {
         saveMenuItem.setVisible(showSave);
+        cancelMenuItem.setVisible(showSave);
         editMenuItem.setVisible(showEdit);
+        deleteMenuItem.setVisible(showDelete);
+    }
+
+    @SuppressWarnings("WrongConstant")
+    @Mode
+    private int getMode() {
+        return getArguments().getInt(Key.MODE);
     }
 
     private long getTripId() {
-        return getArguments().getLong(KEY_TRIP_ID);
+        return getArguments().getLong(Key.TRIP_ID);
     }
 
 }

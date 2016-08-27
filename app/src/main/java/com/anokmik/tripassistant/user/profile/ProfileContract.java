@@ -10,6 +10,8 @@ public interface ProfileContract {
 
     interface Presenter {
 
+        boolean validFields();
+
         void save();
 
         void cancel();

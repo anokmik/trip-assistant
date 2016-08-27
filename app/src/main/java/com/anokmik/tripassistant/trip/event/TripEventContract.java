@@ -12,8 +12,6 @@ public interface TripEventContract {
 
     interface Presenter {
 
-        TripEvent getTripEvent();
-
         List<PhotoAttachment> getPhotoAttachments();
 
         ViewHolderPresenter<PhotoAttachment> getViewHolderPresenter();
@@ -26,7 +24,11 @@ public interface TripEventContract {
 
         void setFinishDate(long finishDate);
 
+        boolean validFields();
+
         void save();
+
+        void cancel();
 
         void edit();
 
@@ -63,13 +65,15 @@ public interface TripEventContract {
 
         void showFinishDatePickerDialog(long finishDate);
 
+        void showDatesInvalidError();
+
         void takePhotoAttachment();
 
         void pickPhotoAttachment();
 
-        void enableSaveMode();
+        void enableSaveControls();
 
-        void enableEditMode();
+        void enableEditControls();
 
         void back();
 

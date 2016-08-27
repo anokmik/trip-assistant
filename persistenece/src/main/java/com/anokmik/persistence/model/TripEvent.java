@@ -1,7 +1,6 @@
 package com.anokmik.persistence.model;
 
 import com.anokmik.persistence.TripAssistantDatabase;
-import com.anokmik.persistence.util.TypeEventUtils;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
@@ -40,10 +39,6 @@ public final class TripEvent extends BaseModel {
 
     @Column
     public String comment;
-
-    @TypeEventUtils.Type
-    @Column
-    public int type;
 
     @Column
     public long startDate;

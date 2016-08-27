@@ -21,7 +21,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
@@ -35,21 +34,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_title"
-                android:text="@={presenter.tripTitle}" />
+                android:text="@={presenter.observableTrip.title}" />
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="@{ViewUtils.show(presenter.isEditing, presenter.tripDescription)}"
+            android:visibility="@{ViewUtils.show(presenter.isEditing, presenter.observableTrip.description)}"
             app:editable="@{presenter.isEditing}">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_description"
-                android:text="@={presenter.tripDescription}" />
+                android:text="@={presenter.observableTrip.description}" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -64,7 +63,7 @@
                 android:layout_weight="1"
                 android:enabled="@{presenter.isEditing}"
                 android:onClick="@{() -> presenter.showStartDatePicker()}"
-                android:text="@{@string/start_date(DateUtils.toString(presenter.tripStartDate))}" />
+                android:text="@{@string/start_date(DateUtils.toString(presenter.observableTrip.startDate))}" />
 
             <Button
                 android:layout_width="0dp"
@@ -72,7 +71,7 @@
                 android:layout_weight="1"
                 android:enabled="@{presenter.isEditing}"
                 android:onClick="@{() -> presenter.showFinishDatePicker()}"
-                android:text="@{@string/finish_date(DateUtils.toString(presenter.tripFinishDate))}" />
+                android:text="@{@string/finish_date(DateUtils.toString(presenter.observableTrip.finishDate))}" />
 
         </LinearLayout>
 

@@ -1,17 +1,19 @@
 package com.anokmik.tripassistant.validator;
 
-public class TextLengthValidator {
+import android.text.TextUtils;
 
-    public boolean higherThan(String text, int length) {
-        return notNull(text) && (text.length() > length);
+public final class TextLengthValidator {
+
+    public boolean higherThan(String text, @Threshold int threshold) {
+        return notEmpty(text) && (text.length() > threshold);
     }
 
-    public boolean lowerThan(String text, int length) {
-        return notNull(text) && (text.length() < length);
+    public boolean lowerThan(String text, @Threshold int threshold) {
+        return notEmpty(text) && (text.length() < threshold);
     }
 
-    private boolean notNull(String text) {
-        return text != null;
+    public boolean notEmpty(String text) {
+        return !TextUtils.isEmpty(text);
     }
 
 }

@@ -2,6 +2,7 @@ package com.anokmik.tripassistant.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -14,10 +15,26 @@ public final class DateUtils {
 
     }
 
+    public static boolean validDates(long startDate, long finishDate) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTimeInMillis(startDate);
+        int startYear = calendar.get(Calendar.YEAR);
+        int startMonth = calendar.get(Calendar.MONTH);
+        int startDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+        calendar.setTimeInMillis(finishDate);
+        int finishYear = calendar.get(Calendar.YEAR);
+        int finishMonth = calendar.get(Calendar.MONTH);
+        int finishDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+        return (finishYear >= startYear) && (finishMonth >= startMonth) && (finishDayOfMonth >= startDayOfMonth);
+    }
+
     public static String format(long startDate, long finishDate) {
         String startDateValue = toString(startDate);
         String finishDateValue = toString(finishDate);
-        return (startDateValue.equals(finishDateValue))
+        return startDateValue.equals(finishDateValue)
                 ? startDateValue : String.format(FORMAT, startDateValue, finishDateValue);
     }
 

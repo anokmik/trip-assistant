@@ -5,14 +5,13 @@ import android.os.Bundle;
 import com.anokmik.tripassistant.R;
 import com.anokmik.tripassistant.base.BaseFragment;
 import com.anokmik.tripassistant.databinding.FragmentProfileBinding;
+import com.anokmik.tripassistant.trip.Key;
 
 public final class ProfileFragment extends BaseFragment<FragmentProfileBinding> implements ProfileContract.View {
 
-    private static final String KEY_USER_ID = "key_user_id";
-
     public static ProfileFragment newInstance(long userId) {
         Bundle args = new Bundle();
-        args.putLong(KEY_USER_ID, userId);
+        args.putLong(Key.USER_ID, userId);
         ProfileFragment fragment = new ProfileFragment();
         fragment.setArguments(args);
         return fragment;
@@ -44,7 +43,7 @@ public final class ProfileFragment extends BaseFragment<FragmentProfileBinding> 
     }
 
     private long getUserId() {
-        return getArguments().getLong(KEY_USER_ID);
+        return getArguments().getLong(Key.USER_ID);
     }
 
 }

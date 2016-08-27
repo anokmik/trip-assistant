@@ -20,6 +20,7 @@
     <string name="menu_edit_trip_event">Edit Trip Event</string>
     <string name="menu_delete_trip_event">Delete Trip Event</string>
     <string name="menu_save_trip_event">Save Trip Event</string>
+    <string name="menu_cancel">Cancel</string>
     <string name="menu_show_user">Show User</string>
 
     <!-- Button -->
@@ -47,6 +48,6 @@
     <string name="error_first_name_not_valid">Input value length must be higher than five chars</string>
     <string name="error_last_name_not_valid">Input value length must be higher than five chars</string>
     <string name="error_input_not_empty">Input value must be not empty</string>
-    <string name="error_start_date_not_valid">Dates should be equal or represent period</string>
+    <string name="error_dates_invalid">Dates should be equal or represent period of time</string>
 
 </resources>

@@ -12,8 +12,6 @@ public interface TripDetailsContract {
 
     interface Presenter {
 
-        Trip getTrip();
-
         List<TripEvent> getTripEvents();
 
         ViewHolderPresenter<TripEvent> getViewHolderPresenter();
@@ -26,7 +24,11 @@ public interface TripDetailsContract {
 
         void setFinishDate(long finishDate);
 
+        boolean validFields();
+
         void save();
+
+        void cancel();
 
         void edit();
 
@@ -59,13 +61,15 @@ public interface TripDetailsContract {
 
         void showFinishDatePickerDialog(long finishDate);
 
+        void showDatesInvalidError();
+
         void addTripEvent();
 
         void viewTripEvent(long tripEventId);
 
-        void enableSaveMode();
+        void enableSaveControls();
 
-        void enableEditMode();
+        void enableEditControls();
 
         void back();
 

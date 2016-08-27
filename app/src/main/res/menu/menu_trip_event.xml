@@ -10,6 +10,12 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/action_cancel"
+        android:icon="@drawable/ic_cancel"
+        android:title="@string/menu_cancel"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_save_trip_event"
         android:icon="@drawable/ic_save"
         android:title="@string/menu_save_trip_event"
