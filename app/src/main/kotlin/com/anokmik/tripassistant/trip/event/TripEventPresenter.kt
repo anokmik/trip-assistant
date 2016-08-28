@@ -2,60 +2,104 @@ package com.anokmik.tripassistant.trip.event
 
 import android.databinding.ObservableBoolean
 import com.anokmik.persistence.model.PhotoAttachment
-import com.anokmik.persistence.model.PhotoAttachment_Table
+import com.anokmik.persistence.model.TripEvent
+import com.anokmik.persistence.model.Trip_Table
 import com.anokmik.persistence.model.TripEvent_Table
+import com.anokmik.persistence.model.PhotoAttachment_Table
 import com.anokmik.persistence.repository.PhotoAttachmentRepository
 import com.anokmik.persistence.repository.TripEventRepository
+import com.anokmik.persistence.repository.TripRepository
+import com.anokmik.persistence.repository.UserRepository
+import com.anokmik.tripassistant.databinding.ObservableCompositeList
 import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter
+import com.anokmik.tripassistant.model.ObservableTripEvent
+import com.anokmik.tripassistant.trip.ADD
+import com.anokmik.tripassistant.trip.Mode
+import com.anokmik.tripassistant.trip.VIEW
+import com.anokmik.tripassistant.util.DateUtils
+import com.anokmik.tripassistant.validator.TextLengthValidator
 
-class TripEventPresenter(private val view: TripEventContract.View, tripEventId: Long) : TripEventContract.Presenter, TripEventContract.PhotoAttachmentListener {
+class TripEventPresenter(private val view: TripEventContract.View, @Mode val mode: Long, private val tripId: Long, private val tripEventId: Long) : TripEventContract.Presenter {
 
-    val isEditing = ObservableBoolean(tripEventId == 0L)
-    val nameValid = ObservableBoolean(tripEventId != 0L)
+    val isEditing = ObservableBoolean(isEditingInitialValue())
+    val nameValid = ObservableBoolean(nameValidInitialValue())
 
-    override val tripEvent = TripEventRepository().get(TripEvent_Table.id.`is`(tripEventId))
+    private val tripRepository = TripRepository()
+    private val tripEventRepository = TripEventRepository()
+    private val photoAttachmentRepository = PhotoAttachmentRepository()
+    private val validator = TextLengthValidator()
 
-    override val photoAttachments = PhotoAttachmentRepository().getList(PhotoAttachment_Table.tripEvent.`is`(tripEventId))
+    private val tripEvent: TripEvent?
+        get() {
+            when (mode) {
+                ADD -> {
+                    val tripEvent = TripEvent()
+                    UserRepository().getActive()?.apply {
+                        tripEvent.user = this
+                    }
+                    tripEvent.startDate = System.currentTimeMillis()
+                    tripEvent.finishDate = System.currentTimeMillis()
+                    tripEvent.trip = tripRepository.get(Trip_Table.id.`is`(tripId))
+                    return tripEvent
+                }
+                VIEW -> return tripEventRepository.get(TripEvent_Table.id.`is`(tripEventId))
+                else -> throw IllegalArgumentException()
+            }
+        }
+
+    val observableTripEvent = ObservableTripEvent(tripEvent)
+
+    override val photoAttachments = ObservableCompositeList(photoAttachmentRepository.getAsyncList(PhotoAttachment_Table.tripEvent.`is`(tripEventId)))
 
     override val viewHolderPresenter: ViewHolderPresenter<PhotoAttachment>
-        get() = ViewHolderPresenter.Builder<PhotoAttachment>(view.rowItemLayoutId, view.itemBindingId).mapVariable(view.itemListenerBindingId, this).mapVariable(view.itemIsEditingBindingId, isEditing).build()
+        get() = ViewHolderPresenter.Builder<PhotoAttachment>(view.rowItemLayoutId, view.itemBindingId)
+                .setAdapterPositionProviderBindingId(view.adapterPositionProviderBindingId)
+                .mapVariable(view.itemListenerBindingId, this)
+                .mapVariable(view.itemIsEditingBindingId, isEditing)
+                .build()
 
-    override fun showStartDatePicker() {
-        tripEvent?.let {
-            view.showStartDatePickerDialog(tripEvent.startDate)
-        }
-    }
+    override fun showStartDatePicker() = view.showStartDatePickerDialog(observableTripEvent.startDate)
 
-    override fun showFinishDatePicker() {
-        tripEvent?.let {
-            view.showFinishDatePickerDialog(tripEvent.finishDate)
-        }
-    }
+    override fun showFinishDatePicker() = view.showFinishDatePickerDialog(observableTripEvent.finishDate)
 
     override fun setStartDate(startDate: Long) {
-        tripEvent?.startDate = startDate
+        observableTripEvent.startDate = startDate
     }
 
     override fun setFinishDate(finishDate: Long) {
-        tripEvent?.finishDate = finishDate
+        observableTripEvent.finishDate = finishDate
+    }
+
+    override fun validFields(): Boolean {
+        nameValid.set(validator.notEmpty(observableTripEvent.name))
+        val validDates = DateUtils.validDates(observableTripEvent.startDate, observableTripEvent.finishDate)
+        if (!validDates) {
+            view.showDatesInvalidError()
+        }
+        return nameValid.get() && validDates
     }
 
     override fun save() {
-        isEditing.set(false)
-        tripEvent?.save()
-        view.enableEditMode()
+        if (validFields()) {
+            isEditing.set(false)
+            observableTripEvent.save()
+            handleSave()
+        }
     }
+
+    override fun cancel() = handleCancel()
 
     override fun edit() {
         isEditing.set(true)
-        view.enableSaveMode()
+        view.enableSaveControls()
     }
 
     override fun delete() {
         for (photoAttachment in photoAttachments) {
             photoAttachment.delete()
         }
-        tripEvent?.delete()
+        observableTripEvent.delete()
+        view.back()
     }
 
     override fun addPhotoAttachment(path: String?) {
@@ -67,34 +111,47 @@ class TripEventPresenter(private val view: TripEventContract.View, tripEventId: 
         }
     }
 
-    override fun takePhoto() {
-        view.takePhotoAttachment()
+    override fun takePhoto() = view.takePhotoAttachment()
+
+    override fun pickPhoto() = view.pickPhotoAttachment()
+
+    override fun deletePhoto(position: Int) {
+        photoAttachments.remove(photoAttachments[position])
     }
 
-    override fun pickPhoto() {
-        view.pickPhotoAttachment()
-    }
-
-    override fun deletePhoto(photoAttachment: PhotoAttachment) {
-        photoAttachment.delete()
-    }
-
-    var tripEventName: String?
-        get() = tripEvent?.name
-        set(name) {
-            tripEvent?.name = name
+    private fun isEditingInitialValue(): Boolean {
+        when (mode) {
+            ADD -> return true
+            VIEW -> return false
+            else -> throw IllegalArgumentException()
         }
+    }
 
-    var tripEventComment: String?
-        get() = tripEvent?.comment
-        set(comment) {
-            tripEvent?.comment = comment
+    private fun nameValidInitialValue(): Boolean {
+        when (mode) {
+            ADD, VIEW -> return true
+            else -> throw IllegalArgumentException()
         }
+    }
 
-    val tripEventStartDate: Long?
-        get() = tripEvent?.startDate
+    private fun handleSave() {
+        when (mode) {
+            ADD -> view.back()
+            VIEW -> view.enableEditControls()
+            else -> throw IllegalArgumentException()
+        }
+    }
 
-    val tripEventFinishDate: Long?
-        get() = tripEvent?.finishDate
+    private fun handleCancel() {
+        when (mode) {
+            ADD -> view.back()
+            VIEW -> {
+                isEditing.set(false)
+                view.enableEditControls()
+                observableTripEvent.set(tripEvent)
+            }
+            else -> throw IllegalArgumentException()
+        }
+    }
 
 }

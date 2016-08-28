@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.annotation.MenuRes
-import android.support.annotation.StringRes
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
@@ -25,18 +24,16 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     protected abstract val layoutId: Int
 
+    protected abstract val titleResourceId: Int
+
     @Suppress("OverridingDeprecatedMember", "DEPRECATION")
     override fun onAttach(activity: Activity?) {
         super.onAttach(activity)
         if (activity is AppCompatActivity) {
             supportActionBar = activity.supportActionBar
-            supportActionBar?.apply {
-                setDisplayHomeAsUpEnabled(displayHomeAsUp)
-                show()
-            }
         }
         if (activity is OnInteractionListener) {
-            onInteractionListener = activity;
+            onInteractionListener = activity
         }
     }
 
@@ -52,9 +49,17 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+        super.onCreateOptionsMenu(menu, inflater)
         if (getOptionMenuResourceId() > 0) {
-            inflater.inflate(getOptionMenuResourceId(), menu);
+            inflater.inflate(getOptionMenuResourceId(), menu)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(displayHomeAsUp)
+            setTitle(titleResourceId)
         }
     }
 
@@ -70,8 +75,6 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     protected fun showDialog(dialogFragment: DialogFragment) = onInteractionListener?.onShowDialog(dialogFragment)
 
     protected fun immediatePopBack(flags: Int, backStackTag: String? = null) = onInteractionListener?.onImmediatePopBack(flags, backStackTag)
-
-    protected fun setActionBarTitle(@StringRes resourceId: Int) = supportActionBar?.apply { setTitle(resourceId) }
 
     protected abstract fun initBinding(binding: T)
 

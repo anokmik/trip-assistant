@@ -5,6 +5,10 @@
     <data>
 
         <variable
+            name="decoration"
+            type="android.support.v7.widget.RecyclerView.ItemDecoration" />
+
+        <variable
             name="layoutManager"
             type="android.support.v7.widget.RecyclerView.LayoutManager" />
 
@@ -17,6 +21,9 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="@dimen/fragment_padding"
+        app:decoration="@{decoration}"
         app:items="@{presenter.trips}"
         app:layoutManager="@{layoutManager}"
         app:viewHolderPresenter="@{presenter.viewHolderPresenter}" />

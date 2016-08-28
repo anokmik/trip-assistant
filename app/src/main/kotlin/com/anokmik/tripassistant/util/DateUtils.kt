@@ -7,8 +7,28 @@ import java.util.*
 object DateUtils {
 
     private val DATE_FORMAT = SimpleDateFormat("dd/MM/yyyy", Locale.US)
-
     private val FORMAT = "%s - %s"
+
+    @JvmStatic
+    fun validDates(startDate: Long?, finishDate: Long?): Boolean {
+        if (startDate == null || finishDate == null) {
+            return false
+        }
+
+        val calendar = Calendar.getInstance()
+
+        calendar.timeInMillis = startDate
+        val startYear = calendar.get(Calendar.YEAR)
+        val startMonth = calendar.get(Calendar.MONTH)
+        val startDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+        calendar.timeInMillis = finishDate
+        val finishYear = calendar.get(Calendar.YEAR)
+        val finishMonth = calendar.get(Calendar.MONTH)
+        val finishDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+        return finishYear >= startYear && finishMonth >= startMonth && finishDayOfMonth >= startDayOfMonth
+    }
 
     @JvmStatic
     fun format(startDate: Long, finishDate: Long): String {

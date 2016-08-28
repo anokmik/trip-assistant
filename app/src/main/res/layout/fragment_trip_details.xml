@@ -9,6 +9,10 @@
         <import type="com.anokmik.tripassistant.util.DateUtils" />
 
         <variable
+            name="decoration"
+            type="android.support.v7.widget.RecyclerView.ItemDecoration" />
+
+        <variable
             name="layoutManager"
             type="android.support.v7.widget.RecyclerView.LayoutManager" />
 
@@ -21,42 +25,45 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/fragment_padding">
 
         <android.support.design.widget.TextInputLayout
+            style="@style/TextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="@{presenter.isEditing}"
+            app:editable="@{presenter.isEditing}"
             app:error="@{@string/error_input_not_empty}"
             app:showError="@{!presenter.titleValid}">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="@{presenter.isEditing}"
-                android:focusable="@{presenter.isEditing}"
-                android:focusableInTouchMode="@{presenter.isEditing}"
                 android:hint="@string/hint_title"
-                android:text="@={presenter.tripTitle}" />
+                android:singleLine="true"
+                android:text="@={presenter.observableTrip.title}" />
 
         </android.support.design.widget.TextInputLayout>
 
+        <include layout="@layout/space_small" />
+
         <android.support.design.widget.TextInputLayout
+            style="@style/TextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="@{presenter.isEditing}">
+            android:visibility="@{ViewUtils.show(presenter.isEditing, presenter.observableTrip.description)}"
+            app:editable="@{presenter.isEditing}">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="@{presenter.isEditing}"
-                android:focusable="@{presenter.isEditing}"
-                android:focusableInTouchMode="@{presenter.isEditing}"
                 android:hint="@string/hint_description"
-                android:text="@={presenter.tripDescription}" />
+                android:maxLines="3"
+                android:text="@={presenter.observableTrip.description}" />
 
         </android.support.design.widget.TextInputLayout>
+
+        <include layout="@layout/space_small" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,7 +76,9 @@
                 android:layout_weight="1"
                 android:enabled="@{presenter.isEditing}"
                 android:onClick="@{() -> presenter.showStartDatePicker()}"
-                android:text="@{@string/start_date(DateUtils.toString(presenter.tripStartDate))}" />
+                android:text="@{@string/start_date(DateUtils.toString(presenter.observableTrip.startDate))}" />
+
+            <include layout="@layout/space_small" />
 
             <Button
                 android:layout_width="0dp"
@@ -77,9 +86,24 @@
                 android:layout_weight="1"
                 android:enabled="@{presenter.isEditing}"
                 android:onClick="@{() -> presenter.showFinishDatePicker()}"
-                android:text="@{@string/finish_date(DateUtils.toString(presenter.tripFinishDate))}" />
+                android:text="@{@string/finish_date(DateUtils.toString(presenter.observableTrip.finishDate))}" />
 
         </LinearLayout>
+
+        <include layout="@layout/space_medium" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:decoration="@{decoration}"
+            app:items="@{presenter.tripEvents}"
+            app:layoutManager="@{layoutManager}"
+            app:viewHolderPresenter="@{presenter.viewHolderPresenter}" />
+
+        <include
+            layout="@layout/space_small"
+            android:visibility="@{ViewUtils.showForViewMode(presenter.isEditing, presenter.mode)}" />
 
         <Button
             android:layout_width="wrap_content"
@@ -87,14 +111,7 @@
             android:layout_gravity="center_horizontal"
             android:onClick="@{() -> presenter.addEvent()}"
             android:text="@string/add_event"
-            android:visibility="@{ViewUtils.show(presenter.isEditing)}" />
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:items="@{presenter.tripEvents}"
-            app:layoutManager="@{layoutManager}"
-            app:viewHolderPresenter="@{presenter.viewHolderPresenter}" />
+            android:visibility="@{ViewUtils.showForViewMode(presenter.isEditing, presenter.mode)}" />
 
     </LinearLayout>
 

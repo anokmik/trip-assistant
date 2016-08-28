@@ -7,18 +7,17 @@ import android.support.annotation.IntDef
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.widget.DatePicker
-
-import com.anokmik.tripassistant.dialog.DateHandler
-
-import java.util.Calendar
+import com.anokmik.tripassistant.trip.DATE
+import com.anokmik.tripassistant.trip.TYPE
+import java.util.*
 
 class DatePickerDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    private val date by lazy { arguments.getLong(KEY_DATE) }
-
-    private val type by lazy { arguments.getLong(KEY_TYPE) }
-
     private val calendar = Calendar.getInstance()
+
+    private val date by lazy { arguments.getLong(DATE) }
+
+    private val type by lazy { arguments.getLong(TYPE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,24 +49,22 @@ class DatePickerDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetLis
 
     companion object {
 
-        private val KEY_DATE = "key_date"
-        private val KEY_TYPE = "key_type"
+        const val START = 1L
 
-        private const val START = 0L
-        private const val FINISH = 1L
+        const val FINISH = 2L
 
-        fun startDateInstance(date: Long, target: Fragment): DatePickerDialogFragment {
+        fun startDateInstance(date: Long?, target: Fragment): DatePickerDialogFragment {
             return newInstance(START, date, target)
         }
 
-        fun finishDateInstance(date: Long, target: Fragment): DatePickerDialogFragment {
+        fun finishDateInstance(date: Long?, target: Fragment): DatePickerDialogFragment {
             return newInstance(FINISH, date, target)
         }
 
-        private fun newInstance(@Type type: Long, date: Long, target: Fragment): DatePickerDialogFragment {
+        private fun newInstance(@Type type: Long, date: Long?, target: Fragment): DatePickerDialogFragment {
             val args = Bundle()
-            args.putLong(KEY_DATE, date)
-            args.putLong(KEY_TYPE, type)
+            args.putLong(TYPE, type)
+            args.putLong(DATE, date ?: 0)
             val fragment = DatePickerDialogFragment()
             fragment.arguments = args
             fragment.setTargetFragment(target, 0)

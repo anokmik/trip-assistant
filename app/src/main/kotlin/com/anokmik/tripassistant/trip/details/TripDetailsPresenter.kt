@@ -1,46 +1,58 @@
 package com.anokmik.tripassistant.trip.details
 
 import android.databinding.ObservableBoolean
+import com.anokmik.persistence.model.Trip
 import com.anokmik.persistence.model.TripEvent
-import com.anokmik.persistence.model.TripEvent_Table
 import com.anokmik.persistence.model.Trip_Table
+import com.anokmik.persistence.model.TripEvent_Table
 import com.anokmik.persistence.repository.TripEventRepository
 import com.anokmik.persistence.repository.TripRepository
-import com.anokmik.tripassistant.databinding.adapter.OnItemClickListener
+import com.anokmik.tripassistant.databinding.ObservableCompositeList
 import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter
+import com.anokmik.tripassistant.model.ObservableTrip
+import com.anokmik.tripassistant.trip.ADD
+import com.anokmik.tripassistant.trip.Mode
+import com.anokmik.tripassistant.trip.VIEW
+import com.anokmik.tripassistant.util.DateUtils
+import com.anokmik.tripassistant.validator.TextLengthValidator
 
-class TripDetailsPresenter(private val view: TripDetailsContract.View, private val tripId: Long) :
-        TripDetailsContract.Presenter, TripDetailsContract.TripEventListener, OnItemClickListener<TripEvent> {
+class TripDetailsPresenter(private val view: TripDetailsContract.View, @Mode val mode: Long, private val tripId: Long) : TripDetailsContract.Presenter {
+
+    val isEditing = ObservableBoolean(isEditingInitialValue())
+    val titleValid = ObservableBoolean(titleValidInitialValue())
 
     private val tripRepository = TripRepository()
-
     private val tripEventRepository = TripEventRepository()
+    private val validator = TextLengthValidator()
 
-    val isEditing = ObservableBoolean(tripId == 0L)
+    private val trip: Trip?
+        get() {
+            when (mode) {
+                ADD -> {
+                    val trip = Trip()
+                    trip.startDate = System.currentTimeMillis()
+                    trip.finishDate = System.currentTimeMillis()
+                    return trip
+                }
+                VIEW -> return tripRepository.get(Trip_Table.id.`is`(tripId))
+                else -> throw IllegalArgumentException()
+            }
+        }
 
-    val titleValid = ObservableBoolean(tripId != 0L)
+    val observableTrip = ObservableTrip(trip)
 
-    override val trip = tripRepository.get(Trip_Table.id.`is`(tripId))
-
-    override val tripEvents = tripEventRepository.getList(TripEvent_Table.trip.`is`(tripId))
+    override val tripEvents = ObservableCompositeList(tripEventRepository.getAsyncList(TripEvent_Table.trip.`is`(tripId)))
 
     override val viewHolderPresenter = ViewHolderPresenter.Builder<TripEvent>(view.rowItemLayoutId, view.itemBindingId)
             .setItemClickListener(this)
+            .setAdapterPositionProviderBindingId(view.adapterPositionProviderBindingId)
             .mapVariable(view.itemListenerBindingId, this)
             .mapVariable(view.itemIsEditingBindingId, isEditing)
             .build()
 
-    override fun showStartDatePicker() {
-        trip?.let {
-            view.showStartDatePickerDialog(trip.startDate)
-        }
-    }
+    override fun showStartDatePicker() = view.showStartDatePickerDialog(observableTrip.startDate)
 
-    override fun showFinishDatePicker() {
-        trip?.let {
-            view.showFinishDatePickerDialog(trip.finishDate)
-        }
-    }
+    override fun showFinishDatePicker() = view.showFinishDatePickerDialog(observableTrip.finishDate)
 
     override fun setStartDate(startDate: Long) {
         trip?.startDate = startDate
@@ -50,31 +62,42 @@ class TripDetailsPresenter(private val view: TripDetailsContract.View, private v
         trip?.finishDate = finishDate
     }
 
-    override fun save() {
-        isEditing.set(false)
-        trip?.save()
-        view.enableEditMode()
+    override fun validFields(): Boolean {
+        titleValid.set(validator.notEmpty(observableTrip.title))
+        val validDates = DateUtils.validDates(observableTrip.startDate, observableTrip.finishDate)
+        if (!validDates) {
+            view.showDatesInvalidError()
+        }
+        return titleValid.get() && validDates
     }
+
+    override fun save() {
+        if (validFields()) {
+            isEditing.set(false)
+            observableTrip.save()
+            handleSave()
+        }
+    }
+
+    override fun cancel() = handleCancel()
 
     override fun edit() {
         isEditing.set(true)
-        view.enableSaveMode()
+        view.enableSaveControls()
     }
 
     override fun delete() {
         for (tripEvent in tripEvents) {
             tripEvent.delete()
         }
-        trip?.delete();
-        view.back();
+        observableTrip.delete()
+        view.back()
     }
 
-    override fun addEvent() {
-        view.addTripEvent()
-    }
+    override fun addEvent() = view.addTripEvent()
 
-    override fun deleteEvent(tripEvent: TripEvent) {
-        tripEvent.delete()
+    override fun deleteEvent(position: Int) {
+        tripEvents.remove(tripEvents[position])
     }
 
     override fun onItemClick(item: TripEvent?, position: Int) {
@@ -83,22 +106,39 @@ class TripDetailsPresenter(private val view: TripDetailsContract.View, private v
         }
     }
 
-    var tripTitle: String?
-        get() = trip?.title
-        set(title) {
-            trip?.title = title
+    private fun isEditingInitialValue(): Boolean {
+        when (mode) {
+            ADD -> return true
+            VIEW -> return false
+            else -> throw IllegalArgumentException()
         }
+    }
 
-    var tripDescription: String?
-        get() = trip?.description
-        set(description) {
-            trip?.description = description
+    private fun titleValidInitialValue(): Boolean {
+        when (mode) {
+            ADD, VIEW -> return true
+            else -> throw IllegalArgumentException()
         }
+    }
 
-    val tripStartDate: Long?
-        get() = trip?.startDate
+    private fun handleSave() {
+        when (mode) {
+            ADD -> view.back()
+            VIEW -> view.enableEditControls()
+            else -> throw IllegalArgumentException()
+        }
+    }
 
-    val tripFinishDate: Long?
-        get() = trip?.finishDate
+    private fun handleCancel() {
+        when (mode) {
+            ADD -> view.back()
+            VIEW -> {
+                isEditing.set(false);
+                view.enableEditControls();
+                observableTrip.set(trip);
+            }
+            else -> throw IllegalArgumentException()
+        }
+    }
 
 }

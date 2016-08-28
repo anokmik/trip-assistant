@@ -1,26 +1,14 @@
 package com.anokmik.tripassistant.user.profile
 
+import com.anokmik.tripassistant.util.contract.presenter.PresenterEditable
+import com.anokmik.tripassistant.util.contract.presenter.PresenterValidator
+import com.anokmik.tripassistant.util.contract.view.ViewBack
+
 interface ProfileContract {
 
-    interface View {
+    interface View : ViewBack
 
-        fun setProfileTitle()
-
-        fun setEditUserTitle()
-
-        fun back()
-
-    }
-
-    interface Presenter {
-
-        fun save()
-
-        fun cancel()
-
-        fun edit()
-
-        fun delete()
+    interface Presenter : PresenterValidator, PresenterEditable {
 
         fun signOut()
 

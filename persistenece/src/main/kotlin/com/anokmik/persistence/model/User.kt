@@ -23,6 +23,6 @@ class User : BaseModel() {
 
     @JvmField
     @Column
-    var isActive: Boolean = false
+    var isActive: Boolean? = false
 
 }

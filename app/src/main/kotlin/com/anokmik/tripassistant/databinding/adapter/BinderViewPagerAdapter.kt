@@ -7,14 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class BinderViewPagerAdapter<T>(private val inflater: LayoutInflater, private val items: List<T>, private val presenter: ViewHolderPresenter<T>) : PagerAdapter() {
+class BinderViewPagerAdapter<T>(
+        private val inflater: LayoutInflater,
+        private val items: List<T>,
+        private val presenter: ViewHolderPresenter<T>
+) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, presenter.layoutId, container, false)
-        val binderViewHolder = BinderViewHolder(binding, presenter, position)
-        binderViewHolder.bindItem(items[position])
-        container.addView(binding.root)
-        return binding.root
+        val binderViewHolder = BinderViewHolder(binding, items[position], presenter, position)
+        val rootView = binding.root
+        rootView.tag = binderViewHolder
+        container.addView(rootView)
+        return rootView
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
@@ -25,29 +30,41 @@ class BinderViewPagerAdapter<T>(private val inflater: LayoutInflater, private va
 
     override fun getCount() = items.size
 
-    class BinderViewHolder<in T, B : ViewDataBinding>(private val binding: B, private val presenter: ViewHolderPresenter<T>, private val adapterPosition: Int) : View.OnClickListener, View.OnLongClickListener {
+    override fun getItemPosition(`object`: Any?) = PagerAdapter.POSITION_NONE
 
-        private var item: T? = null
+    class BinderViewHolder<in T, B : ViewDataBinding>(
+            private val binding: B,
+            private val item: T,
+            private val presenter: ViewHolderPresenter<T>,
+            private val adapterPosition: Int
+    ) : View.OnClickListener, View.OnLongClickListener, AdapterPositionProvider {
+
+        override val itemPosition: Int
+            get() = adapterPosition
 
         init {
+            binding.setVariable(presenter.itemBindingId, item)
+            binding.executePendingBindings()
+
+            setAdapterPositionProvider(presenter.adapterPositionProviderBindingId)
             setItemClickListener(binding.root, presenter.itemClickListener)
             setItemLongClickListener(binding.root, presenter.itemLongClickListener)
             setMappedVariables()
         }
 
-        fun bindItem(item: T) {
-            this.item = item
-            binding.setVariable(presenter.itemBindingId, item)
-            binding.executePendingBindings()
-        }
-
         override fun onClick(view: View) {
-            presenter.itemClickListener!!.onItemClick(item, adapterPosition)
+            presenter.itemClickListener?.onItemClick(item, itemPosition)
         }
 
         override fun onLongClick(view: View): Boolean {
-            presenter.itemLongClickListener!!.onItemLongClick(item, adapterPosition)
+            presenter.itemLongClickListener?.onItemLongClick(item, itemPosition)
             return true
+        }
+
+        private fun setAdapterPositionProvider(adapterPositionProviderBindingId: Int) {
+            if (adapterPositionProviderBindingId > 0) {
+                binding.setVariable(adapterPositionProviderBindingId, this)
+            }
         }
 
         private fun setItemClickListener(view: View, onItemClickListener: OnItemClickListener<T>?) {

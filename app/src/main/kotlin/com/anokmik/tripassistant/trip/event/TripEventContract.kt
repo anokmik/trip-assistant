@@ -1,72 +1,31 @@
 package com.anokmik.tripassistant.trip.event
 
-import android.support.annotation.LayoutRes
-
 import com.anokmik.persistence.model.PhotoAttachment
-import com.anokmik.persistence.model.TripEvent
 import com.anokmik.tripassistant.databinding.adapter.ViewHolderPresenter
+import com.anokmik.tripassistant.dialog.DateHandler
+import com.anokmik.tripassistant.util.contract.presenter.PresenterEditable
+import com.anokmik.tripassistant.util.contract.presenter.PresenterStartFinishDates
+import com.anokmik.tripassistant.util.contract.presenter.PresenterValidator
+import com.anokmik.tripassistant.util.contract.view.ViewBack
+import com.anokmik.tripassistant.util.contract.view.ViewControls
+import com.anokmik.tripassistant.util.contract.view.ViewListItem
+import com.anokmik.tripassistant.util.contract.view.ViewStartFinishDates
 
 interface TripEventContract {
 
-    interface Presenter {
-
-        val tripEvent: TripEvent?
+    interface Presenter : PresenterStartFinishDates, PresenterValidator, PresenterEditable, PhotoAttachmentListener {
 
         val photoAttachments: List<PhotoAttachment>
 
         val viewHolderPresenter: ViewHolderPresenter<PhotoAttachment>
 
-        fun showStartDatePicker()
-
-        fun showFinishDatePicker()
-
-        fun setStartDate(startDate: Long)
-
-        fun setFinishDate(finishDate: Long)
-
-        fun save()
-
-        fun edit()
-
-        fun delete()
-
-        fun addPhotoAttachment(path: String?)
-
     }
 
-    interface PhotoAttachmentListener {
-
-        fun takePhoto()
-
-        fun pickPhoto()
-
-        fun deletePhoto(photoAttachment: PhotoAttachment)
-
-    }
-
-    interface View {
-
-        val rowItemLayoutId: Int
-
-        val itemBindingId: Int
-
-        val itemListenerBindingId: Int
-
-        val itemIsEditingBindingId: Int
-
-        fun showStartDatePickerDialog(startDate: Long)
-
-        fun showFinishDatePickerDialog(finishDate: Long)
+    interface View : ViewListItem, ViewStartFinishDates, ViewControls, ViewBack, DateHandler {
 
         fun takePhotoAttachment()
 
         fun pickPhotoAttachment()
-
-        fun enableSaveMode()
-
-        fun enableEditMode()
-
-        fun back()
 
     }
 

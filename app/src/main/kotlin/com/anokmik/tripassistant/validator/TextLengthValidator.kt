@@ -1,11 +1,13 @@
 package com.anokmik.tripassistant.validator
 
-open class TextLengthValidator {
+import android.text.TextUtils
 
-    fun higherThan(text: String?, length: Int) = length(text) > length
+class TextLengthValidator {
 
-    fun lowerThan(text: String, length: Int) = length(text) < length
+    fun higherThan(text: String?, @Threshold threshold: Long) = notEmpty(text) && ((text?.length ?: 0) > threshold)
 
-    private fun length(text: String?) = text?.length ?: 0
+    fun lowerThan(text: String?, @Threshold threshold: Long) = notEmpty(text) && ((text?.length ?: 0) < threshold)
+
+    fun notEmpty(text: String?) = !TextUtils.isEmpty(text)
 
 }

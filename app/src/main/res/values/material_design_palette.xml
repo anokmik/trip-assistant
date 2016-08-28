@@ -277,4 +277,15 @@
     <color name="material_black">#000000</color>
     <color name="material_white">#ffffff</color>
 
+    <color name="material_dark_primary_text_color">#DD000000</color>
+    <color name="material_dark_secondary_text_color">#89000000</color>
+    <color name="material_dark_disabled_hint_text_color">#60000000</color>
+
+    <color name="material_light_primary_text_color">#FFFFFFFF</color>
+    <color name="material_light_secondary_text_color">#B2FFFFFF</color>
+    <color name="material_light_disabled_hint_text_color">#7FFFFFFF</color>
+
+    <color name="material_dark_divider">#1E000000</color>
+    <color name="material_light_divider">#1EFFFFFF</color>
+
 </resources>

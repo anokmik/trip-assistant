@@ -17,10 +17,10 @@ import com.anokmik.tripassistant.extensions.replace
 abstract class BaseActivity<in T : ViewDataBinding> : AppCompatActivity(), OnInteractionListener {
 
     @IdRes
-    protected var containerId: Int = 0
+    protected var containerId = 0
 
     @LayoutRes
-    protected var layoutId: Int = 0
+    protected var layoutId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

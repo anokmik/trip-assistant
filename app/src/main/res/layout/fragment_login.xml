@@ -13,14 +13,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
         android:fitsSystemWindows="true"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/fragment_padding">
 
         <android.support.design.widget.TextInputLayout
+            style="@style/TextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:error="@{@string/error_first_name_not_valid}"
+            app:error="@{@string/error_name_not_valid}"
             app:showError="@{!presenter.firstNameValid}">
 
             <android.support.design.widget.TextInputEditText
@@ -31,10 +33,13 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <include layout="@layout/space_small" />
+
         <android.support.design.widget.TextInputLayout
+            style="@style/TextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:error="@{@string/error_last_name_not_valid}"
+            app:error="@{@string/error_name_not_valid}"
             app:showError="@{!presenter.lastNameValid}">
 
             <android.support.design.widget.TextInputEditText
@@ -45,8 +50,10 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <include layout="@layout/space_large" />
+
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> presenter.login()}"
             android:text="@string/login" />

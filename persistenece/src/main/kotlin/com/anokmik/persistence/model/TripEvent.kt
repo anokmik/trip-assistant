@@ -2,7 +2,6 @@ package com.anokmik.persistence.model
 
 import android.support.annotation.IntDef
 import com.anokmik.persistence.TripAssistantDatabase
-import com.anokmik.persistence.util.TypeEventUtils
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.structure.BaseModel
 
@@ -43,17 +42,12 @@ class TripEvent : BaseModel() {
     var comment: String? = null
 
     @JvmField
-    @TypeEventUtils.Type
     @Column
-    var type: Long = 0
+    var startDate: Long? = 0
 
     @JvmField
     @Column
-    var startDate: Long = 0
-
-    @JvmField
-    @Column
-    var finishDate: Long = 0
+    var finishDate: Long? = 0
 
 
 }

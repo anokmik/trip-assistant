@@ -18,21 +18,44 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{trip.title}" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{trip.title}"
+                android:textColor="@color/material_dark_primary_text_color"
+                android:textSize="@dimen/title_text_size"
+                android:textStyle="bold" />
+
+            <include layout="@layout/space_very_small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{DateUtils.format(trip.startDate, trip.finishDate)}"
+                android:textColor="@color/material_dark_secondary_text_color"
+                android:textSize="@dimen/caption_text_size"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <include
+            layout="@layout/space_very_small"
+            android:visibility="@{ViewUtils.show(trip.description)}" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{trip.description}"
-            android:visibility="@{ViewUtils.hideIfEmpty(trip.description)}" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{DateUtils.format(trip.startDate, trip.finishDate)}" />
+            android:textColor="@color/material_dark_secondary_text_color"
+            android:textSize="@dimen/body_text_size"
+            android:visibility="@{ViewUtils.show(trip.description)}" />
 
     </LinearLayout>
 

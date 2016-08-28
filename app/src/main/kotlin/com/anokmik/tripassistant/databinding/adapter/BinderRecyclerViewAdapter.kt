@@ -7,19 +7,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class BinderRecyclerViewAdapter<T, B : ViewDataBinding>(private val inflater: LayoutInflater, private val items: List<T>, private val presenter: ViewHolderPresenter<T>) : RecyclerView.Adapter<BinderRecyclerViewAdapter.BinderViewHolder<T, B>>() {
+class BinderRecyclerViewAdapter<T, B : ViewDataBinding>(
+        private val inflater: LayoutInflater,
+        private val items: List<T>,
+        private val presenter: ViewHolderPresenter<T>
+) : RecyclerView.Adapter<BinderRecyclerViewAdapter.BinderViewHolder<T, B>>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BinderViewHolder<T, B> = BinderViewHolder(DataBindingUtil.inflate<ViewDataBinding>(inflater, presenter.layoutId, parent, false), presenter)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BinderViewHolder<T, B>
+            = BinderViewHolder(DataBindingUtil.inflate<ViewDataBinding>(inflater, presenter.layoutId, parent, false), presenter)
 
-    override fun onBindViewHolder(holder: BinderViewHolder<T, B>, position: Int) = holder.bindItem(items[position])
+    override fun onBindViewHolder(holder: BinderViewHolder<T, B>, position: Int)
+            = holder.bindItem(items[position])
 
     override fun getItemCount() = items.size
 
-    class BinderViewHolder<in T, in B : ViewDataBinding>(private val binding: B, private val presenter: ViewHolderPresenter<T>) : RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener {
+    class BinderViewHolder<in T, in B : ViewDataBinding>(
+            private val binding: B,
+            private val presenter: ViewHolderPresenter<T>
+    ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener, AdapterPositionProvider {
 
         private var item: T? = null
 
+        override val itemPosition: Int
+            get() = adapterPosition
+
         init {
+            setAdapterPositionProvider(presenter.adapterPositionProviderBindingId)
             setItemClickListener(itemView, presenter.itemClickListener)
             setItemLongClickListener(itemView, presenter.itemLongClickListener)
             setMappedVariables()
@@ -32,12 +45,18 @@ class BinderRecyclerViewAdapter<T, B : ViewDataBinding>(private val inflater: La
         }
 
         override fun onClick(view: View) {
-            presenter.itemClickListener?.onItemClick(item, adapterPosition)
+            presenter.itemClickListener?.onItemClick(item, itemPosition)
         }
 
         override fun onLongClick(view: View): Boolean {
-            presenter.itemLongClickListener?.onItemLongClick(item, adapterPosition)
+            presenter.itemLongClickListener?.onItemLongClick(item, itemPosition)
             return true
+        }
+
+        private fun setAdapterPositionProvider(adapterPositionProviderBindingId: Int) {
+            if (adapterPositionProviderBindingId > 0) {
+                binding.setVariable(adapterPositionProviderBindingId, this)
+            }
         }
 
         private fun setItemClickListener(view: View, onItemClickListener: OnItemClickListener<T>?) {

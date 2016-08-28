@@ -5,10 +5,10 @@ import android.view.View
 
 import com.anokmik.persistence.model.User
 import com.anokmik.tripassistant.R
-import com.anokmik.tripassistant.user.login.LoginFragment
-import com.anokmik.tripassistant.user.profile.ProfileFragment
 import com.anokmik.tripassistant.base.BaseActivity
 import com.anokmik.tripassistant.databinding.ActivityUserBinding
+import com.anokmik.tripassistant.user.login.LoginFragment
+import com.anokmik.tripassistant.user.profile.ProfileFragment
 
 class UserActivity : BaseActivity<ActivityUserBinding>(), UserContract.View, View.OnClickListener {
 

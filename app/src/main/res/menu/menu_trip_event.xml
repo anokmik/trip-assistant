@@ -4,27 +4,33 @@
     tools:context=".trip.TripActivity">
 
     <item
-        android:id="@+id/action_edit_trip"
+        android:id="@+id/action_edit_trip_event"
         android:icon="@drawable/ic_edit"
-        android:title="@string/title_trip"
+        android:title="@string/menu_edit_trip_event"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_save_trip"
+        android:id="@+id/action_cancel"
+        android:icon="@drawable/ic_cancel"
+        android:title="@string/menu_cancel"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_save_trip_event"
         android:icon="@drawable/ic_save"
-        android:title="@string/title_trip"
+        android:title="@string/menu_save_trip_event"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_delete_trip"
+        android:id="@+id/action_delete_trip_event"
         android:icon="@drawable/ic_delete"
-        android:title="@string/title_delete"
-        app:showAsAction="always" />
+        android:title="@string/menu_delete_trip_event"
+        app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_user"
+        android:id="@+id/action_show_user"
         android:icon="@drawable/ic_user"
-        android:title="@string/title_user"
-        app:showAsAction="always" />
+        android:title="@string/menu_show_user"
+        app:showAsAction="ifRoom" />
 
 </menu>

@@ -23,10 +23,10 @@ class Trip : BaseModel() {
 
     @JvmField
     @Column
-    var startDate: Long = 0
+    var startDate: Long? = 0
 
     @JvmField
     @Column
-    var finishDate: Long = 0
+    var finishDate: Long? = 0
 
 }

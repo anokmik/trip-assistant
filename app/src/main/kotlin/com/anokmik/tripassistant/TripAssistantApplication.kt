@@ -7,7 +7,6 @@ import com.anokmik.persistence.model.Trip
 import com.anokmik.persistence.model.TripEvent
 import com.anokmik.persistence.model.User
 import com.anokmik.persistence.repository.mock.MockRepository
-import com.anokmik.persistence.util.TypeEventUtils
 import com.anokmik.tripassistant.databinding.ComponentProvider
 import com.anokmik.tripassistant.util.DateUtils
 import com.raizlabs.android.dbflow.config.FlowConfig
@@ -62,11 +61,11 @@ class TripAssistantApplication : Application() {
                     val commentLouvre = "The world's largest museum and a historic monument in Paris, France. A central landmark of the city, it is located on the Right Bank of the Seine in the 1st arrondissement (ward). Nearly 35,000 objects from prehistory to the 21st century are exhibited over an area of 60,600 square metres.";
 
                     val tripEvents = ArrayList<TripEvent>();
-                    tripEvents.add(newTripEvent(firstTrip, null, "Ticket", null, TypeEventUtils.TICKET, DateUtils.toTime("12/12/2013"), DateUtils.toTime("12/12/2013")));
-                    tripEvents.add(newTripEvent(firstTrip, null, "Return Ticket", null, TypeEventUtils.TICKET, DateUtils.toTime("21/12/2013"), DateUtils.toTime("21/12/2013")));
-                    tripEvents.add(newTripEvent(firstTrip, null, "Hotel Ritz Paris", commentHotel, TypeEventUtils.HOTEL, DateUtils.toTime("12/01/2014"), DateUtils.toTime("22/01/2014")));
-                    tripEvents.add(newTripEvent(firstTrip, null, "Eiffel Tower", commentEiffelTower, TypeEventUtils.PLACE_OF_INTEREST, DateUtils.toTime("16/01/2014"), DateUtils.toTime("16/01/2014")));
-                    tripEvents.add(newTripEvent(firstTrip, null, "Louvre", commentLouvre, TypeEventUtils.PLACE_OF_INTEREST, DateUtils.toTime("19/01/2014"), DateUtils.toTime("19/01/2014")));
+                    tripEvents.add(newTripEvent(firstTrip, null, "Ticket", null, DateUtils.toTime("12/12/2013"), DateUtils.toTime("12/12/2013")));
+                    tripEvents.add(newTripEvent(firstTrip, null, "Return Ticket", null, DateUtils.toTime("21/12/2013"), DateUtils.toTime("21/12/2013")));
+                    tripEvents.add(newTripEvent(firstTrip, null, "Hotel Ritz Paris", commentHotel, DateUtils.toTime("12/01/2014"), DateUtils.toTime("22/01/2014")));
+                    tripEvents.add(newTripEvent(firstTrip, null, "Eiffel Tower", commentEiffelTower, DateUtils.toTime("16/01/2014"), DateUtils.toTime("16/01/2014")));
+                    tripEvents.add(newTripEvent(firstTrip, null, "Louvre", commentLouvre, DateUtils.toTime("19/01/2014"), DateUtils.toTime("19/01/2014")));
 
                     mockTripEventRepository.storeModelsFast(tripEvents);
 
@@ -94,12 +93,11 @@ class TripAssistantApplication : Application() {
             finishDate = finishDateValue
         }
 
-        private fun newTripEvent(tripValue: Trip?, userValue: User?, nameValue: String?, commentValue: String?, @TypeEventUtils.Type typeValue: Long, startDateValue: Long, finishDateValue: Long) = TripEvent().apply {
+        private fun newTripEvent(tripValue: Trip?, userValue: User?, nameValue: String?, commentValue: String?, startDateValue: Long, finishDateValue: Long) = TripEvent().apply {
             trip = tripValue;
             user = userValue;
             name = nameValue;
             comment = commentValue;
-            type = typeValue;
             startDate = startDateValue;
             finishDate = finishDateValue;
         }

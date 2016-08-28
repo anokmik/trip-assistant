@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?android:attr/colorControlHighlight">
+    <item>
+        <selector>
+            <item
+                android:drawable="@drawable/btn_stroke_barckground"
+                android:state_enabled="false" />
+            <item android:drawable="@drawable/btn_primary_barckground" />
+        </selector>
+    </item>
+</ripple>

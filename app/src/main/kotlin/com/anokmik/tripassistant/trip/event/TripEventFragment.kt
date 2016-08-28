@@ -3,26 +3,31 @@ package com.anokmik.tripassistant
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.anokmik.tripassistant.base.BaseFragment
 import com.anokmik.tripassistant.databinding.FragmentTripEventBinding
-import com.anokmik.tripassistant.dialog.DateHandler
 import com.anokmik.tripassistant.dialog.DatePickerDialogFragment
-import com.anokmik.tripassistant.trip.details.TripDetailsFragment
+import com.anokmik.tripassistant.trip.*
 import com.anokmik.tripassistant.trip.event.TripEventContract
 import com.anokmik.tripassistant.trip.event.TripEventPresenter
 import com.anokmik.tripassistant.user.UserActivity
 
-class TripEventFragment : BaseFragment<FragmentTripEventBinding>(), TripEventContract.View, DateHandler {
+class TripEventFragment : BaseFragment<FragmentTripEventBinding>(), TripEventContract.View {
 
     private lateinit var saveMenuItem: MenuItem
+    private lateinit var cancelMenuItem: MenuItem
     private lateinit var editMenuItem: MenuItem
+    private lateinit var deleteMenuItem: MenuItem
 
-    private val tripId by lazy { arguments.getLong(TripDetailsFragment.KEY_TRIP_ID) }
+    private val mode by lazy { arguments.getLong(MODE) }
 
-    private val tripEventId by  lazy { arguments.getLong(KEY_TRIP_EVENT_ID) }
+    private val tripId by lazy { arguments.getLong(TRIP_ID) }
+
+    private val tripEventId by  lazy { arguments.getLong(TRIP_EVENT_ID) }
 
     //TODO: Mikle, implement
     private val takePhotoIntent: Intent? = null
@@ -32,6 +37,8 @@ class TripEventFragment : BaseFragment<FragmentTripEventBinding>(), TripEventCon
 
     override val displayHomeAsUp = true
 
+    override val titleResourceId = R.string.title_trip_event
+
     override val layoutId = R.layout.fragment_trip_event
 
     override val rowItemLayoutId = R.layout.row_photo_attachment
@@ -40,35 +47,38 @@ class TripEventFragment : BaseFragment<FragmentTripEventBinding>(), TripEventCon
 
     override val itemListenerBindingId = BR.listener
 
-    override val itemIsEditingBindingId = BR.isEditing
+    override val adapterPositionProviderBindingId = BR.positionProvider
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setActionBarTitle(R.string.title_trip_event)
-    }
+    override val itemIsEditingBindingId = BR.isEditing
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        saveMenuItem = menu.findItem(R.id.action_save_trip)
-        editMenuItem = menu.findItem(R.id.action_edit_trip)
-        showEditMenuItem()
+        saveMenuItem = menu.findItem(R.id.action_save_trip_event)
+        cancelMenuItem = menu.findItem(R.id.action_cancel)
+        editMenuItem = menu.findItem(R.id.action_edit_trip_event)
+        deleteMenuItem = menu.findItem(R.id.action_delete_trip_event)
+        initControls()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_edit_trip -> {
+            R.id.action_edit_trip_event -> {
                 binding.presenter.edit()
                 return true
             }
-            R.id.action_save_trip -> {
+            R.id.action_cancel -> {
+                binding.presenter.cancel()
+                return true
+            }
+            R.id.action_save_trip_event -> {
                 binding.presenter.save()
                 return true
             }
-            R.id.action_delete_trip -> {
+            R.id.action_delete_trip_event -> {
                 binding.presenter.delete()
                 return true
             }
-            R.id.action_user -> {
+            R.id.action_show_user -> {
                 launchActivity(UserActivity::class.java)
                 return true
             }
@@ -94,19 +104,26 @@ class TripEventFragment : BaseFragment<FragmentTripEventBinding>(), TripEventCon
         }
     }
 
-
     override fun initBinding(binding: FragmentTripEventBinding) {
-        binding.setPresenter(TripEventPresenter(this, tripEventId))
+        binding.presenter = TripEventPresenter(this, mode, tripId, tripEventId)
     }
 
     override fun getOptionMenuResourceId() = R.menu.menu_trip_event
 
-    override fun showStartDatePickerDialog(startDate: Long) {
+    override fun showStartDatePickerDialog(startDate: Long?) {
         showDialog(DatePickerDialogFragment.startDateInstance(startDate, this))
     }
 
-    override fun showFinishDatePickerDialog(finishDate: Long) {
+    override fun showFinishDatePickerDialog(finishDate: Long?) {
         showDialog(DatePickerDialogFragment.finishDateInstance(finishDate, this))
+    }
+
+    override fun showDatesInvalidError() {
+        view?.apply {
+            val snackbar = Snackbar.make(this, R.string.error_dates_invalid, Snackbar.LENGTH_LONG)
+            snackbar.view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
+            snackbar.show()
+        }
     }
 
     override fun takePhotoAttachment() {
@@ -117,17 +134,11 @@ class TripEventFragment : BaseFragment<FragmentTripEventBinding>(), TripEventCon
         launchActivity(pickPhotoIntent)
     }
 
-    override fun enableSaveMode() {
-        showSaveMenuItem()
-    }
+    override fun enableSaveControls() = showSaveControls()
 
-    override fun enableEditMode() {
-        showEditMenuItem()
-    }
+    override fun enableEditControls() = showEditControls()
 
-    override fun back() {
-        activity.onBackPressed()
-    }
+    override fun back() = activity.onBackPressed()
 
     override fun updateStartDate(startDate: Long) {
         binding.presenter.setStartDate(startDate)
@@ -137,29 +148,35 @@ class TripEventFragment : BaseFragment<FragmentTripEventBinding>(), TripEventCon
         binding.presenter.setFinishDate(finishDate)
     }
 
-    private fun showSaveMenuItem() {
-        updateModeMenuItems(true, false)
+    private fun initControls() {
+        when (mode) {
+            ADD -> showAddControls()
+            VIEW -> showEditControls()
+        }
     }
 
-    private fun showEditMenuItem() {
-        updateModeMenuItems(false, true)
-    }
+    private fun showAddControls() = updateMenuItems(true, false, false)
 
-    private fun updateModeMenuItems(showSave: Boolean, showEdit: Boolean) {
+    private fun showEditControls() = updateMenuItems(false, true, true)
+
+    private fun showSaveControls() = updateMenuItems(true, false, true)
+
+    private fun updateMenuItems(showSave: Boolean, showEdit: Boolean, showDelete: Boolean) {
         saveMenuItem.isVisible = showSave
+        cancelMenuItem.isVisible = showSave
         editMenuItem.isVisible = showEdit
+        deleteMenuItem.isVisible = showDelete
     }
 
     companion object {
-
-        val KEY_TRIP_EVENT_ID = "key_trip_event_id"
 
         private val TAKE_PHOTO_REQUEST = 1212
         private val PICK_PHOTO_REQUEST = 2222
 
         fun add(tripId: Long): TripEventFragment {
             val arguments = Bundle()
-            arguments.putLong(TripDetailsFragment.KEY_TRIP_ID, tripId)
+            arguments.putLong(MODE, ADD)
+            arguments.putLong(TRIP_ID, tripId)
             val tripEventFragment = TripEventFragment()
             tripEventFragment.arguments = arguments
             return tripEventFragment
@@ -167,7 +184,8 @@ class TripEventFragment : BaseFragment<FragmentTripEventBinding>(), TripEventCon
 
         fun view(tripEventId: Long): TripEventFragment {
             val arguments = Bundle()
-            arguments.putLong(KEY_TRIP_EVENT_ID, tripEventId)
+            arguments.putLong(MODE, VIEW)
+            arguments.putLong(TRIP_EVENT_ID, tripEventId)
             val tripDetailsFragment = TripEventFragment()
             tripDetailsFragment.arguments = arguments
             return tripDetailsFragment
