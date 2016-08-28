@@ -3,7 +3,6 @@ package com.anokmik.tripassistant.databinding;
 import com.anokmik.tripassistant.databinding.components.ImageViewComponent;
 import com.anokmik.tripassistant.databinding.components.RecyclerViewComponent;
 import com.anokmik.tripassistant.databinding.components.TextInputLayoutComponent;
-import com.anokmik.tripassistant.databinding.components.TextViewComponent;
 import com.anokmik.tripassistant.databinding.components.ViewPagerComponent;
 
 public final class ComponentProvider implements android.databinding.DataBindingComponent {
@@ -21,11 +20,6 @@ public final class ComponentProvider implements android.databinding.DataBindingC
     @Override
     public TextInputLayoutComponent getTextInputLayoutComponent() {
         return new TextInputLayoutComponent();
-    }
-
-    @Override
-    public TextViewComponent getTextViewComponent() {
-        return new TextViewComponent();
     }
 
     @Override

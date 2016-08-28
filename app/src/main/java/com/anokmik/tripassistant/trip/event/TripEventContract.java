@@ -21,8 +21,6 @@ public interface TripEventContract {
 
         ViewHolderPresenter<PhotoAttachment> getViewHolderPresenter();
 
-        void addPhotoAttachment(String path);
-
     }
 
     interface View extends ViewListItem, ViewStartFinishDates, ViewControls, ViewBack, DateHandler {

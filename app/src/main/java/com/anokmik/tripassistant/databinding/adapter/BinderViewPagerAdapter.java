@@ -25,10 +25,11 @@ public final class BinderViewPagerAdapter<T> extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, presenter.getLayoutId(), container, false);
-        BinderViewHolder binderViewHolder = new BinderViewHolder(binding, presenter, position);
-        binderViewHolder.bindItem(items.get(position));
-        container.addView(binding.getRoot());
-        return binding.getRoot();
+        BinderViewHolder binderViewHolder = new BinderViewHolder(binding, items.get(position), presenter, position);
+        View rootView = binding.getRoot();
+        rootView.setTag(binderViewHolder);
+        container.addView(rootView);
+        return rootView;
     }
 
     @Override
@@ -61,20 +62,19 @@ public final class BinderViewPagerAdapter<T> extends PagerAdapter {
 
         private T item;
 
-        public BinderViewHolder(B binding, ViewHolderPresenter<T> presenter, int adapterPosition) {
+        public BinderViewHolder(B binding, T item, ViewHolderPresenter<T> presenter, int adapterPosition) {
             this.binding = binding;
             this.presenter = presenter;
             this.adapterPosition = adapterPosition;
+            this.item = item;
+
+            binding.setVariable(presenter.getItemBindingId(), item);
+            binding.executePendingBindings();
+
             setAdapterPositionProvider(presenter.getAdapterPositionProviderBindingId());
             setItemClickListener(binding.getRoot(), presenter.getItemClickListener());
             setItemLongClickListener(binding.getRoot(), presenter.getItemLongClickListener());
             setMappedVariables();
-        }
-
-        private void bindItem(T item) {
-            this.item = item;
-            binding.setVariable(presenter.getItemBindingId(), item);
-            binding.executePendingBindings();
         }
 
         @Override

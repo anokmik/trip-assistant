@@ -8,4 +8,6 @@ public interface PhotoAttachmentListener {
 
     void deletePhoto(int position);
 
+    void addPhotoAttachment(String path);
+
 }
