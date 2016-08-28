@@ -10,8 +10,6 @@ class ComponentProvider : android.databinding.DataBindingComponent {
 
     override fun getTextInputLayoutComponent() = TextInputLayoutComponent()
 
-    override fun getTextViewComponent() = TextViewComponent()
-
     override fun getViewPagerComponent() = ViewPagerComponent()
 
 }
