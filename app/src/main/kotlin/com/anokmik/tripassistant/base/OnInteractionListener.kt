@@ -8,6 +8,8 @@ interface OnInteractionListener {
 
     fun onLaunchActivity(intent: Intent?)
 
+    fun onLaunchActivity(intent: Intent?, requestCode: Int)
+
     fun onReplace(fragment: Fragment, backStackTag: String?)
 
     fun onShowDialog(dialogFragment: DialogFragment)

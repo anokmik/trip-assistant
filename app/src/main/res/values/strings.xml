@@ -49,4 +49,7 @@
     <string name="error_input_not_empty">Field must be not empty</string>
     <string name="error_dates_invalid">Dates should be equal or represent period of time</string>
 
+    <!-- Near Future -->
+    <string name="feature_that_require_implementation">This feature will be implemented on Monday</string>
+
 </resources>

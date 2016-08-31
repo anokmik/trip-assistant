@@ -36,6 +36,8 @@ abstract class BaseActivity<in T : ViewDataBinding> : AppCompatActivity(), OnInt
 
     override fun onLaunchActivity(intent: Intent?) = launchActivity(intent)
 
+    override fun onLaunchActivity(intent: Intent?, requestCode: Int) = launchActivity(intent, requestCode)
+
     override fun onReplace(fragment: Fragment, backStackTag: String?) {
         replaceFragment(fragment, backStackTag)
     }
@@ -46,6 +48,10 @@ abstract class BaseActivity<in T : ViewDataBinding> : AppCompatActivity(), OnInt
         popBackImmediate(flags, backStackTag)
     }
 
+    protected fun launchActivity(intent: Intent?) = startActivity(intent)
+
+    protected fun launchActivity(intent: Intent?, requestCode: Int) = startActivityForResult(intent, requestCode)
+
     protected fun addFragment(fragment: Fragment) = supportFragmentManager.add(fragment, containerId)
 
     protected fun replaceFragment(fragment: Fragment, backStackTag: String? = null) = supportFragmentManager.replace(fragment, containerId, backStackTag)
@@ -53,8 +59,6 @@ abstract class BaseActivity<in T : ViewDataBinding> : AppCompatActivity(), OnInt
     protected fun showDialog(dialogFragment: DialogFragment) = dialogFragment.show(supportFragmentManager, null)
 
     protected fun popBackImmediate(flags: Int = FragmentManager.POP_BACK_STACK_INCLUSIVE, backStackTag: String? = null) = supportFragmentManager.popBackImmediate(backStackTag, flags)
-
-    protected fun launchActivity(intent: Intent?) = startActivity(intent)
 
     protected abstract fun initBinding(binding: T)
 

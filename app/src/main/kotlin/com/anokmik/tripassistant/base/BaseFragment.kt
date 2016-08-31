@@ -70,6 +70,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     protected fun launchActivity(intent: Intent?) = onInteractionListener?.onLaunchActivity(intent)
 
+    protected fun launchActivity(intent: Intent?, requestCode: Int) = onInteractionListener?.onLaunchActivity(intent, requestCode)
+
     protected fun replaceFragment(fragment: Fragment, backStackTag: String? = null) = onInteractionListener?.onReplace(fragment, backStackTag)
 
     protected fun showDialog(dialogFragment: DialogFragment) = onInteractionListener?.onShowDialog(dialogFragment)

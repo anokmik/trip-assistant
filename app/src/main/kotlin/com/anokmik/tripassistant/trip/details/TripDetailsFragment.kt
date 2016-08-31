@@ -18,6 +18,7 @@ import com.anokmik.tripassistant.trip.MODE
 import com.anokmik.tripassistant.trip.TRIP_ID
 import com.anokmik.tripassistant.trip.VIEW
 import com.anokmik.tripassistant.user.UserActivity
+import com.anokmik.tripassistant.util.ViewUtils
 import com.dgreenhalgh.android.simpleitemdecoration.linear.DividerItemDecoration
 
 class TripDetailsFragment : BaseFragment<FragmentTripDetailsBinding>(), TripDetailsContract.View {
@@ -99,11 +100,7 @@ class TripDetailsFragment : BaseFragment<FragmentTripDetailsBinding>(), TripDeta
     }
 
     override fun showDatesInvalidError() {
-        view?.apply {
-            val snackbar = Snackbar.make(this, R.string.error_dates_invalid, Snackbar.LENGTH_LONG)
-            snackbar.view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
-            snackbar.show()
-        }
+        ViewUtils.showSnackbar(view, R.string.error_dates_invalid)
     }
 
     override fun addTripEvent() {

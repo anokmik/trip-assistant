@@ -15,6 +15,7 @@ import com.anokmik.tripassistant.trip.*
 import com.anokmik.tripassistant.trip.event.TripEventContract
 import com.anokmik.tripassistant.trip.event.TripEventPresenter
 import com.anokmik.tripassistant.user.UserActivity
+import com.anokmik.tripassistant.util.ViewUtils
 
 class TripEventFragment : BaseFragment<FragmentTripEventBinding>(), TripEventContract.View {
 
@@ -29,10 +30,10 @@ class TripEventFragment : BaseFragment<FragmentTripEventBinding>(), TripEventCon
 
     private val tripEventId by  lazy { arguments.getLong(TRIP_EVENT_ID) }
 
-    //TODO: Mikle, implement
+    //TODO: Build intent for taking photo
     private val takePhotoIntent: Intent? = null
 
-    //TODO: Mikle, implement
+    //TODO: Build intent for picking photo
     private val pickPhotoIntent: Intent? = null
 
     override val displayHomeAsUp = true
@@ -89,14 +90,13 @@ class TripEventFragment : BaseFragment<FragmentTripEventBinding>(), TripEventCon
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
+            //TODO: Implement path retrieving for picked or taken photo
             when (requestCode) {
                 TAKE_PHOTO_REQUEST -> {
-                    //TODO: Mikle, get path to photo
                     val takePhotoPath: String? = null
                     binding.presenter.addPhotoAttachment(takePhotoPath)
                 }
                 PICK_PHOTO_REQUEST -> {
-                    //TODO: Mikle, get path to photo
                     val pickPhotoPath: String? = null
                     binding.presenter.addPhotoAttachment(pickPhotoPath)
                 }
@@ -119,19 +119,17 @@ class TripEventFragment : BaseFragment<FragmentTripEventBinding>(), TripEventCon
     }
 
     override fun showDatesInvalidError() {
-        view?.apply {
-            val snackbar = Snackbar.make(this, R.string.error_dates_invalid, Snackbar.LENGTH_LONG)
-            snackbar.view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
-            snackbar.show()
-        }
+        ViewUtils.showSnackbar(view, R.string.error_dates_invalid)
     }
 
     override fun takePhotoAttachment() {
-        launchActivity(takePhotoIntent)
+        ViewUtils.showSnackbar(view, R.string.feature_that_require_implementation)
+        launchActivity(takePhotoIntent, TAKE_PHOTO_REQUEST)
     }
 
     override fun pickPhotoAttachment() {
-        launchActivity(pickPhotoIntent)
+        ViewUtils.showSnackbar(view, R.string.feature_that_require_implementation)
+        launchActivity(pickPhotoIntent, PICK_PHOTO_REQUEST)
     }
 
     override fun enableSaveControls() = showSaveControls()
