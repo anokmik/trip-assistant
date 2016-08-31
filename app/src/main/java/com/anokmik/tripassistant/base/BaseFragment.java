@@ -89,6 +89,12 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
         }
     }
 
+    protected void launchActivity(Intent intent, int requestCode) {
+        if (onInteractionListener != null) {
+            onInteractionListener.onLaunchActivity(intent, requestCode);
+        }
+    }
+
     protected void replaceFragment(Fragment fragment, String backStackTag) {
         if (onInteractionListener != null) {
             onInteractionListener.onReplace(fragment, backStackTag);

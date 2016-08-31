@@ -8,6 +8,8 @@ public interface OnInteractionListener {
 
     void onLaunchActivity(Intent intent);
 
+    void onLaunchActivity(Intent intent, int requestCode);
+
     void onReplace(Fragment fragment, String backStackTag);
 
     void onShowDialog(DialogFragment dialogFragment);

@@ -1,16 +1,14 @@
 package com.anokmik.tripassistant.trip.details;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.anokmik.tripassistant.R;
 import com.anokmik.tripassistant.BR;
+import com.anokmik.tripassistant.R;
 import com.anokmik.tripassistant.base.BaseFragment;
 import com.anokmik.tripassistant.databinding.FragmentTripDetailsBinding;
 import com.anokmik.tripassistant.dialog.DatePickerDialogFragment;
@@ -18,6 +16,7 @@ import com.anokmik.tripassistant.trip.Key;
 import com.anokmik.tripassistant.trip.Mode;
 import com.anokmik.tripassistant.trip.event.TripEventFragment;
 import com.anokmik.tripassistant.user.UserActivity;
+import com.anokmik.tripassistant.util.ViewUtils;
 import com.dgreenhalgh.android.simpleitemdecoration.linear.DividerItemDecoration;
 
 public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsBinding> implements TripDetailsContract.View {
@@ -141,12 +140,7 @@ public final class TripDetailsFragment extends BaseFragment<FragmentTripDetailsB
 
     @Override
     public void showDatesInvalidError() {
-        View view = getView();
-        if (view != null) {
-            Snackbar snackbar = Snackbar.make(view, R.string.error_dates_invalid, Snackbar.LENGTH_LONG);
-            snackbar.getView().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-            snackbar.show();
-        }
+        ViewUtils.showSnackbar(getView(), R.string.error_dates_invalid);
     }
 
     @Override

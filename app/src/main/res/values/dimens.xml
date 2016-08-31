@@ -5,10 +5,12 @@
     <dimen name="space_small">8dp</dimen>
     <dimen name="space_medium">16dp</dimen>
     <dimen name="space_large">32dp</dimen>
-    <dimen name="divider_small_inset">4dp</dimen>
-    <dimen name="divider_medium_inset">8dp</dimen>
-    <dimen name="divider_large_inset">16dp</dimen>
+    <dimen name="divider_small_offset">4dp</dimen>
+    <dimen name="divider_medium_offset">8dp</dimen>
+    <dimen name="divider_large_offset">16dp</dimen>
     <dimen name="divider_size">2dp</dimen>
+    <dimen name="divider_small_height">10dp</dimen>
+    <dimen name="divider_medium_height">18dp</dimen>
     <dimen name="divider_large_height">34dp</dimen>
     <dimen name="image_btn_size">48dp</dimen>
     <dimen name="image_btn_margin">8dp</dimen>

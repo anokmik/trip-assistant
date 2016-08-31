@@ -3,21 +3,19 @@ package com.anokmik.tripassistant.trip.event;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.anokmik.tripassistant.R;
 import com.anokmik.tripassistant.BR;
+import com.anokmik.tripassistant.R;
 import com.anokmik.tripassistant.base.BaseFragment;
 import com.anokmik.tripassistant.databinding.FragmentTripEventBinding;
 import com.anokmik.tripassistant.dialog.DatePickerDialogFragment;
 import com.anokmik.tripassistant.trip.Key;
 import com.anokmik.tripassistant.trip.Mode;
 import com.anokmik.tripassistant.user.UserActivity;
+import com.anokmik.tripassistant.util.ViewUtils;
 
 public final class TripEventFragment extends BaseFragment<FragmentTripEventBinding> implements TripEventContract.View {
 
@@ -84,14 +82,13 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
+            //TODO: Implement path retrieving for picked or taken photo
             switch (requestCode) {
                 case TAKE_PHOTO_REQUEST:
-                    //TODO: Mikle, get path to photo
                     String takePhotoPath = null;
                     getBinding().getPresenter().addPhotoAttachment(takePhotoPath);
                     break;
                 case PICK_PHOTO_REQUEST:
-                    //TODO: Mikle, get path to photo
                     String pickPhotoPath = null;
                     getBinding().getPresenter().addPhotoAttachment(pickPhotoPath);
                     break;
@@ -161,22 +158,17 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
 
     @Override
     public void showDatesInvalidError() {
-        View view = getView();
-        if (view != null) {
-            Snackbar snackbar = Snackbar.make(view, R.string.error_dates_invalid, Snackbar.LENGTH_LONG);
-            snackbar.getView().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-            snackbar.show();
-        }
+        ViewUtils.showSnackbar(getView(), R.string.error_dates_invalid);
     }
 
     @Override
     public void takePhotoAttachment() {
-        launchActivity(getTakePhotoIntent());
+        launchActivity(getTakePhotoIntent(), TAKE_PHOTO_REQUEST);
     }
 
     @Override
     public void pickPhotoAttachment() {
-        launchActivity(getPickPhotoIntent());
+        launchActivity(getPickPhotoIntent(), PICK_PHOTO_REQUEST);
     }
 
     @Override
@@ -235,12 +227,14 @@ public final class TripEventFragment extends BaseFragment<FragmentTripEventBindi
     }
 
     private Intent getTakePhotoIntent() {
-        //TODO: Mikle, implement
+        ViewUtils.showSnackbar(getView(), R.string.feature_that_require_implementation);
+        //TODO: Build intent for taking photo
         return null;
     }
 
     private Intent getPickPhotoIntent() {
-        //TODO: Mikle, implement
+        ViewUtils.showSnackbar(getView(), R.string.feature_that_require_implementation);
+        //TODO: Build intent for picking photo
         return null;
     }
 

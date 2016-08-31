@@ -37,6 +37,11 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     }
 
     @Override
+    public void onLaunchActivity(Intent intent, int requestCode) {
+        launchActivity(intent, requestCode);
+    }
+
+    @Override
     public void onReplace(Fragment fragment, String backStackTag) {
         replaceFragment(fragment, backStackTag);
     }
@@ -49,6 +54,14 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     @Override
     public void onImmediatePopBack(int flags, String backStackTag) {
         popBackImmediate(flags, backStackTag);
+    }
+
+    protected void launchActivity(Intent intent) {
+        startActivity(intent);
+    }
+
+    protected void launchActivity(Intent intent, int requestCode) {
+        startActivityForResult(intent, requestCode);
     }
 
     protected void addFragment(Fragment fragment) {
@@ -65,10 +78,6 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
 
     protected void popBackImmediate(int flags, String backStackTag) {
         getSupportFragmentManager().popBackStackImmediate(backStackTag, flags);
-    }
-
-    protected void launchActivity(Intent intent) {
-        startActivity(intent);
     }
 
     @LayoutRes
