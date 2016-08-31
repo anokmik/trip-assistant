@@ -48,9 +48,17 @@ abstract class BaseActivity<in T : ViewDataBinding> : AppCompatActivity(), OnInt
         popBackImmediate(flags, backStackTag)
     }
 
-    protected fun launchActivity(intent: Intent?) = startActivity(intent)
+    protected fun launchActivity(intent: Intent?) {
+        intent?.let {
+            startActivity(it)
+        }
+    }
 
-    protected fun launchActivity(intent: Intent?, requestCode: Int) = startActivityForResult(intent, requestCode)
+    protected fun launchActivity(intent: Intent?, requestCode: Int) {
+        intent?.let {
+            startActivityForResult(it, requestCode)
+        }
+    }
 
     protected fun addFragment(fragment: Fragment) = supportFragmentManager.add(fragment, containerId)
 
