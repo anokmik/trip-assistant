@@ -57,11 +57,15 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     }
 
     protected void launchActivity(Intent intent) {
-        startActivity(intent);
+        if (intent != null) {
+            startActivity(intent);
+        }
     }
 
     protected void launchActivity(Intent intent, int requestCode) {
-        startActivityForResult(intent, requestCode);
+        if (intent != null) {
+            startActivityForResult(intent, requestCode);
+        }
     }
 
     protected void addFragment(Fragment fragment) {
