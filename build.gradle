@@ -2,13 +2,13 @@
 
 ext {
     libraries = [
-            supportVersion      : "24.1.1",
+            supportVersion      : "25.0.1",
             picassoVersion      : "2.5.2",
             simpleItemDecoration: "1.0.0",
             dbFlowVersion       : "3.1.1",
             dbInspector         : "3.3.0@aar",
-            dataBindingVersion: "2.1.2",
-            kotlinVersion     : "1.0.3",
+            dataBindingVersion  : "2.1.2",
+            kotlinVersion       : "1.0.4",
             testJunit           : "4.12"
     ]
 }
@@ -18,8 +18,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.3'
+        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.4'
     }
 }
 
